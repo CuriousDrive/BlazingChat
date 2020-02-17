@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<linker>
+  <!-- THIS IS A GENERATED FILE - DO NOT EDIT MANUALLY -->
+  <assembly fullname="Microsoft.AspNetCore.Authorization">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.AspNetCore.Blazor">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.AspNetCore.Blazor.HttpClient">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.AspNetCore.Components">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.AspNetCore.Components.Forms">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.AspNetCore.Components.Web">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.AspNetCore.Metadata">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.Extensions.Configuration">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.Extensions.Configuration.Abstractions">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.Extensions.DependencyInjection">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.Extensions.DependencyInjection.Abstractions">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.Extensions.Logging.Abstractions">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.Extensions.Options">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.Extensions.Primitives">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+</linker>
