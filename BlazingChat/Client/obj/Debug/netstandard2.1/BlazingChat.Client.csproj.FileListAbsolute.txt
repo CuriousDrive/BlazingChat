@@ -92,3 +92,15 @@ C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\obj\Debug\netstandard2.1\Bla
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\obj\Debug\netstandard2.1\blazor\linker.descriptor.xml
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\obj\Debug\netstandard2.1\blazor\linker.typegranularityconfig.xml
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\obj\Debug\netstandard2.1\blazor\blazor.boot.json
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\bin\Debug\netstandard2.1\Microsoft.AspNetCore.Connections.Abstractions.dll
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\bin\Debug\netstandard2.1\Microsoft.AspNetCore.Http.Connections.Client.dll
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\bin\Debug\netstandard2.1\Microsoft.AspNetCore.Http.Connections.Common.dll
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\bin\Debug\netstandard2.1\Microsoft.AspNetCore.Http.Features.dll
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\bin\Debug\netstandard2.1\Microsoft.AspNetCore.SignalR.Client.dll
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\bin\Debug\netstandard2.1\Microsoft.AspNetCore.SignalR.Client.Core.dll
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\bin\Debug\netstandard2.1\Microsoft.AspNetCore.SignalR.Common.dll
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\bin\Debug\netstandard2.1\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\bin\Debug\netstandard2.1\Microsoft.Extensions.Configuration.Binder.dll
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\bin\Debug\netstandard2.1\Microsoft.Extensions.Logging.dll
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\bin\Debug\netstandard2.1\System.IO.Pipelines.dll
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\bin\Debug\netstandard2.1\System.Threading.Channels.dll
