@@ -19,7 +19,31 @@
   <assembly fullname="Microsoft.AspNetCore.Components.Web">
     <type fullname="*" preserve="all" required="false" />
   </assembly>
+  <assembly fullname="Microsoft.AspNetCore.Connections.Abstractions">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.AspNetCore.Http.Connections.Client">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.AspNetCore.Http.Connections.Common">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.AspNetCore.Http.Features">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
   <assembly fullname="Microsoft.AspNetCore.Metadata">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.AspNetCore.SignalR.Client">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.AspNetCore.SignalR.Client.Core">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.AspNetCore.SignalR.Common">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.AspNetCore.SignalR.Protocols.Json">
     <type fullname="*" preserve="all" required="false" />
   </assembly>
   <assembly fullname="Microsoft.Extensions.Configuration">
@@ -28,10 +52,16 @@
   <assembly fullname="Microsoft.Extensions.Configuration.Abstractions">
     <type fullname="*" preserve="all" required="false" />
   </assembly>
+  <assembly fullname="Microsoft.Extensions.Configuration.Binder">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
   <assembly fullname="Microsoft.Extensions.DependencyInjection">
     <type fullname="*" preserve="all" required="false" />
   </assembly>
   <assembly fullname="Microsoft.Extensions.DependencyInjection.Abstractions">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
+  <assembly fullname="Microsoft.Extensions.Logging">
     <type fullname="*" preserve="all" required="false" />
   </assembly>
   <assembly fullname="Microsoft.Extensions.Logging.Abstractions">

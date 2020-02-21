@@ -1,9 +1,9 @@
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Shared\bin\Debug\netstandard2.1\BlazingChat.Shared.deps.json
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Shared\bin\Debug\netstandard2.1\BlazingChat.Shared.dll
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Shared\bin\Debug\netstandard2.1\BlazingChat.Shared.pdb
-C:\Data\CuriousDrive\BlazingChat\BlazingChat\Shared\obj\Debug\netstandard2.1\BlazingChat.Shared.csprojAssemblyReference.cache
-C:\Data\CuriousDrive\BlazingChat\BlazingChat\Shared\obj\Debug\netstandard2.1\BlazingChat.Shared.csproj.CoreCompileInputs.cache
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Shared\obj\Debug\netstandard2.1\BlazingChat.Shared.AssemblyInfoInputs.cache
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Shared\obj\Debug\netstandard2.1\BlazingChat.Shared.AssemblyInfo.cs
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Shared\obj\Debug\netstandard2.1\BlazingChat.Shared.dll
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Shared\obj\Debug\netstandard2.1\BlazingChat.Shared.pdb
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Shared\obj\Debug\netstandard2.1\BlazingChat.Shared.csprojAssemblyReference.cache
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Shared\obj\Debug\netstandard2.1\BlazingChat.Shared.csproj.CoreCompileInputs.cache

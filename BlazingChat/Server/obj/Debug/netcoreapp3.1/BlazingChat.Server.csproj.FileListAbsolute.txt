@@ -1,3 +1,4 @@
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\bin\Debug\netcoreapp3.1\BlazingChat.Client.blazor.config
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\bin\Debug\netcoreapp3.1\BlazingChat.Server.exe
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\bin\Debug\netcoreapp3.1\BlazingChat.Server.deps.json
@@ -21,7 +22,6 @@ C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\bin\Debug\netcoreapp3.1\Blaz
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\obj\Debug\netcoreapp3.1\BlazingChat.Server.csprojAssemblyReference.cache
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\obj\Debug\netcoreapp3.1\staticwebassets\BlazingChat.Server.StaticWebAssets.Manifest.cache
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\obj\Debug\netcoreapp3.1\staticwebassets\BlazingChat.Server.StaticWebAssets.xml
-C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\obj\Debug\netcoreapp3.1\BlazingChat.Server.csproj.CoreCompileInputs.cache
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\obj\Debug\netcoreapp3.1\BlazingChat.Server.MvcApplicationPartsAssemblyInfo.cache
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\obj\Debug\netcoreapp3.1\BlazingChat.Server.AssemblyInfoInputs.cache
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\obj\Debug\netcoreapp3.1\BlazingChat.Server.AssemblyInfo.cs
@@ -29,7 +29,6 @@ C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\obj\Debug\netcoreapp3.1\Blaz
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\obj\Debug\netcoreapp3.1\BlazingChat.Server.csproj.CopyComplete
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\obj\Debug\netcoreapp3.1\BlazingChat.Server.dll
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\obj\Debug\netcoreapp3.1\BlazingChat.Server.pdb
-C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\obj\Debug\netcoreapp3.1\BlazingChat.Server.genruntimeconfig.cache
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Connections.Abstractions.dll
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Http.Connections.Client.dll
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Http.Connections.Common.dll
@@ -47,3 +46,5 @@ C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\bin\Debug\netcoreapp3.1\Micr
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Primitives.dll
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\obj\Debug\netcoreapp3.1\BlazingChat.Server.csproj.CoreCompileInputs.cache
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\obj\Debug\netcoreapp3.1\BlazingChat.Server.genruntimeconfig.cache
