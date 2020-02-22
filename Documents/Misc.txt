@@ -1,0 +1,2 @@
+dotnet build
+dotnet run --project .\Server\BlazingChat.Server.csproj

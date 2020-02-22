@@ -4011,14 +4011,14 @@
       },
       {
         "Kind": "Components.Component",
-        "Name": "BlazingChat.Client.Pages.Index",
+        "Name": "BlazingChat.Client.App",
         "AssemblyName": "BlazingChat.Client",
         "Documentation": null,
         "TagOutputHint": null,
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "Index",
+            "TagName": "App",
             "ParentTag": null,
             "TagStructure": 0,
             "Attributes": [],
@@ -4030,19 +4030,19 @@
         "Diagnostics": [],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazingChat.Client.Pages.Index"
+          "Common.TypeName": "BlazingChat.Client.App"
         }
       },
       {
         "Kind": "Components.Component",
-        "Name": "BlazingChat.Client.Pages.Index",
+        "Name": "BlazingChat.Client.App",
         "AssemblyName": "BlazingChat.Client",
         "Documentation": null,
         "TagOutputHint": null,
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "BlazingChat.Client.Pages.Index",
+            "TagName": "BlazingChat.Client.App",
             "ParentTag": null,
             "TagStructure": 0,
             "Attributes": [],
@@ -4054,56 +4054,7 @@
         "Diagnostics": [],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazingChat.Client.Pages.Index",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
-        "Kind": "Components.Component",
-        "Name": "BlazingChat.Client.Pages.FetchData",
-        "AssemblyName": "BlazingChat.Client",
-        "Documentation": null,
-        "TagOutputHint": null,
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "FetchData",
-            "ParentTag": null,
-            "TagStructure": 0,
-            "Attributes": [],
-            "Diagnostics": []
-          }
-        ],
-        "BoundAttributes": [],
-        "AllowedChildTags": [],
-        "Diagnostics": [],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazingChat.Client.Pages.FetchData"
-        }
-      },
-      {
-        "Kind": "Components.Component",
-        "Name": "BlazingChat.Client.Pages.FetchData",
-        "AssemblyName": "BlazingChat.Client",
-        "Documentation": null,
-        "TagOutputHint": null,
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "BlazingChat.Client.Pages.FetchData",
-            "ParentTag": null,
-            "TagStructure": 0,
-            "Attributes": [],
-            "Diagnostics": []
-          }
-        ],
-        "BoundAttributes": [],
-        "AllowedChildTags": [],
-        "Diagnostics": [],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazingChat.Client.Pages.FetchData",
+          "Common.TypeName": "BlazingChat.Client.App",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
@@ -4158,93 +4109,63 @@
       },
       {
         "Kind": "Components.Component",
-        "Name": "BlazingChat.Client.Shared.SurveyPrompt",
+        "Name": "BlazingChat.Client.Pages.FetchData",
         "AssemblyName": "BlazingChat.Client",
         "Documentation": null,
         "TagOutputHint": null,
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "SurveyPrompt",
+            "TagName": "FetchData",
             "ParentTag": null,
             "TagStructure": 0,
             "Attributes": [],
             "Diagnostics": []
           }
         ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "Title",
-            "TypeName": "System.String",
-            "IsEnum": false,
-            "IndexerNamePrefix": null,
-            "IndexerTypeName": null,
-            "Documentation": null,
-            "Diagnostics": [],
-            "Metadata": {
-              "Common.PropertyName": "Title"
-            },
-            "BoundAttributeParameters": []
-          }
-        ],
+        "BoundAttributes": [],
         "AllowedChildTags": [],
         "Diagnostics": [],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazingChat.Client.Shared.SurveyPrompt"
+          "Common.TypeName": "BlazingChat.Client.Pages.FetchData"
         }
       },
       {
         "Kind": "Components.Component",
-        "Name": "BlazingChat.Client.Shared.SurveyPrompt",
+        "Name": "BlazingChat.Client.Pages.FetchData",
         "AssemblyName": "BlazingChat.Client",
         "Documentation": null,
         "TagOutputHint": null,
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "BlazingChat.Client.Shared.SurveyPrompt",
+            "TagName": "BlazingChat.Client.Pages.FetchData",
             "ParentTag": null,
             "TagStructure": 0,
             "Attributes": [],
             "Diagnostics": []
           }
         ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "Title",
-            "TypeName": "System.String",
-            "IsEnum": false,
-            "IndexerNamePrefix": null,
-            "IndexerTypeName": null,
-            "Documentation": null,
-            "Diagnostics": [],
-            "Metadata": {
-              "Common.PropertyName": "Title"
-            },
-            "BoundAttributeParameters": []
-          }
-        ],
+        "BoundAttributes": [],
         "AllowedChildTags": [],
         "Diagnostics": [],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazingChat.Client.Shared.SurveyPrompt",
+          "Common.TypeName": "BlazingChat.Client.Pages.FetchData",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
       {
         "Kind": "Components.Component",
-        "Name": "BlazingChat.Client.Shared.NavMenu",
+        "Name": "BlazingChat.Client.Pages.Index",
         "AssemblyName": "BlazingChat.Client",
         "Documentation": null,
         "TagOutputHint": null,
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "NavMenu",
+            "TagName": "Index",
             "ParentTag": null,
             "TagStructure": 0,
             "Attributes": [],
@@ -4256,19 +4177,19 @@
         "Diagnostics": [],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazingChat.Client.Shared.NavMenu"
+          "Common.TypeName": "BlazingChat.Client.Pages.Index"
         }
       },
       {
         "Kind": "Components.Component",
-        "Name": "BlazingChat.Client.Shared.NavMenu",
+        "Name": "BlazingChat.Client.Pages.Index",
         "AssemblyName": "BlazingChat.Client",
         "Documentation": null,
         "TagOutputHint": null,
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "BlazingChat.Client.Shared.NavMenu",
+            "TagName": "BlazingChat.Client.Pages.Index",
             "ParentTag": null,
             "TagStructure": 0,
             "Attributes": [],
@@ -4280,7 +4201,7 @@
         "Diagnostics": [],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazingChat.Client.Shared.NavMenu",
+          "Common.TypeName": "BlazingChat.Client.Pages.Index",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
@@ -4418,14 +4339,14 @@
       },
       {
         "Kind": "Components.Component",
-        "Name": "BlazingChat.Client.App",
+        "Name": "BlazingChat.Client.Shared.NavMenu",
         "AssemblyName": "BlazingChat.Client",
         "Documentation": null,
         "TagOutputHint": null,
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "App",
+            "TagName": "NavMenu",
             "ParentTag": null,
             "TagStructure": 0,
             "Attributes": [],
@@ -4437,19 +4358,19 @@
         "Diagnostics": [],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazingChat.Client.App"
+          "Common.TypeName": "BlazingChat.Client.Shared.NavMenu"
         }
       },
       {
         "Kind": "Components.Component",
-        "Name": "BlazingChat.Client.App",
+        "Name": "BlazingChat.Client.Shared.NavMenu",
         "AssemblyName": "BlazingChat.Client",
         "Documentation": null,
         "TagOutputHint": null,
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "BlazingChat.Client.App",
+            "TagName": "BlazingChat.Client.Shared.NavMenu",
             "ParentTag": null,
             "TagStructure": 0,
             "Attributes": [],
@@ -4461,7 +4382,86 @@
         "Diagnostics": [],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazingChat.Client.App",
+          "Common.TypeName": "BlazingChat.Client.Shared.NavMenu",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "Kind": "Components.Component",
+        "Name": "BlazingChat.Client.Shared.SurveyPrompt",
+        "AssemblyName": "BlazingChat.Client",
+        "Documentation": null,
+        "TagOutputHint": null,
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "SurveyPrompt",
+            "ParentTag": null,
+            "TagStructure": 0,
+            "Attributes": [],
+            "Diagnostics": []
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "Title",
+            "TypeName": "System.String",
+            "IsEnum": false,
+            "IndexerNamePrefix": null,
+            "IndexerTypeName": null,
+            "Documentation": null,
+            "Diagnostics": [],
+            "Metadata": {
+              "Common.PropertyName": "Title"
+            },
+            "BoundAttributeParameters": []
+          }
+        ],
+        "AllowedChildTags": [],
+        "Diagnostics": [],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "BlazingChat.Client.Shared.SurveyPrompt"
+        }
+      },
+      {
+        "Kind": "Components.Component",
+        "Name": "BlazingChat.Client.Shared.SurveyPrompt",
+        "AssemblyName": "BlazingChat.Client",
+        "Documentation": null,
+        "TagOutputHint": null,
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "BlazingChat.Client.Shared.SurveyPrompt",
+            "ParentTag": null,
+            "TagStructure": 0,
+            "Attributes": [],
+            "Diagnostics": []
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "Title",
+            "TypeName": "System.String",
+            "IsEnum": false,
+            "IndexerNamePrefix": null,
+            "IndexerTypeName": null,
+            "Documentation": null,
+            "Diagnostics": [],
+            "Metadata": {
+              "Common.PropertyName": "Title"
+            },
+            "BoundAttributeParameters": []
+          }
+        ],
+        "AllowedChildTags": [],
+        "Diagnostics": [],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "BlazingChat.Client.Shared.SurveyPrompt",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },

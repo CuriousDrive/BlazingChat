@@ -33,6 +33,10 @@
 
     protected override async Task OnInitializedAsync()
     {
+        
+        _userInput = "User1";
+        _messageInput = "Message1";
+        
         _hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("/chatHub"))
             .Build();
@@ -41,6 +45,7 @@
         {
             var encodedMsg = $"{user}: {message}";
             _messages.Add(encodedMsg);
+            
             StateHasChanged();
         });
 
