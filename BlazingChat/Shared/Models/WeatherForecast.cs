@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BlazingChat.Shared
+namespace BlazingChat.Shared.Models
 {
     public class WeatherForecast
     {

@@ -1,41 +1,46 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.SignalR.Client
+@using BlazingChat.Shared.Models
 @inject NavigationManager NavigationManager
+@inject HttpClient Http
 
-<div class="form-group">
-    <label>
-        User:
-        <input @bind="_userInput" />
-    </label>
+<div class="form-group col-12">
+    @* <label>        
+        <input class="form-control" @bind="_userInput" placeholder="user"/>
+    </label> *@
+    <label>Logged in as : <b>@_userInput</b></label> 
 </div>
-<div class="form-group">
-    <label>
-        Message:
-        <input @bind="_messageInput" size="50" />
-    </label>
+<div class="form-group col-12">
+    <textarea class="form-control" @bind="_messageInput" placeholder="message"/>    
 </div>
-<button @onclick="Send" disabled="@(!IsConnected)">Send</button>
+<div class="form-group col-12">
+    <button class="btn btn-primary" @onclick="Send" disabled="@(!IsConnected)">Send</button>
+</div>
 
 <hr>
 
-<ul id="messagesList">
+<div class="form-group bg-light">
+    <ul id="messagesList">
     @foreach (var message in _messages)
     {
         <li>@message</li>
     }
 </ul>
 
+</div>
+
 @code {
     private HubConnection _hubConnection;
     private List<string> _messages = new List<string>();
     private string _userInput;
     private string _messageInput;
+    public bool IsConnected;
 
     protected override async Task OnInitializedAsync()
-    {
-        
-        _userInput = "User1";
-        _messageInput = "Message1";
+    {        
+        User randomUserName = await Http.GetJsonAsync<User>("User");
+
+        _userInput = randomUserName.UserName;        
         
         _hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("/chatHub"))
@@ -43,18 +48,21 @@
 
         _hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
         {
-            var encodedMsg = $"{user}: {message}";
+            var encodedMsg = $"{user} : {message}";
             _messages.Add(encodedMsg);
             
             StateHasChanged();
         });
 
         await _hubConnection.StartAsync();
+
+        if(_hubConnection.State == HubConnectionState.Connected)
+            IsConnected = true;
     }
 
-    Task Send() =>
-        _hubConnection.SendAsync("SendMessage", _userInput, _messageInput);
-
-    public bool IsConnected =>
-        _hubConnection.State == HubConnectionState.Connected;
+    public async Task Send()
+    {
+        await _hubConnection.SendAsync("SendMessage", _userInput, _messageInput);
+    }
+    
 }

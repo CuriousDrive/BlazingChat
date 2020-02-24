@@ -1,4 +1,4 @@
-﻿using BlazingChat.Shared;
+﻿using BlazingChat.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
