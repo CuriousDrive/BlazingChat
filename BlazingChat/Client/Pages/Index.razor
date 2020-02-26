@@ -5,28 +5,42 @@
 @inject HttpClient Http
 
 <div class="form-group col-12">
-    @* <label>        
-        <input class="form-control" @bind="_userInput" placeholder="user"/>
-    </label> *@
     <label>Logged in as : <b>@_userInput</b></label> 
 </div>
+
 <div class="form-group col-12">
-    <textarea class="form-control" @bind="_messageInput" placeholder="message"/>    
-</div>
-<div class="form-group col-12">
-    <button class="btn btn-primary" @onclick="Send" disabled="@(!IsConnected)">Send</button>
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table table-bordered table-striped mb-0">
+            <tbody>
+                @foreach (var message in _messages)
+                {
+                    <tr>
+                        <th scope="row">
+                            @message
+                        </th>                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 
-<hr>
-
-<div class="form-group bg-light">
+@* <div class="form-group bg-light">
     <ul id="messagesList">
     @foreach (var message in _messages)
     {
         <li>@message</li>
     }
-</ul>
+    </ul>
+</div> *@
 
+<hr>
+
+<div class="form-group col-12">
+    <input class="form-control" @bind="_messageInput" placeholder="message"/>    
+</div>
+<div class="form-group col-12">
+    <button class="btn btn-primary" @onclick="Send" disabled="@(!IsConnected)">Send</button>
 </div>
 
 @code {
