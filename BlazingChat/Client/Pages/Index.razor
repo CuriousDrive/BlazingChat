@@ -3,6 +3,7 @@
 @using BlazingChat.Shared.Models
 @inject NavigationManager NavigationManager
 @inject HttpClient Http
+@inject IJSRuntime JSRuntime
 
 <div class="form-group col-12">
     <label>Logged in as : <b>@_userInput</b></label> 
@@ -11,13 +12,11 @@
 <div class="form-group col-12">
     <div class="table-wrapper-scroll-y my-custom-scrollbar">
         <table class="table table-bordered table-striped mb-0">
-            <tbody>
+            <tbody style="vertical-align:text-bottom">
                 @foreach (var message in _messages)
                 {
-                    <tr>
-                        <th scope="row">
-                            @message
-                        </th>                        
+                    <tr>                        
+                        @message                        
                     </tr>
                 }
             </tbody>
@@ -25,22 +24,12 @@
     </div>
 </div>
 
-@* <div class="form-group bg-light">
-    <ul id="messagesList">
-    @foreach (var message in _messages)
-    {
-        <li>@message</li>
-    }
-    </ul>
-</div> *@
-
 <hr>
-
 <div class="form-group col-12">
-    <input class="form-control" @bind="_messageInput" placeholder="message"/>    
+    @_messageInput
 </div>
 <div class="form-group col-12">
-    <button class="btn btn-primary" @onclick="Send" disabled="@(!IsConnected)">Send</button>
+    <input id="txtMessageInput" class="form-control" @bind="_messageInput" placeholder="message" @onkeydown="@(e => OnKeyDownEvent(e))"/>    
 </div>
 
 @code {
@@ -49,9 +38,11 @@
     private string _userInput;
     private string _messageInput;
     public bool IsConnected;
+    public bool IsEnterPressed;
+
 
     protected override async Task OnInitializedAsync()
-    {        
+    {       
         User randomUserName = await Http.GetJsonAsync<User>("User");
 
         _userInput = randomUserName.UserName;        
@@ -72,11 +63,21 @@
 
         if(_hubConnection.State == HubConnectionState.Connected)
             IsConnected = true;
+    
     }
 
-    public async Task Send()
-    {
-        await _hubConnection.SendAsync("SendMessage", _userInput, _messageInput);
+    public async Task OnKeyDownEvent(KeyboardEventArgs eventArgs)
+    {        
+        if(eventArgs.Key == "Enter")
+        {
+            string messsageToBeSent = await JSRuntime.InvokeAsync<string>("getMessageInput");
+            await Send(messsageToBeSent);     
+        }
     }
-    
+
+    public async Task Send(string message)
+    {
+        if(message != null && message.Length > 0)
+            await _hubConnection.SendAsync("SendMessage", _userInput, message);
+    }
 }
