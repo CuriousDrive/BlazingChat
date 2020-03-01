@@ -138,6 +138,16 @@
             "Microsoft.AspNetCore.Blazor.Server": {
               "target": "Package",
               "version": "[3.2.0-preview1.20073.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[3.1.1, )"
             }
           },
           "imports": [

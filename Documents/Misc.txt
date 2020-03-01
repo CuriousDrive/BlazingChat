@@ -1,2 +1,4 @@
 dotnet build
 dotnet run --project .\Server\BlazingChat.Server.csproj
+
+dotnet ef dbcontext scaffold "Data Source=C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\DB\BlazingChat.db;" Microsoft.EntityFrameworkCore.Sqlite --output-dir Models

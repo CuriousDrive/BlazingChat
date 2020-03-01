@@ -4,7 +4,7 @@ Stream - 02/28/2020
 this has been done. I had too do this using js interop. and the textbox is getting emptied after the message has been sent to the other user.
 
 2. Figure out how you can add the message at the bottom of the table instead of adding at the top
--- in progress
+-- on hold
 
-3. Let's figure out how we can use SQLite for storing our user information and this will store even Twitter, Facebook and Google logins
--- request acknowledged
+3. Let's figure out how we can use SQLite for storing our user information
+-- in progress

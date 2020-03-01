@@ -15,11 +15,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Shared\\BlazingChat.Shared.csproj",
+      "projectUniqueName": "c:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Shared\\BlazingChat.Shared.csproj",
       "projectName": "BlazingChat.Shared",
-      "projectPath": "C:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Shared\\BlazingChat.Shared.csproj",
+      "projectPath": "c:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Shared\\BlazingChat.Shared.csproj",
       "packagesPath": "C:\\Users\\fahad.mullaji\\.nuget\\packages\\",
-      "outputPath": "C:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Shared\\obj\\",
+      "outputPath": "c:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Shared\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
