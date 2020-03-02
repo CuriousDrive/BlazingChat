@@ -43,9 +43,9 @@
 
     protected override async Task OnInitializedAsync()
     {       
-        User randomUserName = await Http.GetJsonAsync<User>("User");
+        Contacts randomContact = await Http.GetJsonAsync<Contacts>("User");
 
-        _userInput = randomUserName.UserName;        
+        _userInput = randomContact.FirstName;        
         
         _hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("/chatHub"))

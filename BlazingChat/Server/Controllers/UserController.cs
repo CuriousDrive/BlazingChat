@@ -1,22 +1,18 @@
-﻿using BlazingChat.Shared.Models;
+﻿//using BlazingChat.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using BlazingChat.Server.Models;
 
 namespace BlazingChat.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase
-    {
-        private static readonly string[] Users = new[]
-        {
-            "John", "Bill", "Steve", "Monica", "Rachel", "Laura", "Mark", "David", "Liz", "Amanda"
-        };
-
+    {        
         private readonly ILogger<UserController> logger;
 
         public UserController(ILogger<UserController> logger)
@@ -25,17 +21,20 @@ namespace BlazingChat.Server.Controllers
         }
 
         [HttpGet]
-        public User Get()
-        {
-           // Create a Random object  
-            Random rand = new Random();  
-            // Generate a random index less than the size of the array.  
-            int index = rand.Next(Users.Length);  
+        public Contacts Get()
+        {           
+           using(var blazingChatContext = new BlazingChatContext())
+           {
+               var contacts = blazingChatContext.Contacts.ToList();
+                // Create a Random object  
+                Random rand = new Random();  
+                // Generate a random index less than the size of the array.  
+                int index = rand.Next(contacts.Count);
 
-            User user = new User();
-            user.UserName = Users[index];
-            
-            return user;
+                var contact = contacts.Where(c => c.ContactId == index).FirstOrDefault();
+
+                return contact;
+           }
             
         }
     }

@@ -2,6 +2,18 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v3.1": {
+      "Microsoft.AspNetCore.Authentication.Twitter/3.1.1": {
+        "type": "package",
+        "compile": {
+          "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.Twitter.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.Twitter.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Microsoft.AspNetCore.Authorization/3.1.0": {
         "type": "package",
         "dependencies": {
@@ -1147,6 +1159,20 @@
     }
   },
   "libraries": {
+    "Microsoft.AspNetCore.Authentication.Twitter/3.1.1": {
+      "sha512": "4vP0GwUey6ntRMXx63LXhaqzM8FQi/UPwneXz/bEf69F7kwHhaSznU381PvKwXVe0n37TrrroRs9/UbuxeO26Q==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.authentication.twitter/3.1.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.Twitter.dll",
+        "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.Twitter.xml",
+        "microsoft.aspnetcore.authentication.twitter.3.1.1.nupkg.sha512",
+        "microsoft.aspnetcore.authentication.twitter.nuspec"
+      ]
+    },
     "Microsoft.AspNetCore.Authorization/3.1.0": {
       "sha512": "R/0qFIu1m7jJFD0OuLIjLXC0uYQxFwwW7ylVvGgUPUpOJJK0bKJjfrDu20kY1Yw0hy9ejZYZEdUZHRm3ei0+3w==",
       "type": "package",
@@ -3771,6 +3797,7 @@
     ".NETCoreApp,Version=v3.1": [
       "BlazingChat.Client >= 1.0.0",
       "BlazingChat.Shared >= 1.0.0",
+      "Microsoft.AspNetCore.Authentication.Twitter >= 3.1.1",
       "Microsoft.AspNetCore.Blazor.Server >= 3.2.0-preview1.20073.1",
       "Microsoft.EntityFrameworkCore.Design >= 3.1.1",
       "Microsoft.EntityFrameworkCore.Sqlite >= 3.1.1"
@@ -3827,6 +3854,10 @@
     "frameworks": {
       "netcoreapp3.1": {
         "dependencies": {
+          "Microsoft.AspNetCore.Authentication.Twitter": {
+            "target": "Package",
+            "version": "[3.1.1, )"
+          },
           "Microsoft.AspNetCore.Blazor.Server": {
             "target": "Package",
             "version": "[3.2.0-preview1.20073.1, )"

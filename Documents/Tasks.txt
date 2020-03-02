@@ -1,10 +1,24 @@
 Stream - 02/28/2020
 
 1. Let's send message on enter keyboard event
-this has been done. I had too do this using js interop. and the textbox is getting emptied after the message has been sent to the other user.
+-- DONE. 
+I had too do this using js interop. and the textbox is getting emptied after the message has been sent to the other user.
 
 2. Figure out how you can add the message at the bottom of the table instead of adding at the top
--- on hold
+-- ON HOLD
 
 3. Let's figure out how we can use SQLite for storing our user information
--- in progress
+-- DONE
+I had to install SQLite extension to make it work and write queries in vs code. But I did not have to install SQLite to make this happen
+So anyone from any machine cloning this project should be able to use the DB just fine.
+
+Stream - 03/02/2020
+4. Let's add twitter login in the server side app
+-- IN PROGRESS
+    - The best way to do this is by creating keys by email address that you really do not care about?
+    - Then people who are intended to bad things with the keys then they can and it's okay if I loose that email address
+    - I created a new twitter app with my secrete email address 
+    - I also added the consumer key and consumer secrete key to the app settings 
+    - I added twitter package in the server project 
+    - I added the configuration services at the time of start up
+    

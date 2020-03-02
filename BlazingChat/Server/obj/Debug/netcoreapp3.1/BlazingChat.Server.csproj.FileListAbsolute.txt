@@ -76,3 +76,4 @@ C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\bin\Debug\netcoreapp3.1\runt
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\e_sqlite3.dll
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\e_sqlite3.dll
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\bin\Debug\netcoreapp3.1\appsettings.json

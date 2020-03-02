@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "QFC/AfUTdonPjq9gpnBKaJ4fhErcjkGZvCRhhH6J6bDDbCSQETKjLgcy6RI9avF5If7ZJu34m+wjUghadC494A==",
+  "dgSpecHash": "pb23nh3LnDZ1KOod8kxYK5pCjyNFQIUe2MP75/EFk8eXXrF8DqsqxnB45ibIvbKHj+V/bA+3V1TX+meSfYf8kw==",
   "success": true,
   "projectFilePath": "C:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Server\\BlazingChat.Server.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.aspnetcore.authentication.twitter\\3.1.1\\microsoft.aspnetcore.authentication.twitter.3.1.1.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.aspnetcore.authorization\\3.1.0\\microsoft.aspnetcore.authorization.3.1.0.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.aspnetcore.blazor\\3.2.0-preview1.20073.1\\microsoft.aspnetcore.blazor.3.2.0-preview1.20073.1.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.aspnetcore.blazor.httpclient\\3.2.0-preview1.20073.1\\microsoft.aspnetcore.blazor.httpclient.3.2.0-preview1.20073.1.nupkg.sha512",
