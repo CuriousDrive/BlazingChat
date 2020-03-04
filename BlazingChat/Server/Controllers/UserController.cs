@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BlazingChat.Server.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Twitter;
 
 namespace BlazingChat.Server.Controllers
 {
@@ -36,6 +38,19 @@ namespace BlazingChat.Server.Controllers
                 return contact;
            }
             
+        }
+    
+        [HttpGet("/twittersignin")]
+        public async Task TwitterSignIn(string redirectUri)
+        {
+            if (string.IsNullOrEmpty(redirectUri) || !Url.IsLocalUrl(redirectUri))
+            {
+                redirectUri = "/";
+            }
+
+            await HttpContext.ChallengeAsync(
+                TwitterDefaults.AuthenticationScheme,
+                new AuthenticationProperties { RedirectUri = redirectUri });
         }
     }
 }

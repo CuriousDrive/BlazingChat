@@ -156,6 +156,55 @@
       },
       {
         "Kind": "Components.Component",
+        "Name": "BlazingChat.Client.Pages.LoginPages.Login",
+        "AssemblyName": "BlazingChat.Client",
+        "Documentation": null,
+        "TagOutputHint": null,
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Login",
+            "ParentTag": null,
+            "TagStructure": 0,
+            "Attributes": [],
+            "Diagnostics": []
+          }
+        ],
+        "BoundAttributes": [],
+        "AllowedChildTags": [],
+        "Diagnostics": [],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "BlazingChat.Client.Pages.LoginPages.Login"
+        }
+      },
+      {
+        "Kind": "Components.Component",
+        "Name": "BlazingChat.Client.Pages.LoginPages.Login",
+        "AssemblyName": "BlazingChat.Client",
+        "Documentation": null,
+        "TagOutputHint": null,
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "BlazingChat.Client.Pages.LoginPages.Login",
+            "ParentTag": null,
+            "TagStructure": 0,
+            "Attributes": [],
+            "Diagnostics": []
+          }
+        ],
+        "BoundAttributes": [],
+        "AllowedChildTags": [],
+        "Diagnostics": [],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "BlazingChat.Client.Pages.LoginPages.Login",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "Kind": "Components.Component",
         "Name": "BlazingChat.Client.Shared.MainLayout",
         "AssemblyName": "BlazingChat.Client",
         "Documentation": null,
@@ -16380,6 +16429,11 @@
     {
       "FilePath": "c:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Client\\Pages\\Index.razor",
       "TargetPath": "Pages\\Index.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Client\\Pages\\LoginPages\\Login.razor",
+      "TargetPath": "Pages\\LoginPages\\Login.razor",
       "FileKind": "component"
     },
     {

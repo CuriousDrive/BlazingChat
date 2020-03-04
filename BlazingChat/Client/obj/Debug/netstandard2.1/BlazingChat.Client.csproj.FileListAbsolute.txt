@@ -115,3 +115,5 @@ C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\bin\Debug\netstandard2.1\dis
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\bin\Debug\netstandard2.1\dist\_framework\_bin\Microsoft.Extensions.Options.dll
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\bin\Debug\netstandard2.1\dist\_framework\_bin\Mono.Security.dll
 C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\bin\Debug\netstandard2.1\dist\_framework\_bin\WebAssembly.Net.WebSockets.dll
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\obj\Debug\netstandard2.1\RazorDeclaration\Pages\LoginPages\Login.razor.g.cs
+C:\Data\CuriousDrive\BlazingChat\BlazingChat\Client\obj\Debug\netstandard2.1\Razor\Pages\LoginPages\Login.razor.g.cs

@@ -1,0 +1,22 @@
+@page "/login"
+
+@inject NavigationManager NavigationManager
+
+<h1>Login Page</h1>
+<br>
+
+<div class="col-4">
+    <a class="btn btn-block btn-social btn-twitter" @onclick="TwitterSignIn">
+        <span class="fa fa-twitter"></span> <b>Sign in with Twitter</b>
+    </a>
+</div>
+
+
+@code{
+
+    private void TwitterSignIn()
+    {
+        NavigationManager.NavigateTo("user/twitterlogin", true);
+    }
+
+}
