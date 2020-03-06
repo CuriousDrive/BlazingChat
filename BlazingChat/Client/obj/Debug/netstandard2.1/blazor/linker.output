@@ -1,13 +1,16 @@
 obj\Debug\netstandard2.1\blazor\linker\BlazingChat.Client.dll
 obj\Debug\netstandard2.1\blazor\linker\BlazingChat.Shared.dll
+obj\Debug\netstandard2.1\blazor\linker\Microsoft.AspNetCore.Authorization.dll
 obj\Debug\netstandard2.1\blazor\linker\Microsoft.AspNetCore.Blazor.dll
 obj\Debug\netstandard2.1\blazor\linker\Microsoft.AspNetCore.Blazor.HttpClient.dll
+obj\Debug\netstandard2.1\blazor\linker\Microsoft.AspNetCore.Components.Authorization.dll
 obj\Debug\netstandard2.1\blazor\linker\Microsoft.AspNetCore.Components.dll
 obj\Debug\netstandard2.1\blazor\linker\Microsoft.AspNetCore.Components.Web.dll
 obj\Debug\netstandard2.1\blazor\linker\Microsoft.AspNetCore.Connections.Abstractions.dll
 obj\Debug\netstandard2.1\blazor\linker\Microsoft.AspNetCore.Http.Connections.Client.dll
 obj\Debug\netstandard2.1\blazor\linker\Microsoft.AspNetCore.Http.Connections.Common.dll
 obj\Debug\netstandard2.1\blazor\linker\Microsoft.AspNetCore.Http.Features.dll
+obj\Debug\netstandard2.1\blazor\linker\Microsoft.AspNetCore.Metadata.dll
 obj\Debug\netstandard2.1\blazor\linker\Microsoft.AspNetCore.SignalR.Client.Core.dll
 obj\Debug\netstandard2.1\blazor\linker\Microsoft.AspNetCore.SignalR.Client.dll
 obj\Debug\netstandard2.1\blazor\linker\Microsoft.AspNetCore.SignalR.Common.dll

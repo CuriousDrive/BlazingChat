@@ -8,11 +8,12 @@ using Microsoft.Extensions.Logging;
 using BlazingChat.Server.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Twitter;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace BlazingChat.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    //[Route("[controller]")]
     public class UserController : ControllerBase
     {        
         private readonly ILogger<UserController> logger;
@@ -22,25 +23,20 @@ namespace BlazingChat.Server.Controllers
             this.logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet("user")]
         public Contacts Get()
         {           
-           using(var blazingChatContext = new BlazingChatContext())
-           {
-               var contacts = blazingChatContext.Contacts.ToList();
-                // Create a Random object  
-                Random rand = new Random();  
-                // Generate a random index less than the size of the array.  
-                int index = rand.Next(contacts.Count);
+            var contact = new Contacts();
 
-                var contact = contacts.Where(c => c.ContactId == index).FirstOrDefault();
+            if(User.Identity.IsAuthenticated)
+            {
+                contact.FirstName = User.Identity.Name;   
+            }
 
-                return contact;
-           }
-            
+            return contact;
         }
     
-        [HttpGet("/twittersignin")]
+        [HttpGet("user/twittersignin")]
         public async Task TwitterSignIn(string redirectUri)
         {
             if (string.IsNullOrEmpty(redirectUri) || !Url.IsLocalUrl(redirectUri))
@@ -51,6 +47,13 @@ namespace BlazingChat.Server.Controllers
             await HttpContext.ChallengeAsync(
                 TwitterDefaults.AuthenticationScheme,
                 new AuthenticationProperties { RedirectUri = redirectUri });
+        }
+
+        [HttpGet("user/signout")]
+        public async Task<IActionResult> SignOut()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return Redirect("~/");
         }
     }
 }

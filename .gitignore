@@ -1,7 +1,8 @@
 # Ingnore bin folder on Blazor Client
 **/BlazingChat/Client/bin/
+**/BlazingChat/Client/obj/
+**/BlazingChat/Client/bin/Debug/netstandard2.1
 **/BlazingChat/Client/obj/Debug/netstandard2.1
-
 
 # Ingnore bin folder on Blazor Server
 **/BlazingChat/Server/bin/

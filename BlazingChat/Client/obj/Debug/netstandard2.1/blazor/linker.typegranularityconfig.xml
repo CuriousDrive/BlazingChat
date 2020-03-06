@@ -13,6 +13,9 @@
   <assembly fullname="Microsoft.AspNetCore.Components">
     <type fullname="*" preserve="all" required="false" />
   </assembly>
+  <assembly fullname="Microsoft.AspNetCore.Components.Authorization">
+    <type fullname="*" preserve="all" required="false" />
+  </assembly>
   <assembly fullname="Microsoft.AspNetCore.Components.Forms">
     <type fullname="*" preserve="all" required="false" />
   </assembly>

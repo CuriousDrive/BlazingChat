@@ -1,5 +1,5 @@
 @page "/"
-
+@using Microsoft.AspNetCore.Components.Authorization
 @inject NavigationManager NavigationManager
 
 <h1>Login Page</h1>
@@ -11,12 +11,22 @@
     </a>
 </div>
 
-
 @code{
+
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var user = (await authenticationStateTask).User;
+
+        if(user.Identity.IsAuthenticated)
+            NavigationManager.NavigateTo("/chat");
+    }
 
     private void TwitterSignIn()
     {
-        NavigationManager.NavigateTo("user/twitterlogin", true);
+        NavigationManager.NavigateTo("user/twittersignin?redirectUri=/chat", true);
     }
 
 }
