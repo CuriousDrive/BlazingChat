@@ -986,7 +986,8 @@
             "Documentation": "Specifies the parameter name for all child content expressions.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True"
+              "Components.ChildContentParameterName": "True",
+              "Common.PropertyName": "Context"
             },
             "BoundAttributeParameters": []
           }
@@ -1083,7 +1084,8 @@
             "Documentation": "Specifies the parameter name for all child content expressions.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True"
+              "Components.ChildContentParameterName": "True",
+              "Common.PropertyName": "Context"
             },
             "BoundAttributeParameters": []
           }
@@ -1174,7 +1176,8 @@
             "Documentation": "Specifies the parameter name for the 'Found' child content expression.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True"
+              "Components.ChildContentParameterName": "True",
+              "Common.PropertyName": "Context"
             },
             "BoundAttributeParameters": []
           }
@@ -1214,7 +1217,8 @@
             "Documentation": "Specifies the parameter name for the 'Found' child content expression.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True"
+              "Components.ChildContentParameterName": "True",
+              "Common.PropertyName": "Context"
             },
             "BoundAttributeParameters": []
           }
@@ -1406,7 +1410,8 @@
             "Documentation": "Specifies the parameter name for all child content expressions.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True"
+              "Components.ChildContentParameterName": "True",
+              "Common.PropertyName": "Context"
             },
             "BoundAttributeParameters": []
           }
@@ -1547,7 +1552,8 @@
             "Documentation": "Specifies the parameter name for all child content expressions.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True"
+              "Components.ChildContentParameterName": "True",
+              "Common.PropertyName": "Context"
             },
             "BoundAttributeParameters": []
           }
@@ -1587,7 +1593,8 @@
             "Documentation": "Specifies the parameter name for the 'ChildContent' child content expression.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True"
+              "Components.ChildContentParameterName": "True",
+              "Common.PropertyName": "Context"
             },
             "BoundAttributeParameters": []
           }
@@ -1627,7 +1634,8 @@
             "Documentation": "Specifies the parameter name for the 'ChildContent' child content expression.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True"
+              "Components.ChildContentParameterName": "True",
+              "Common.PropertyName": "Context"
             },
             "BoundAttributeParameters": []
           }

@@ -1,0 +1,17 @@
+# Ingnore bin folder on Blazor Client
+BlazingChat/Client/bin
+BlazingChat/Client/obj
+
+
+# Ingnore bin folder on Blazor Server
+BlazingChat/Server/bin
+BlazingChat/Shared/obj
+
+# Ingnore bin folder on Blazor Shared
+BlazingChat/Shared/bin
+BlazingChat/Shared/obj
+
+# Ignore .vscode and .vs
+.vscode/
+BlazingChat/.vs
+
