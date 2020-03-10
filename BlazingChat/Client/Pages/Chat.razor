@@ -7,19 +7,30 @@
 @inject IJSRuntime JSRuntime
 
 
-<div class="form-group col-12">
+@* <div class="form-group col-12">
     <div class="table-wrapper-scroll-y my-custom-scrollbar">
         <table class="table table-bordered table-striped mb-0">
             <tbody>
                 @foreach (var message in _messages)
                 {
-                    <tr>                        
-                        @message
+                    <tr>                                                
+                        <b style="font-size: larger;">@message</b>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+</div> *@
+
+<div class="form-group col-12 box">
+  <div class="tb">
+    @foreach (var message in _messages)
+    {
+        <li>                                             
+            <b style="font-size: large;">@message</b>
+        </li>
+    }
+  </div>
 </div>
 
 <hr>

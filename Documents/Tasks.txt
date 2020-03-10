@@ -1,24 +1,30 @@
-Stream - 02/28/2020
-
-1. Let's send message on enter keyboard event
+1. Let's send message on enter keyboard event - 02/28/2020
 -- DONE. 
 I had too do this using js interop. and the textbox is getting emptied after the message has been sent to the other user.
 
-2. Figure out how you can add the message at the bottom of the table instead of adding at the top
--- ON HOLD
-
-3. Let's figure out how we can use SQLite for storing our user information
+3. Let's figure out how we can use SQLite for storing our user information - 02/28/2020
 -- DONE
 I had to install SQLite extension to make it work and write queries in vs code. But I did not have to install SQLite to make this happen
 So anyone from any machine cloning this project should be able to use the DB just fine.
 
-Stream - 03/02/2020
-4. Let's add twitter login in the server side app
--- IN PROGRESS
+4. Let's add twitter login in the server side app - 03/02/2020
+-- DONE
     - The best way to do this is by creating keys by email address that you really do not care about?
     - Then people who are intended to bad things with the keys then they can and it's okay if I loose that email address
     - I created a new twitter app with my secrete email address 
     - I also added the consumer key and consumer secrete key to the app settings 
     - I added twitter package in the server project 
     - I added the configuration services at the time of start up
+    - I had to add custom authentication state provider in order to handle twitter authentication
+    - I had to clean and build the solution in order to make it recognize the <AuthorizeRouteView>
+
+2. Figure out how you can add the message at the bottom of the table instead of adding at the top - 02/28/2020
+-- ON HOLD
+    1. I learned that we can do this is using justify content - flex but the outer div was not recognizing the inner div
+    2. We are going to convert a js query UI (that I found on internet) in Blazor UI
     
+
+5. Also remove sub directories of directories that I want to ignore - 03/08/2020
+-- IN PROGRESS
+
+

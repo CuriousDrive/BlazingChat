@@ -107,6 +107,55 @@
       },
       {
         "Kind": "Components.Component",
+        "Name": "BlazingChat.Client.Pages.LoginPages.Login",
+        "AssemblyName": "BlazingChat.Client",
+        "Documentation": null,
+        "TagOutputHint": null,
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Login",
+            "ParentTag": null,
+            "TagStructure": 0,
+            "Attributes": [],
+            "Diagnostics": []
+          }
+        ],
+        "BoundAttributes": [],
+        "AllowedChildTags": [],
+        "Diagnostics": [],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "BlazingChat.Client.Pages.LoginPages.Login"
+        }
+      },
+      {
+        "Kind": "Components.Component",
+        "Name": "BlazingChat.Client.Pages.LoginPages.Login",
+        "AssemblyName": "BlazingChat.Client",
+        "Documentation": null,
+        "TagOutputHint": null,
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "BlazingChat.Client.Pages.LoginPages.Login",
+            "ParentTag": null,
+            "TagStructure": 0,
+            "Attributes": [],
+            "Diagnostics": []
+          }
+        ],
+        "BoundAttributes": [],
+        "AllowedChildTags": [],
+        "Diagnostics": [],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "BlazingChat.Client.Pages.LoginPages.Login",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "Kind": "Components.Component",
         "Name": "BlazingChat.Client.Pages.Chat",
         "AssemblyName": "BlazingChat.Client",
         "Documentation": null,
@@ -156,14 +205,14 @@
       },
       {
         "Kind": "Components.Component",
-        "Name": "BlazingChat.Client.Pages.LoginPages.Login",
+        "Name": "BlazingChat.Client.Pages.TestChat",
         "AssemblyName": "BlazingChat.Client",
         "Documentation": null,
         "TagOutputHint": null,
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "Login",
+            "TagName": "TestChat",
             "ParentTag": null,
             "TagStructure": 0,
             "Attributes": [],
@@ -175,19 +224,19 @@
         "Diagnostics": [],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazingChat.Client.Pages.LoginPages.Login"
+          "Common.TypeName": "BlazingChat.Client.Pages.TestChat"
         }
       },
       {
         "Kind": "Components.Component",
-        "Name": "BlazingChat.Client.Pages.LoginPages.Login",
+        "Name": "BlazingChat.Client.Pages.TestChat",
         "AssemblyName": "BlazingChat.Client",
         "Documentation": null,
         "TagOutputHint": null,
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "BlazingChat.Client.Pages.LoginPages.Login",
+            "TagName": "BlazingChat.Client.Pages.TestChat",
             "ParentTag": null,
             "TagStructure": 0,
             "Attributes": [],
@@ -199,7 +248,7 @@
         "Diagnostics": [],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazingChat.Client.Pages.LoginPages.Login",
+          "Common.TypeName": "BlazingChat.Client.Pages.TestChat",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
@@ -17490,6 +17539,11 @@
     {
       "FilePath": "c:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Client\\Pages\\LoginPages\\Login.razor",
       "TargetPath": "Pages\\LoginPages\\Login.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Client\\Pages\\TestChat.razor",
+      "TargetPath": "Pages\\TestChat.razor",
       "FileKind": "component"
     },
     {
