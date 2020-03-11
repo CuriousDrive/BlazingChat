@@ -1,8 +1,6 @@
 @page "/testchat"
 @inject IJSRuntime JSRuntime
 
-<p>this is test again - 1</p>]
-
 <div class="panel panel-primary h-100" style="border:0px;">
     <div class="panel-heading top-bar">
       <div class="col-md-8 col-xs-8">
@@ -34,19 +32,19 @@
     <!--CHAT USER BOX-->
     <div class="panel-footer">
       <div class="input-group" id="myForm">
-        <input id="btn-input" type="text" class="form-control input-sm chat_input" 
-          placeholder="Write your message here..." @onkeydown="@(e => OnKeyDownEvent(e))">
+        <input id="txtMessageInput1" type="text" class="form-control input-sm chat_input" 
+          placeholder="Write your message here..." @onkeydown="@(e => OnKeyDownEventChat(e))">
       </div>
     </div>
 </div>
 
 @code {
 
-   public async Task OnKeyDownEvent(KeyboardEventArgs eventArgs)
-    {        
-        if(eventArgs.Key == "Enter")
-        {
-            string messsageToBeSent = await JSRuntime.InvokeAsync<string>("submitClick");            
-        }
-    }
+  public async Task OnKeyDownEventChat(KeyboardEventArgs eventArgs)
+  {        
+      if(eventArgs.Key == "Enter")
+      {
+          string messsageToBeSent = await JSRuntime.InvokeAsync<string>("submitClick");            
+      }
+  }
 }

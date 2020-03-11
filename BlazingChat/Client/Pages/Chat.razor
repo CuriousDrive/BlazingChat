@@ -6,7 +6,6 @@
 @inject HttpClient Http
 @inject IJSRuntime JSRuntime
 
-
 @* <div class="form-group col-12">
     <div class="table-wrapper-scroll-y my-custom-scrollbar">
         <table class="table table-bordered table-striped mb-0">
@@ -22,21 +21,68 @@
     </div>
 </div> *@
 
-<div class="form-group col-12 box">
-  <div class="tb">
-    @foreach (var message in _messages)
-    {
-        <li>                                             
-            <b style="font-size: large;">@message</b>
-        </li>
-    }
-  </div>
+<div class="panel panel-primary h-100" style="border:0px;">
+    <div class="panel-heading top-bar">
+      <div class="col-md-8 col-xs-8">
+        <h3 class="panel-title"><span class="glyphicon glyphicon-comment" style="margin-right:6px;"></span>Blazing Chat</h3>
+      </div>
+    </div>
+
+    <div id="divMessageContainerBase" class="panel-body msg_container_base">
+        @* <div class="row msg_container base_sent">
+            <div class="col-md-10 col-xs-10">
+                <div class="messages msg_sent">
+                    <p>that mongodb thing looks good, huh? tiny master db, and huge document store</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row msg_container base_receive">
+            <div class="col-md-10 col-xs-10">
+                <div class="messages msg_receive">
+                    <p>that mongodb thing looks good, huh? tiny master db, and huge document store</p>
+                </div>
+            </div>
+        </div> *@
+        
+        @foreach (var message in _messages)
+        {            
+            @if(message.Contains(user.Identity.Name))
+            {
+                <div class="row msg_container base_sent">
+                    <div class="col-md-10 col-xs-10">
+                        <div class="messages msg_sent">
+                            <p>@message</p>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row msg_container base_receive">
+                    <div class="col-md-10 col-xs-10">
+                        <div class="messages msg_receive">
+                            <p>@message</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <!--CHAT USER BOX-->
+    <div class="panel-footer">
+      <div class="input-group" id="myForm">
+        <input id="txtMessageInput" type="text" class="form-control input-sm chat_input" 
+          placeholder="Write your message here..." @onkeydown="@(e => OnKeyDownEventChat(e))">
+      </div>
+    </div>
 </div>
 
-<hr>
+@* <hr>
 <div class="form-group col-12">
     <input id="txtMessageInput" class="form-control" @bind="_messageInput" placeholder="message" @onkeydown="@(e => OnKeyDownEvent(e))"/>    
-</div>
+</div> *@
 
 @code {
     private HubConnection _hubConnection;
@@ -48,11 +94,12 @@
 
     [CascadingParameter]
     public Task<AuthenticationState> authenticationStateTask { get; set; }
+    public System.Security.Claims.ClaimsPrincipal user { get; set; }
     
     protected override async Task OnInitializedAsync()
     {       
         
-        var user = (await authenticationStateTask).User;
+        user = (await authenticationStateTask).User;
 
         if(!user.Identity.IsAuthenticated)
             NavigationManager.NavigateTo("/");
@@ -69,7 +116,7 @@
         {
             var encodedMsg = $"{user} : {message}";
             _messages.Add(encodedMsg);
-            
+
             StateHasChanged();
         });
 
@@ -78,6 +125,11 @@
         if(_hubConnection.State == HubConnectionState.Connected)
             IsConnected = true;
     
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("setScroll");
     }
 
     public async Task OnKeyDownEvent(KeyboardEventArgs eventArgs)
@@ -93,5 +145,14 @@
     {
         if(message != null && message.Length > 0)
             await _hubConnection.SendAsync("SendMessage", _userInput, message);
+    }
+
+    public async Task OnKeyDownEventChat(KeyboardEventArgs eventArgs)
+    {        
+        if(eventArgs.Key == "Enter")
+        {
+            string messsageToBeSent = await JSRuntime.InvokeAsync<string>("getMessageInput");
+            await Send(messsageToBeSent);                     
+        }
     }
 }
