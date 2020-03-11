@@ -3,14 +3,13 @@
 **/BlazingChat/Client/obj/Debug/
 
 # Ignore bin folder on Blazor Server
-**/BlazingChat/Server/bin/
-**/BlazingChat/Server/obj/
+**/BlazingChat/Server/bin/Debug/
+**/BlazingChat/Server/obj/Debug/
 
 # Ignore bin folder on Blazor Shared
-**/BlazingChat/Shared/bin/
-**/BlazingChat/Shared/obj/
+**/BlazingChat/Shared/bin/Debug/
+**/BlazingChat/Shared/obj/Debug/
 
 # Ignore .vscode and .vs
 **/.vscode/
 **/BlazingChat/.vs/
-
