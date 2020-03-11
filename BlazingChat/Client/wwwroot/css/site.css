@@ -221,6 +221,7 @@ app {
     padding: 0 10px 10px;
     max-height: 80vh;
     overflow-x: hidden;
+    height: 100%;
   }
   
   .top-bar {

@@ -4031,14 +4031,14 @@
       },
       {
         "Kind": "Components.Component",
-        "Name": "BlazingChat.Client.App",
+        "Name": "BlazingChat.Client.Pages.LoginPages.Login",
         "AssemblyName": "BlazingChat.Client",
         "Documentation": null,
         "TagOutputHint": null,
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "App",
+            "TagName": "Login",
             "ParentTag": null,
             "TagStructure": 0,
             "Attributes": [],
@@ -4050,19 +4050,19 @@
         "Diagnostics": [],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazingChat.Client.App"
+          "Common.TypeName": "BlazingChat.Client.Pages.LoginPages.Login"
         }
       },
       {
         "Kind": "Components.Component",
-        "Name": "BlazingChat.Client.App",
+        "Name": "BlazingChat.Client.Pages.LoginPages.Login",
         "AssemblyName": "BlazingChat.Client",
         "Documentation": null,
         "TagOutputHint": null,
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "BlazingChat.Client.App",
+            "TagName": "BlazingChat.Client.Pages.LoginPages.Login",
             "ParentTag": null,
             "TagStructure": 0,
             "Attributes": [],
@@ -4074,7 +4074,7 @@
         "Diagnostics": [],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazingChat.Client.App",
+          "Common.TypeName": "BlazingChat.Client.Pages.LoginPages.Login",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
@@ -4178,55 +4178,6 @@
       },
       {
         "Kind": "Components.Component",
-        "Name": "BlazingChat.Client.Pages.LoginPages.Login",
-        "AssemblyName": "BlazingChat.Client",
-        "Documentation": null,
-        "TagOutputHint": null,
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Login",
-            "ParentTag": null,
-            "TagStructure": 0,
-            "Attributes": [],
-            "Diagnostics": []
-          }
-        ],
-        "BoundAttributes": [],
-        "AllowedChildTags": [],
-        "Diagnostics": [],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazingChat.Client.Pages.LoginPages.Login"
-        }
-      },
-      {
-        "Kind": "Components.Component",
-        "Name": "BlazingChat.Client.Pages.LoginPages.Login",
-        "AssemblyName": "BlazingChat.Client",
-        "Documentation": null,
-        "TagOutputHint": null,
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "BlazingChat.Client.Pages.LoginPages.Login",
-            "ParentTag": null,
-            "TagStructure": 0,
-            "Attributes": [],
-            "Diagnostics": []
-          }
-        ],
-        "BoundAttributes": [],
-        "AllowedChildTags": [],
-        "Diagnostics": [],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "BlazingChat.Client.Pages.LoginPages.Login",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
-        "Kind": "Components.Component",
         "Name": "BlazingChat.Client.Pages.TestChat",
         "AssemblyName": "BlazingChat.Client",
         "Documentation": null,
@@ -4271,6 +4222,55 @@
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
           "Common.TypeName": "BlazingChat.Client.Pages.TestChat",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "Kind": "Components.Component",
+        "Name": "BlazingChat.Client.App",
+        "AssemblyName": "BlazingChat.Client",
+        "Documentation": null,
+        "TagOutputHint": null,
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "App",
+            "ParentTag": null,
+            "TagStructure": 0,
+            "Attributes": [],
+            "Diagnostics": []
+          }
+        ],
+        "BoundAttributes": [],
+        "AllowedChildTags": [],
+        "Diagnostics": [],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "BlazingChat.Client.App"
+        }
+      },
+      {
+        "Kind": "Components.Component",
+        "Name": "BlazingChat.Client.App",
+        "AssemblyName": "BlazingChat.Client",
+        "Documentation": null,
+        "TagOutputHint": null,
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "BlazingChat.Client.App",
+            "ParentTag": null,
+            "TagStructure": 0,
+            "Attributes": [],
+            "Diagnostics": []
+          }
+        ],
+        "BoundAttributes": [],
+        "AllowedChildTags": [],
+        "Diagnostics": [],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "BlazingChat.Client.App",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
