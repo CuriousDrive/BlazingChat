@@ -1,5 +1,0 @@
-﻿<linker>
-  <assembly fullname="BlazingChat.Client">
-    <type fullname="*" required="true" />
-  </assembly>
-</linker>
