@@ -6,21 +6,6 @@
 @inject HttpClient Http
 @inject IJSRuntime JSRuntime
 
-@* <div class="form-group col-12">
-    <div class="table-wrapper-scroll-y my-custom-scrollbar">
-        <table class="table table-bordered table-striped mb-0">
-            <tbody>
-                @foreach (var message in _messages)
-                {
-                    <tr>                                                
-                        <b style="font-size: larger;">@message</b>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div> *@
-
 <div class="panel panel-primary h-100" style="border:0px;">
     <div class="panel-heading top-bar">
       <div class="col-md-8 col-xs-8">
@@ -29,30 +14,15 @@
     </div>
 
     <div id="divMessageContainerBase" class="panel-body msg_container_base">
-        @* <div class="row msg_container base_sent">
-            <div class="col-md-10 col-xs-10">
-                <div class="messages msg_sent">
-                    <p>that mongodb thing looks good, huh? tiny master db, and huge document store</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="row msg_container base_receive">
-            <div class="col-md-10 col-xs-10">
-                <div class="messages msg_receive">
-                    <p>that mongodb thing looks good, huh? tiny master db, and huge document store</p>
-                </div>
-            </div>
-        </div> *@
         
-        @foreach (var message in _messages)
+        @foreach (var messagePack in messagePacks)
         {            
-            @if(message.Contains(user.Identity.Name))
+            @if(messagePack.UserName == user.Identity.Name)
             {
                 <div class="row msg_container base_sent">
                     <div class="col-md-10 col-xs-10">
                         <div class="messages msg_sent">
-                            <p>@message</p>
+                            <p>@messagePack.Message</p>
                         </div>
                     </div>
                 </div>
@@ -62,7 +32,7 @@
                 <div class="row msg_container base_receive">
                     <div class="col-md-10 col-xs-10">
                         <div class="messages msg_receive">
-                            <p>@message</p>
+                            <p>@messagePack.Message</p>
                         </div>
                     </div>
                 </div>
@@ -79,14 +49,10 @@
     </div>
 </div>
 
-@* <hr>
-<div class="form-group col-12">
-    <input id="txtMessageInput" class="form-control" @bind="_messageInput" placeholder="message" @onkeydown="@(e => OnKeyDownEvent(e))"/>    
-</div> *@
-
 @code {
     private HubConnection _hubConnection;
     private List<string> _messages = new List<string>();
+    private List<MessagePack> messagePacks = new List<MessagePack>();
     private string _userInput;
     private string _messageInput;
     public bool IsConnected;
@@ -112,13 +78,25 @@
             .WithUrl(NavigationManager.ToAbsoluteUri("/chatHub"))
             .Build();
 
-        _hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+        @* _hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
         {
-            var encodedMsg = $"{user} : {message}";
-            _messages.Add(encodedMsg);
+            MessagePack messagePack = new MessagePack();
+            
+            messagePack.UserName = user;
+            messagePack.Message = message;
+
+            messagePacks.Add(messagePack);
+
+            StateHasChanged();
+        }); *@
+
+        _hubConnection.On<MessagePack>("ReceiveMessage", (messagePack) =>
+        {
+            messagePacks.Add(messagePack);
 
             StateHasChanged();
         });
+
 
         await _hubConnection.StartAsync();
 
@@ -141,10 +119,22 @@
         }
     }
 
-    public async Task Send(string message)
+    @* public async Task Send(string message)
     {
         if(message != null && message.Length > 0)
             await _hubConnection.SendAsync("SendMessage", _userInput, message);
+    } *@
+
+    public async Task Send(string message)
+    {
+        if(message != null && message.Length > 0)
+        {
+            MessagePack messagePack = new MessagePack();
+            messagePack.UserName = _userInput;
+            messagePack.Message = message;
+
+            await _hubConnection.SendAsync("SendMessage", messagePack);
+        }            
     }
 
     public async Task OnKeyDownEventChat(KeyboardEventArgs eventArgs)

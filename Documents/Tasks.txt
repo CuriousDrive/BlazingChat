@@ -1,10 +1,10 @@
 1. Let's send message on enter keyboard event - 02/28/2020
 -- DONE. 
-I had too do this using js interop. and the textbox is getting emptied after the message has been sent to the other user.
+    - I had too do this using js interop. and the textbox is getting emptied after the message has been sent to the other user.
 
 3. Let's figure out how we can use SQLite for storing our user information - 02/28/2020
 -- DONE
-I had to install SQLite extension to make it work and write queries in vs code. But I did not have to install SQLite to make this happen
+    - I had to install SQLite extension to make it work and write queries in vs code. But I did not have to install SQLite to make this happen
 So anyone from any machine cloning this project should be able to use the DB just fine.
 
 4. Let's add twitter login in the server side app - 03/02/2020
@@ -19,12 +19,30 @@ So anyone from any machine cloning this project should be able to use the DB jus
     - I had to clean and build the solution in order to make it recognize the <AuthorizeRouteView>
 
 2. Figure out how you can add the message at the bottom of the table instead of adding at the top - 02/28/2020
--- ON HOLD
-    1. I learned that we can do this is using justify content - flex but the outer div was not recognizing the inner div
-    2. We are going to convert a js query UI (that I found on internet) in Blazor UI
-    
+-- DONE
+    - I learned that we can do this is using justify content - flex but the outer div was not recognizing the inner div
+    - We are going to convert a js query UI (that I found on internet) in Blazor UI
 
 5. Also remove sub directories of directories that I want to ignore - 03/08/2020
+-- DONE
+    - I had to follow below steps in order to achieve this 
+        1. Delete the folders that you don't want to commit in yout Git Repo
+        2. Then commit the changes that you did 
+        3. Then mention all those folders/files in you .gitignore file
+
+7. Find out ways to pass objects through SignalR connection
+-- DONE
+    - We have to make changes on the "On" receive function
+    - Send the object when you call SignalR send
+    - Change the method signature at the server
+
+6. Make a document which explains what is the project that you are working on
+-- IN PROGRESS
+
+8. Make the UI changes so that only logged in users can see the navmenu
+-- IN PROGRESS
+
+9. Upgrade the project Blzor WebAssembly 3.2 Preview
 -- IN PROGRESS
 
 
