@@ -4,8 +4,7 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)microsoft.aspnetcore.blazor.mono\3.2.0-preview1.20067.1\build\netstandard1.0\Microsoft.AspNetCore.Blazor.Mono.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.aspnetcore.blazor.mono\3.2.0-preview1.20067.1\build\netstandard1.0\Microsoft.AspNetCore.Blazor.Mono.targets')" />
-    <Import Project="$(NuGetPackageRoot)microsoft.aspnetcore.blazor.devserver\3.2.0-preview1.20073.1\build\Microsoft.AspNetCore.Blazor.DevServer.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.aspnetcore.blazor.devserver\3.2.0-preview1.20073.1\build\Microsoft.AspNetCore.Blazor.DevServer.targets')" />
-    <Import Project="$(NuGetPackageRoot)microsoft.aspnetcore.blazor.build\3.2.0-preview1.20073.1\build\netstandard1.0\Microsoft.AspNetCore.Blazor.Build.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.aspnetcore.blazor.build\3.2.0-preview1.20073.1\build\netstandard1.0\Microsoft.AspNetCore.Blazor.Build.targets')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.aspnetcore.components.webassembly.devserver\3.2.0-preview2.20160.5\build\Microsoft.AspNetCore.Components.WebAssembly.DevServer.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.aspnetcore.components.webassembly.devserver\3.2.0-preview2.20160.5\build\Microsoft.AspNetCore.Components.WebAssembly.DevServer.targets')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.aspnetcore.components.webassembly.build\3.2.0-preview2.20160.5\build\netstandard1.0\Microsoft.AspNetCore.Components.WebAssembly.Build.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.aspnetcore.components.webassembly.build\3.2.0-preview2.20160.5\build\netstandard1.0\Microsoft.AspNetCore.Components.WebAssembly.Build.targets')" />
   </ImportGroup>
 </Project>

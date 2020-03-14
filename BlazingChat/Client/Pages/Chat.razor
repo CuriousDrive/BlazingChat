@@ -6,7 +6,10 @@
 @inject HttpClient Http
 @inject IJSRuntime JSRuntime
 
-<div class="panel panel-primary h-100" style="border:0px;">
+<div style="border:0px;height:100vh;">
+    
+    <div class="panel panel-primary" style="height: 100%;">
+    
     <div class="panel-heading top-bar">
       <div class="col-md-8 col-xs-8">
         <h3 class="panel-title"><span class="glyphicon glyphicon-comment" style="margin-right:6px;"></span>Blazing Chat</h3>
@@ -47,7 +50,11 @@
           placeholder="Write your message here..." @onkeydown="@(e => OnKeyDownEventChat(e))">
       </div>
     </div>
+
+    </div>
+
 </div>
+
 
 @code {
     private HubConnection _hubConnection;

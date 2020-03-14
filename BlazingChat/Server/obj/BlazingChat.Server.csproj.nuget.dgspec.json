@@ -47,27 +47,31 @@
       "frameworks": {
         "netstandard2.1": {
           "dependencies": {
-            "Microsoft.AspNetCore.Blazor": {
-              "target": "Package",
-              "version": "[3.2.0-preview1.20073.1, )"
-            },
-            "Microsoft.AspNetCore.Blazor.Build": {
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[3.2.0-preview1.20073.1, )"
-            },
-            "Microsoft.AspNetCore.Blazor.DevServer": {
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[3.2.0-preview1.20073.1, )"
-            },
             "Microsoft.AspNetCore.Blazor.HttpClient": {
               "target": "Package",
-              "version": "[3.2.0-preview1.20073.1, )"
+              "version": "[3.2.0-preview2.20160.5, )"
             },
             "Microsoft.AspNetCore.Components.Authorization": {
               "target": "Package",
               "version": "[3.1.2, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly": {
+              "target": "Package",
+              "version": "[3.2.0-preview2.20160.5, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly.Authentication": {
+              "target": "Package",
+              "version": "[3.2.0-preview2.20160.5, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly.Build": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.2.0-preview2.20160.5, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly.DevServer": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.2.0-preview2.20160.5, )"
             },
             "Microsoft.AspNetCore.SignalR.Client": {
               "target": "Package",
@@ -89,7 +93,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200-preview-014977\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200-preview-015002\\RuntimeIdentifierGraph.json"
         }
       }
     },
@@ -143,9 +147,9 @@
               "target": "Package",
               "version": "[3.1.1, )"
             },
-            "Microsoft.AspNetCore.Blazor.Server": {
+            "Microsoft.AspNetCore.Components.WebAssembly.Server": {
               "target": "Package",
-              "version": "[3.2.0-preview1.20073.1, )"
+              "version": "[3.2.0-preview2.20160.5, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
@@ -176,7 +180,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200-preview-014977\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200-preview-015002\\RuntimeIdentifierGraph.json"
         }
       }
     },
@@ -233,7 +237,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200-preview-014977\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200-preview-015002\\RuntimeIdentifierGraph.json"
         }
       }
     }

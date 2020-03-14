@@ -2,3 +2,11 @@ dotnet build
 dotnet run --project .\Server\BlazingChat.Server.csproj
 
 dotnet ef dbcontext scaffold "Data Source=C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\DB\BlazingChat.db;" Microsoft.EntityFrameworkCore.Sqlite --output-dir Models
+
+
+Challenges in upgrading from 3.2 Preview1 to 3.2 Preview2
+    - var builder = WebAssemblyHostBuilder.CreateDefault(args); was throwing an error after upgrading the references 
+    - I had to change the namespace that I was using
+    - UseWebAssemblyDebugging and UseBlazorFrameworkFiles were throwing an error 
+    - because it wasn't mentioned to upgrade server references to 
+    - <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="3.2.0-preview2.20160.5" />

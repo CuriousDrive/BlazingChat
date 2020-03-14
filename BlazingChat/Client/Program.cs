@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text;
-using Microsoft.AspNetCore.Blazor.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 namespace BlazingChat.Client
 {
@@ -13,6 +13,9 @@ namespace BlazingChat.Client
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
+            
+            // added this with Blazor 3.2 preview 2
+            builder.Services.AddBaseAddressHttpClient();
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
             

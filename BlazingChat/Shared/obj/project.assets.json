@@ -15,11 +15,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Shared\\BlazingChat.Shared.csproj",
+      "projectUniqueName": "C:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Shared\\BlazingChat.Shared.csproj",
       "projectName": "BlazingChat.Shared",
-      "projectPath": "c:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Shared\\BlazingChat.Shared.csproj",
+      "projectPath": "C:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Shared\\BlazingChat.Shared.csproj",
       "packagesPath": "C:\\Users\\fahad.mullaji\\.nuget\\packages\\",
-      "outputPath": "c:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Shared\\obj\\",
+      "outputPath": "C:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Shared\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -65,7 +65,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200-preview-014977\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200-preview-015002\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -36,13 +36,22 @@ So anyone from any machine cloning this project should be able to use the DB jus
     - Send the object when you call SignalR send
     - Change the method signature at the server
 
+8. Make the UI changes so that only logged in users can see the navmenu
+-- DONE
+    - I used layouts to achieve this
+    - still need to find an image for the login page 
+
+9. Upgrade the project Blzor WebAssembly 3.2 Preview 2
+-- DONE
+    - var builder = WebAssemblyHostBuilder.CreateDefault(args); was throwing an error after upgrading the references 
+    - I had to change the namespace that I was using
+    - UseWebAssemblyDebugging and UseBlazorFrameworkFiles were throwing an error 
+    - because it wasn't mentioned to upgrade server references to 
+    - <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="3.2.0-preview2.20160.5" />
+    - need to talk to Blazor team or comment on post for the challeneges that faced
+
 6. Make a document which explains what is the project that you are working on
 -- IN PROGRESS
 
-8. Make the UI changes so that only logged in users can see the navmenu
--- IN PROGRESS
-
-9. Upgrade the project Blzor WebAssembly 3.2 Preview
--- IN PROGRESS
 
 

@@ -238,7 +238,7 @@ app {
   }
   
   .msg_sent {
-    padding-bottom: 20px !important;
+    /* padding-bottom: 20px !important; */
     margin-right: 0;
   }
   
@@ -251,7 +251,7 @@ app {
   }
   
   .messages > p {
-    font-size: 13px;
+    font-size: large;
     margin: 0 0 0.2rem 0;
 
   }
@@ -265,7 +265,6 @@ app {
     padding: 10px;
     overflow: hidden;
     display: flex;
-
   }
   
   img {

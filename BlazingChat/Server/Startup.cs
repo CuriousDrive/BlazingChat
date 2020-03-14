@@ -25,11 +25,12 @@ namespace BlazingChat.Server
         {
             services.AddMvc();
             services.AddSignalR();
-            services.AddResponseCompression(opts =>
-            {
-                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
-                    new[] { "application/octet-stream" });
-            });
+            //this is handled in .NET framework
+            // services.AddResponseCompression(opts =>
+            // {
+            //     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+            //         new[] { "application/octet-stream" });
+            // });
 
             services
                 .AddAuthentication(options =>
@@ -52,16 +53,19 @@ namespace BlazingChat.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseResponseCompression();
+            //this is handled in .NET framework
+            //app.UseResponseCompression();
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBlazorDebugging();
+                //app.UseBlazorDebugging();
+                app.UseWebAssemblyDebugging();
             }
 
             app.UseStaticFiles();
-            app.UseClientSideBlazorFiles<Client.Program>();
+            //app.UseClientSideBlazorFiles<Client.Program>();
+            app.UseBlazorFrameworkFiles();
 
             app.UseRouting();
             
@@ -72,7 +76,8 @@ namespace BlazingChat.Server
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapHub<ChatHub>("/chatHub");
-                endpoints.MapFallbackToClientSideBlazor<Client.Program>("index.html");
+                //endpoints.MapFallbackToClientSideBlazor<Client.Program>("index.html");
+                endpoints.MapFallbackToFile("index.html");
             });
         }
     }
