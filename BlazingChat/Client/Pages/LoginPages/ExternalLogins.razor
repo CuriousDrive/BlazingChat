@@ -1,0 +1,26 @@
+@inject NavigationManager NavigationManager
+
+<hr>
+
+<div class="col-12">
+    <a class="btn btn-block btn-social btn-twitter" @onclick="TwitterSignIn">
+        <span class="fa fa-twitter"></span> <b>Sign in with Twitter</b>
+    </a>
+    <br />
+    <a class="btn btn-block btn-social btn-facebook">
+        <span class="fa fa-facebook"></span> <b>Sign in with Facebook</b>
+    </a>
+    <br />
+    <a class="btn btn-block btn-social btn-google">
+        <span class="fa fa-google"></span> <b>Sign in with Google</b>
+    </a>
+</div>
+
+@code {
+    
+    private void TwitterSignIn()
+    {
+        NavigationManager.NavigateTo("user/twittersignin?redirectUri=/chat", true);
+    }
+
+}

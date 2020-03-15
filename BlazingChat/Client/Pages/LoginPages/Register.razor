@@ -1,0 +1,39 @@
+@page "/register"
+@layout LoginLayout
+@inject NavigationManager NavigationManager
+
+<h2><b>Register</b></h2>
+<hr>
+
+@* -- I need view models for each of prototype *@
+
+<div class="col-12 row">
+    <input type="text" class="form-control" placeholder="email address">
+</div>
+<br />
+<div class="col-12 row">
+    <input type="password" class="form-control" placeholder="password">
+</div>
+<br />
+<div class="col-12 row">
+    <input type="password" class="form-control" placeholder="cofirm password">
+</div>
+<br />
+
+<div class="col-12 row">   
+    <div class="col-4">
+        <button class="btn btn-danger">Register</button>
+    </div>
+    <div class="col-6">
+        <button class="btn btn-primary" @onclick="@(e => NavigationManager.NavigateTo("/"))">Login</button>
+    </div>
+    <div class="col-4">
+
+    </div>
+</div>
+
+<ExternalLogins />
+
+@code {
+
+}

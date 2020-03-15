@@ -1,4 +1,6 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@inject NavigationManager NavigationManager
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">BlazingChat</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -8,10 +10,25 @@
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/chat" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Chat
+            <NavLink class="nav-link" href="/profile" Match="NavLinkMatch.All">
+                <span class="oi oi-person" aria-hidden="true"></span> Profile
             </NavLink>
-        </li>        
+        </li>
+         <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/chat" Match="NavLinkMatch.All">
+                <span class="oi oi-chat" aria-hidden="true"></span> Chat
+            </NavLink>
+        </li>      
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/settings" Match="NavLinkMatch.All">
+                <span class="oi oi-file" aria-hidden="true"></span> Settings
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <button class="btn btn-primary" @onclick="Logout">
+                <span class="oi oi-account-logout" aria-hidden="true"></span> LogOut
+            </button>
+        </li>
     </ul>
 </div>
 
@@ -23,5 +40,10 @@
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void Logout()
+    {
+        NavigationManager.NavigateTo("user/signout", true);
     }
 }

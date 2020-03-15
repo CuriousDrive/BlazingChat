@@ -10,3 +10,6 @@ Challenges in upgrading from 3.2 Preview1 to 3.2 Preview2
     - UseWebAssemblyDebugging and UseBlazorFrameworkFiles were throwing an error 
     - because it wasn't mentioned to upgrade server references to 
     - <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="3.2.0-preview2.20160.5" />
+
+    
+I need to find a better VS Code extension for taking notes

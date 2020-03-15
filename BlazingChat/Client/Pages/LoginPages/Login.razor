@@ -3,14 +3,33 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @inject NavigationManager NavigationManager
 
-<h1>Login Page</h1>
-<br>
+<h2><b>Login</b></h2>
+<hr>
 
-<div class="col-12">
-    <a class="btn btn-block btn-social btn-twitter" @onclick="TwitterSignIn">
-        <span class="fa fa-twitter"></span> <b>Sign in with Twitter</b>
-    </a>
+ @* -- I need view models for each of prototype *@
+
+<div class="col-12 row">
+    <input type="text" class="form-control" placeholder="email address">
 </div>
+<br />
+<div class="col-12 row">
+    <input type="password" class="form-control" placeholder="password">
+</div>
+<br />
+<div class="col-12 row">
+    <div class="col-4">
+        <button class="btn btn-danger" @onclick="LoginClick">Login</button>
+    </div>
+    <div class="col-6">
+        <button class="btn btn-primary" @onclick="@(e => NavigationManager.NavigateTo("/register"))">Register</button>
+    </div>
+    <div class="col-2">
+
+    </div>
+</div>
+
+<ExternalLogins />
+
 
 @code{
 
@@ -25,9 +44,10 @@
             NavigationManager.NavigateTo("/chat");
     }
 
-    private void TwitterSignIn()
+    private void LoginClick()
     {
-        NavigationManager.NavigateTo("user/twittersignin?redirectUri=/chat", true);
+        // need to write login functionality later
+        NavigationManager.NavigateTo("/profile");
     }
 
 }
