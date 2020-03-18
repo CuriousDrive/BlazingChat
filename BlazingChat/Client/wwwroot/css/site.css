@@ -55,18 +55,18 @@ app {
     }
 
     .sidebar .navbar-brand {
-        font-size: 1.1rem;
+        font-size: 1.5rem;
     }
 
     .sidebar .oi {
         width: 2rem;
-        font-size: 1.1rem;
+        font-size: 1.5rem;
         vertical-align: text-top;
         top: -2px;
     }
 
     .sidebar .nav-item {
-        font-size: 0.9rem;
+        font-size: 1.5rem;
         padding-bottom: 0.5rem;
     }
 
@@ -165,7 +165,7 @@ app {
     }
 
     .sidebar {
-        width: 250px;
+        width: 450px;
         height: 100vh;
         position: sticky;
         top: 0;

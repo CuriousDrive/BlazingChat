@@ -41,7 +41,7 @@
         var user = (await authenticationStateTask).User;
 
         if(user.Identity.IsAuthenticated)
-            NavigationManager.NavigateTo("/chat");
+            NavigationManager.NavigateTo("/profile");
     }
 
     private void LoginClick()

@@ -1,14 +1,14 @@
 ﻿@inject NavigationManager NavigationManager
 
 <div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">BlazingChat</a>
+    <a class="navbar-brand" href="">Blazing Chat</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>
 </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu" >
+    <ul class="nav flex-column" style="font-size: larger;">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="/profile" Match="NavLinkMatch.All">
                 <span class="oi oi-person" aria-hidden="true"></span> Profile
@@ -23,6 +23,8 @@
             <NavLink class="nav-link" href="/settings" Match="NavLinkMatch.All">
                 <span class="oi oi-file" aria-hidden="true"></span> Settings
             </NavLink>
+        </li>
+         <li class="nav-item px-3">
         </li>
         <li class="nav-item px-3">
             <button class="btn btn-primary" @onclick="Logout">

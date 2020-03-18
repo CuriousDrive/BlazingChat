@@ -21,12 +21,12 @@ namespace BlazingChat.Client
             var contact = await _httpClient.GetJsonAsync<Contacts>("user");
             var IsAuthenticated = false;
 
-            if(contact.FirstName != null)
+            if (contact.FirstName != null)
                 IsAuthenticated = true;
 
             var identity = IsAuthenticated
                  ? new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, contact.FirstName) }, "serverauth")
-                 : new ClaimsIdentity();            
+                 : new ClaimsIdentity();
 
             return new AuthenticationState(new ClaimsPrincipal(identity));
         }
