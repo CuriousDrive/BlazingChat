@@ -1,1 +1,1 @@
-I don't know what back end to 
+ Blazor has its own input controls as components that add a bit more functionality i.e. <InputCheckbox>
