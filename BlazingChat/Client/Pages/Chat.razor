@@ -61,7 +61,6 @@
     private List<string> _messages = new List<string>();
     private List<MessagePack> messagePacks = new List<MessagePack>();
     private string _userInput;
-    private string _messageInput;
     public bool IsConnected;
     public bool IsEnterPressed;
 
@@ -84,18 +83,6 @@
         _hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("/chatHub"))
             .Build();
-
-        @* _hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
-        {
-            MessagePack messagePack = new MessagePack();
-            
-            messagePack.UserName = user;
-            messagePack.Message = message;
-
-            messagePacks.Add(messagePack);
-
-            StateHasChanged();
-        }); *@
 
         _hubConnection.On<MessagePack>("ReceiveMessage", (messagePack) =>
         {

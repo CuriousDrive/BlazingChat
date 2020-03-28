@@ -1630,11 +1630,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Client\\BlazingChat.Client.csproj",
+      "projectUniqueName": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\BlazingChat\\Client\\BlazingChat.Client.csproj",
       "projectName": "BlazingChat.Client",
-      "projectPath": "C:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Client\\BlazingChat.Client.csproj",
+      "projectPath": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\BlazingChat\\Client\\BlazingChat.Client.csproj",
       "packagesPath": "C:\\Users\\fahad.mullaji\\.nuget\\packages\\",
-      "outputPath": "C:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Client\\obj\\",
+      "outputPath": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\BlazingChat\\Client\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -1655,8 +1655,8 @@
       "frameworks": {
         "netstandard2.1": {
           "projectReferences": {
-            "C:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Shared\\BlazingChat.Shared.csproj": {
-              "projectPath": "C:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Shared\\BlazingChat.Shared.csproj"
+            "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\BlazingChat\\Shared\\BlazingChat.Shared.csproj": {
+              "projectPath": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\BlazingChat\\Shared\\BlazingChat.Shared.csproj"
             }
           }
         }

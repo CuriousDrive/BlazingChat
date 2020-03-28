@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "c+CP4OxrPtxTbY6CYYt4pYAWSkes0aOv076/lZHM61/aDgB25L5/ggHz345kIdhYsjoyRWrdzVsb/lr0zbwfow==",
+  "dgSpecHash": "7qVHSzzlel+yoRH5kYu/BIcuHW3N75FJlyKerDYNamubqdPj7s/UQVcJiH6f0l+xgY3+mwAIxxsVk0LBiHqA9w==",
   "success": true,
-  "projectFilePath": "C:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Client\\BlazingChat.Client.csproj",
+  "projectFilePath": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\BlazingChat\\Client\\BlazingChat.Client.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.aspnetcore.authorization\\3.1.2\\microsoft.aspnetcore.authorization.3.1.2.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.aspnetcore.blazor.httpclient\\3.2.0-preview2.20160.5\\microsoft.aspnetcore.blazor.httpclient.3.2.0-preview2.20160.5.nupkg.sha512",

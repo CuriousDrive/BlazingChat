@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "rMcNWLoXQinjeHcFctO2USSWeFQiSAYmEycIu4YDZOhsbMqjuEAAX3W9Hskf6xXvfzskUQqSCjDzP2dTbX+FXg==",
+  "dgSpecHash": "kI2aHqvpIb5zNNnq4fW1O66bw19syuxXQXSJkXrrGLEqOvCz+lIiemI1wJ4QBzoiKSrl5epD+O8l3XmSnR6CUQ==",
   "success": true,
-  "projectFilePath": "C:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Server\\BlazingChat.Server.csproj",
+  "projectFilePath": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\BlazingChat\\Server\\BlazingChat.Server.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.aspnetcore.authentication.twitter\\3.1.1\\microsoft.aspnetcore.authentication.twitter.3.1.1.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.aspnetcore.authorization\\3.1.2\\microsoft.aspnetcore.authorization.3.1.2.nupkg.sha512",

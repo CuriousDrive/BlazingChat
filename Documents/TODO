@@ -1,15 +1,13 @@
-✘ Figure out dotnet watch for the project @cancelled(20-03-20 09:04)
-    Don't want to keep on building and running the project. Rather I would let .NET do that for me
-    Need to talk to someone from the Blazor team about this
-    It only watches your server project if you are running asp.net hosted project 
-
 ☐ Make prototype screens for the application 
     Login
     SignUp
     Profile
-    - Chat - Create fake list of friends to chat -> could be pulled SQLite 
+    - Friends - this is where you select who you want talk to and add friends
+        - Chat - Create fake list of friends to chat -> could be pulled SQLite 
     Settings 
     Logout
+
+☐ Make a component for the header and reuse across pages
 
 ☐ Create ViewModels for the prototypes which are created
 
@@ -22,6 +20,9 @@
 ☐ Make a document which explains what is the project that you are working on
 
 ***********************************************************************************************************************
+✔ Make the login page fit right for half screen and find a logo for your app @done(20-03-27 07:39)
+    found a logo online and increased the size of login layout to fill up the page
+
 ✔ Let's send message on enter keyboard event - 02/28/2020 @done(20-03-16 12:56)
     I had too do this using js interop. and the textbox is getting emptied after the message has been sent to the other user.
 
@@ -69,4 +70,17 @@
 
 ***********************************************************************************************************************
 ✘ Make the left nave menu font size bigger and the width longer @cancelled(20-03-20 07:27)
+✘ Figure out dotnet watch for the project @cancelled(20-03-20 09:04)
+    Don't want to keep on building and running the project. Rather I would let .NET do that for me
+    Need to talk to someone from the Blazor team about this
+    It only watches your server project if you are running asp.net hosted project 
+    
+✘ Create a Blazor webassembly 3.2 preview 2 project and migrate everything from @cancelled(20-03-21 10:30)
+    Challenges that I might face in this is -> How to implement CustomAuthStateProvider
+    Twitter Authentication should be one of the 1st thing that I should integrate
+    Read about OpenId, QR Code and PWA
+    I feel like Blazing chat gives an impression of creating a chat app 
+    instead of that if we a Blazing Network -> a tiny social network website with PWA that would be perfect
+    I asked this question on Twitter and I think need to create PR for this -> the comnination of API authorization and external logins don't work 
+
 ***********************************************************************************************************************

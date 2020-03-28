@@ -1,0 +1,5 @@
+ Blazor has its own input controls as components that add a bit more functionality i.e. <InputCheckbox>
+
+ I am thinking of creating a new project with Blazor WenAssembly 3.2 Preview 2 and migrating Blazing Chat into it
+    -> Authenticate using ASP.NET Core Identity and IdentityServer - there are using sqlite for storing the user information 
+    -> Token-based authentication - I don't need to implement whole JWT authentication

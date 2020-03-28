@@ -20,20 +20,13 @@ namespace BlazingChat.Server
             Configuration = configuration;
         }
         public IConfiguration Configuration { get; }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
             services.AddSignalR();
-            //this is handled in .NET framework
-            // services.AddResponseCompression(opts =>
-            // {
-            //     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
-            //         new[] { "application/octet-stream" });
-            // });
 
-            services
-                .AddAuthentication(options =>
+            services.AddAuthentication(options =>
                 {
                     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 })
@@ -64,19 +57,17 @@ namespace BlazingChat.Server
             }
 
             app.UseStaticFiles();
-            //app.UseClientSideBlazorFiles<Client.Program>();
             app.UseBlazorFrameworkFiles();
 
             app.UseRouting();
-            
+
             app.UseAuthentication();
             app.UseAuthorization();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapHub<ChatHub>("/chatHub");
-                //endpoints.MapFallbackToClientSideBlazor<Client.Program>("index.html");
                 endpoints.MapFallbackToFile("index.html");
             });
         }
