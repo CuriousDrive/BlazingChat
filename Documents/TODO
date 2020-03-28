@@ -1,15 +1,6 @@
-☐ Make prototype screens for the application 
-    Login
-    SignUp
-    Profile
-    - Friends - this is where you select who you want talk to and add friends
-        - Chat - Create fake list of friends to chat -> could be pulled SQLite 
-    Settings 
-    Logout
+☐ Create ViewModels for the prototypes which are created
 
 ☐ Make a component for the header and reuse across pages
-
-☐ Create ViewModels for the prototypes which are created
 
 ☐ Create fake identity user for prototype screens
 
@@ -19,7 +10,14 @@
 
 ☐ Make a document which explains what is the project that you are working on
 
+☐ Add functionality to change the them to dark mode
+
 ***********************************************************************************************************************
+✔ Blazor webassembly 3.2 preview 3 - need to upgrade this prtoject @done(20-03-28 10:11)
+   we made this work and it's working like a charm
+
+✔ Change the color of navigation menu -> Green @done(20-03-28 08:51)
+
 ✔ Make the login page fit right for half screen and find a logo for your app @done(20-03-27 07:39)
     found a logo online and increased the size of login layout to fill up the page
 
@@ -66,6 +64,15 @@
     because it wasn't mentioned to upgrade server references to 
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="3.2.0-preview2.20160.5" />
     need to talk to Blazor team or comment on post for the challeneges that faced
+
+✔ Make prototype screens for the application @done(20-03-28 08:39)
+    Login
+    SignUp
+    Profile
+    Friends - this is where you select who you want talk to and add friends
+        Chat - Create fake list of friends to chat -> could be pulled SQLite 
+    Settings 
+    Logout
 
 
 ***********************************************************************************************************************

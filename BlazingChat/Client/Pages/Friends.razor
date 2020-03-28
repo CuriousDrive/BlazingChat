@@ -1,59 +1,47 @@
 @page "/friends"
+@inject NavigationManager NavigationManager
 
 <h2><b>Friends</b></h2> 
 <hr />
 
-<div class="col-12">
-    <ul class="list-group">
-        <li class="list-group-item">
-            Paolo Accorti
-        </li>
-        <li class="list-group-item">
-            Aria Cruz
-        </li>
-        <li>
-            Philip Cramer
-        </li>
-        <li>
-            Francisco Chang
-        </li>
-        <li>
-            Lesley Brown
-        </li>
-        <li>
-            Helen Bennett
-        </li>
-        <li>
-            Victoria Ashworth
-        </li>
-        <li>
-            Pedro Afonso    
-        </li>
-        <li>
-            Carlos Hernadez
-        </li>
-        <li>
-            Paul Henriot
-        </li>
-        <li>
-            Peter Franken
-        </li>
-        <li>
-            Anabela Domingues
-        </li>
-        <li>
-            Ann Devon
-        </li>
-    </ul>
+<div class="list-group">
+    @foreach(string friend in friendList)
+    {
+        <a @onclick="@(e => NavigateToChat(friend))" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1"><b>@friend</b></h6>
+                <small>1 day ago</small>
+            </div>
+            <p class="mb-1">Donec id elit non mi porta gravida at eget metus.</p>
+        </a>
+    }
 </div>
 
 @code {
-
+    List<string> friendList;
     protected override Task OnInitializedAsync()
     {
+        friendList = new List<string>();
 
-        
+        friendList.Add("Paolo Accorti");
+        friendList.Add("Aria Cruz");
+        friendList.Add("Philip Cramer");
+        friendList.Add("Francisco Chang");
+        friendList.Add("Lesley Brown");
+        friendList.Add("Helen Bennett");
+        friendList.Add("Victoria Ashworth");
+        friendList.Add("Pedro Afonso");
+        friendList.Add("Carlos Hernadez");
+        friendList.Add("Paul Henriot");
+        friendList.Add("Peter Franken");
+        friendList.Add("Anabela Domingues");
+        friendList.Add("Ann Devon");
+
         return base.OnInitializedAsync();
     }
 
+    private void NavigateToChat(string id)
+    {
+        NavigationManager.NavigateTo("chat/" + id);
+    }
 }
