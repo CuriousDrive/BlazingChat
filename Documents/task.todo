@@ -1,4 +1,10 @@
 ☐ Create ViewModels for the prototypes which are created
+    ☐ Profile
+    ☐ Settings
+    ☐ Friends
+    ☐ Chat
+    Created all the view models and found an article to convert view model to model
+    Need to map these view models to the screens and test form validations
 
 ☐ Make a component for the header and reuse across pages
 
@@ -10,7 +16,11 @@
 
 ☐ Make a document which explains what is the project that you are working on
 
-☐ Add functionality to change the them to dark mode
+☐ Add functionality to change the theme to dark mode
+
+☐ Any thoughts on integrating InputMask?
+
+☐ convert this to progressive web app
 
 ***********************************************************************************************************************
 ✔ Blazor webassembly 3.2 preview 3 - need to upgrade this prtoject @done(20-03-28 10:11)

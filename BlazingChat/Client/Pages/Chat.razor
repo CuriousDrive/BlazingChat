@@ -122,12 +122,6 @@
         }
     }
 
-    @* public async Task Send(string message)
-    {
-        if(message != null && message.Length > 0)
-            await _hubConnection.SendAsync("SendMessage", _userInput, message);
-    } *@
-
     public async Task Send(string message)
     {
         if(message != null && message.Length > 0)

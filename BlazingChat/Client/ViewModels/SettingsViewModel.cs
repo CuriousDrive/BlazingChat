@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BlazingChat.Shared.ViewModels
+namespace BlazingChat.Client.ViewModels
 {
     public class SettingsViewModel
     {
         public bool Notification { get; set; }
-        public string DarkTheme { get; set; }
+        public bool DarkTheme { get; set; }
     }
 }

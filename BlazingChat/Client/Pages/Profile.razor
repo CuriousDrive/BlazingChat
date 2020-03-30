@@ -1,26 +1,51 @@
 @page "/profile"
+@using BlazingChat.Client.ViewModels
 
 <h2><b>Profile</b></h2> 
 <hr />
 
-<div class="col-12 row">
+<EditForm Model="_profileViewModel" OnValidSubmit="SubmitForm">
+    <div class="col-12 row">
 
-<div class="col-5">
-    <img src="img/blank-profile.png">
-    <br />
-    <a href="">Change Picture</a>
-</div>
+        <div class="col-6">
+            <img src="img/blank-profile.png">
+            <br />
+            <a href="">Change Picture</a>
+        </div>
 
-<div class="col-6">
-    <input class="form-control" placeholder="first name">
-    <br/>
-    <input class="form-control" placeholder="last name">
-    <br/>
-    <input class="form-control" placeholder="email address">
-    <br/>    
-    <textarea class="form-control" placeholder="about me"></textarea>
-    <br/>
-    <button class="btn btn-primary">Save</button>
-</div>
+        <div class="col-6">
+            <DataAnnotationsValidator />
+            @* <ValidationSummary /> *@
 
-</div>
+            <input class="form-control" @bind="_profileViewModel.FirstName" placeholder="first name">
+            <ValidationMessage For="@(() => _profileViewModel.FirstName)" />
+            <br/>
+            <input class="form-control" @bind="_profileViewModel.LastName" placeholder="last name">
+            <ValidationMessage For="@(() => _profileViewModel.LastName)" />
+            <br/>
+            <input class="form-control" @bind="_profileViewModel.EmailAddress" placeholder="email address">
+            <ValidationMessage For="@(() => _profileViewModel.EmailAddress)" />
+            <br/>
+            <InputDate class="form-control default-date-picker" @bind-Value="_profileViewModel.DateOfBirth" placeholder="date of birth"></InputDate>            
+            <br/>    
+            <textarea class="form-control" @bind="_profileViewModel.AboutMe" placeholder="about me"></textarea>
+            <ValidationMessage For="@(() => _profileViewModel.AboutMe)" />
+            <br/>
+            <button class="btn btn-primary">Save</button>
+        </div>
+    </div>
+</EditForm>
+
+
+@code {
+    private ProfileViewModel _profileViewModel = new ProfileViewModel();
+
+    protected override void OnInitialized()
+    {
+        _profileViewModel.DateOfBirth = new DateTime(1980,1,1);
+    }
+    private void SubmitForm()
+    {
+        //Need to write functionality to save this in DB
+    }
+}
