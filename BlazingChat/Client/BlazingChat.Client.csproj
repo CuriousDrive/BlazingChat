@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
+    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +17,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\BlazingChat.Shared.csproj" />
+  </ItemGroup>
+
+  <!-- When publishing, swap service-worker.published.js in place of service-worker.js -->
+  <ItemGroup Condition="'$(DesignTimeBuild)' != 'true'">
+    <Content Remove="wwwroot\service-worker.js" />
+    <Content Update="wwwroot\service-worker.published.js" Link="wwwroot\service-worker.js" />
   </ItemGroup>
 
 </Project>

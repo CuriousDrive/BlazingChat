@@ -11,5 +11,20 @@ namespace BlazingChat.Client.ViewModels
         public string ProfilePictureUrl { get; set; }
         public string TimeSinceLastMessage { get; set; }
         public string LastMessage { get; set; }
+
+        public ChatViewModel()
+        {
+
+        }
+
+        public ChatViewModel(string firstName, string lastName)
+        {
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            LastMessage = "Donec id elit non mi porta gravida at eget metus.";
+            TimeSinceLastMessage = "1 day ago";
+        }
     }
+
+
 }

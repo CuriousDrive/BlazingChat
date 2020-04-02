@@ -1,12 +1,6 @@
-☐ Create ViewModels for the prototypes which are created
-    ☐ Profile
-    ☐ Settings
-    ☐ Friends
-    ☐ Chat
-    Created all the view models and found an article to convert view model to model
-    Need to map these view models to the screens and test form validations
+☐ convert this to progressive web app
 
-☐ Make a component for the header and reuse across pages
+☐ Add Facebook and Google authentication
 
 ☐ Create fake identity user for prototype screens
 
@@ -20,9 +14,20 @@
 
 ☐ Any thoughts on integrating InputMask?
 
-☐ convert this to progressive web app
-
 ***********************************************************************************************************************
+✔ Make a component for the header and reuse across pages @done(20-04-01 17:24)
+
+✔ Change Friends to Contacts @done(20-04-01 17:07)
+
+✔ Create ViewModels for the prototypes which are created @done(20-04-01 17:07)
+    ✔ Profile @done(20-04-01 16:35)
+    ✔ Settings @done(20-04-01 16:42)
+    ✔ Contacts @done(20-04-01 17:02)
+    ✔ Chat @done(20-04-01 17:06)
+    Created all the view models and found an article to convert view model to model
+    Need to map these view models to the screens and test form validations
+
+
 ✔ Blazor webassembly 3.2 preview 3 - need to upgrade this prtoject @done(20-03-28 10:11)
    we made this work and it's working like a charm
 

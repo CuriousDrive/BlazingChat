@@ -10,6 +10,7 @@
     <link href="css/bootstrap/bootstrap-social.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link href="css/site.css" rel="stylesheet" />
+    <link href="manifest.json" rel="manifest" />
 </head>
 
 <body>
@@ -22,6 +23,7 @@
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script src="js/blazing.js"></script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
 </body>
 
 </html>

@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.SignalR.Client
 @using BlazingChat.Shared.Models
 @using Microsoft.AspNetCore.Components.Authorization
+@using ViewModels
 @inject NavigationManager NavigationManager
 @inject HttpClient Http
 @inject IJSRuntime JSRuntime
@@ -11,50 +12,50 @@
     
     <div class="panel panel-primary" style="height: 100%;">
     
-    <div class="panel-heading top-bar">
-      <div class="col-md-8 col-xs-8">
-        <h3 class="panel-title">
-            <span class="glyphicon glyphicon-comment" style="margin-right:6px;">                
-            </span>
-                @id
-            </h3>
-      </div>
-    </div>
+        <div class="panel-heading top-bar">
+        <div class="col-md-8 col-xs-8">
+            <h3 class="panel-title">
+                <span class="glyphicon glyphicon-comment" style="margin-right:6px;">                
+                </span>
+                    @id
+                </h3>
+        </div>
+        </div>
 
-    <div id="divMessageContainerBase" class="panel-body msg_container_base">
-        
-        @foreach (var messagePack in messagePacks)
-        {            
-            @if(messagePack.UserName == user.Identity.Name)
-            {
-                <div class="row msg_container base_sent">
-                    <div class="col-md-10 col-xs-10">
-                        <div class="messages msg_sent">
-                            <p>@messagePack.Message</p>
+        <div id="divMessageContainerBase" class="panel-body msg_container_base">
+            
+            @foreach (var messagePack in messagePacks)
+            {            
+                @if(messagePack.UserName == user.Identity.Name)
+                {
+                    <div class="row msg_container base_sent">
+                        <div class="col-md-10 col-xs-10">
+                            <div class="messages msg_sent">
+                                <p>@messagePack.Message</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
-            else
-            {
-                <div class="row msg_container base_receive">
-                    <div class="col-md-10 col-xs-10">
-                        <div class="messages msg_receive">
-                            <p>@messagePack.Message</p>
+                }
+                else
+                {
+                    <div class="row msg_container base_receive">
+                        <div class="col-md-10 col-xs-10">
+                            <div class="messages msg_receive">
+                                <p>@messagePack.Message</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             }
-        }
-    </div>
+        </div>
 
-    <!--CHAT USER BOX-->
-    <div class="panel-footer">
-      <div class="input-group" id="myForm">
-        <input id="txtMessageInput" type="text" class="form-control input-sm chat_input" 
-          placeholder="Write your message here..." @onkeydown="@(e => OnKeyDownEventChat(e))">
-      </div>
-    </div>
+        <!--CHAT USER BOX-->
+        <div class="panel-footer">
+        <div class="input-group" id="myForm">
+            <input id="txtMessageInput" type="text" class="form-control input-sm chat_input" 
+            placeholder="Write your message here..." @onkeydown="@(e => OnKeyDownEventChat(e))">
+        </div>
+        </div>
 
     </div>
 
@@ -68,15 +69,13 @@
     private HubConnection _hubConnection;
     private List<string> _messages = new List<string>();
     private List<MessagePack> messagePacks = new List<MessagePack>();
-    private string _userInput;
     public bool IsConnected;
     public bool IsEnterPressed;
-
-
     [CascadingParameter]
     public Task<AuthenticationState> authenticationStateTask { get; set; }
     public System.Security.Claims.ClaimsPrincipal user { get; set; }
-    
+    private ChatViewModel _chatViewModel = new ChatViewModel();
+
     protected override async Task OnInitializedAsync()
     {       
         
@@ -85,10 +84,6 @@
         if(!user.Identity.IsAuthenticated)
             NavigationManager.NavigateTo("/");
 
-        Contacts randomContact = await Http.GetJsonAsync<Contacts>("User");
-
-        _userInput = randomContact.FirstName;        
-        
         _hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("/chatHub"))
             .Build();
@@ -127,7 +122,7 @@
         if(message != null && message.Length > 0)
         {
             MessagePack messagePack = new MessagePack();
-            messagePack.UserName = _userInput;
+            messagePack.UserName = id;
             messagePack.Message = message;
 
             await _hubConnection.SendAsync("SendMessage", messagePack);

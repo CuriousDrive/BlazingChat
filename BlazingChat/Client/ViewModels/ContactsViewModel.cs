@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BlazingChat.Client.ViewModels
 {
-    public class FriendsViewModel
+    public class ContactsViewModel
     {
         public List<ChatViewModel> ChatViewModelList { get; set; }
     }

@@ -1,0 +1,16 @@
+@inject NavigationManager NavigationManager
+
+<h2><b>@HeaderText</b></h2> 
+<hr />
+
+@code {
+
+    public string HeaderText { get; set; }
+
+    protected override void OnInitialized()
+    {
+        HeaderText = NavigationManager.Uri.Replace(NavigationManager.BaseUri,"");
+
+        HeaderText = HeaderText.First().ToString().ToUpper() + String.Join("", HeaderText.Skip(1));;
+    }
+}

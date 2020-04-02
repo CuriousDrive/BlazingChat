@@ -1,14 +1,28 @@
 @page "/settings"
+@using ViewModels
 
-<h2><b>Settings</b></h2> 
-<hr />
+<Header />
 
-<div class="col-12">
-    <input type="checkbox" id="chkNotification" name="Notification">
-    <label for="chkNotification"> Notification </label>
-    <br>
+<EditForm Model="@_settingsViewModel" OnValidSubmit="SubmitForm">
+    
+    <div class="col-12">
+        <input type="checkbox" @bind="_settingsViewModel.Notification" id="chkNotification" name="Notification">
+        <label for="chkNotification"> Notification </label>
+        <br>
 
-    <input type="checkbox" id="chkDarkTheme" name="Dark Theme">
-    <label for="chkDarkTheme"> Dark Theme </label>
-    <br>
-</div>
+        <input type="checkbox" @bind="_settingsViewModel.DarkTheme" id="chkDarkTheme" name="Dark Theme">
+        <label for="chkDarkTheme"> Dark Theme </label>
+        <br>
+    </div>
+
+</EditForm>
+
+@code {
+    private SettingsViewModel _settingsViewModel = new SettingsViewModel();
+
+    private void SubmitForm()
+    {
+
+    }
+
+}

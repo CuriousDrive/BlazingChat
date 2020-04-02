@@ -1,0 +1,47 @@
+@page "/contacts"
+@using ViewModels
+@inject NavigationManager NavigationManager
+
+<Header />
+
+<div class="list-group">
+    @foreach(ChatViewModel chatViewModel in _contactsViewModel.ChatViewModelList)
+    {
+        <a @onclick="@(e => NavigateToChat(chatViewModel.FirstName))" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1"><b>@chatViewModel.FirstName<span> </span>@chatViewModel.LastName</b></h6>
+                <small>@chatViewModel.TimeSinceLastMessage</small>
+            </div>
+            <p class="mb-1">@chatViewModel.LastMessage</p>
+        </a>
+    }
+</div>
+
+@code {
+    //List<string> contactList;
+    private ContactsViewModel _contactsViewModel = new ContactsViewModel();
+
+    protected override Task OnInitializedAsync()
+    {
+
+        _contactsViewModel.ChatViewModelList = new List<ChatViewModel>();
+        
+        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Paolo","Accorti"));
+        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Aria","Cruz"));
+        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Philip","Cramer"));
+        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Francisco","Chang"));
+        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Helen","Brown"));
+        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Victoria","Bennett"));
+        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Paul","Ashworth"));
+        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Peter","Afonso"));
+        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Anabela","Hernadez"));
+        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Ann","Franken"));
+
+        return base.OnInitializedAsync();
+    }
+
+    private void NavigateToChat(string id)
+    {
+        NavigationManager.NavigateTo("chat/" + id);
+    }
+}
