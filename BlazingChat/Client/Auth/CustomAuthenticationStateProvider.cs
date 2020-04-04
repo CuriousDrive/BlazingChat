@@ -30,5 +30,23 @@ namespace BlazingChat.Client
 
             return new AuthenticationState(new ClaimsPrincipal(identity));
         }
+
+        public void MarkUserAsLoggedIn(string emailAddress)
+        {
+            var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, emailAddress) }, "serverauth");
+
+            var claimsPrincipal = new ClaimsPrincipal(identity);
+
+            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
+        }
+
+         public void MarkUserAsLoggedOut()
+        {
+            var identity = new ClaimsIdentity();
+
+            var claimsPrincipal = new ClaimsPrincipal(identity);
+
+            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
+        }
     }
 }

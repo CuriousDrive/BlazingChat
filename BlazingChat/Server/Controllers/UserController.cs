@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using BlazingChat.Server.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Twitter;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace BlazingChat.Server.Controllers
@@ -48,6 +50,33 @@ namespace BlazingChat.Server.Controllers
                 TwitterDefaults.AuthenticationScheme,
                 new AuthenticationProperties { RedirectUri = redirectUri });
         }
+
+        [HttpGet("user/googlesignin")]
+        public async Task GoogleSignIn(string redirectUri)
+        {
+            if (string.IsNullOrEmpty(redirectUri) || !Url.IsLocalUrl(redirectUri))
+            {
+                redirectUri = "/";
+            }
+
+            await HttpContext.ChallengeAsync(
+                GoogleDefaults.AuthenticationScheme,
+                new AuthenticationProperties { RedirectUri = redirectUri });
+        }
+
+        [HttpGet("user/facebooksignin")]
+        public async Task FacebookSignIn(string redirectUri)
+        {
+            if (string.IsNullOrEmpty(redirectUri) || !Url.IsLocalUrl(redirectUri))
+            {
+                redirectUri = "/";
+            }
+
+            await HttpContext.ChallengeAsync(
+                FacebookDefaults.AuthenticationScheme,
+                new AuthenticationProperties { RedirectUri = redirectUri });
+        }
+
 
         [HttpGet("user/signout")]
         public async Task<IActionResult> SignOut()

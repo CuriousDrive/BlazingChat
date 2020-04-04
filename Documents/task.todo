@@ -1,3 +1,20 @@
+☐ Upgrade the project to use .NET 5 Preview 1
+    
+☐ Figure out one on one chatting in SignalR
+
+☐ Make a document which explains what is the project that you are working on
+
+☐ Add functionality to change the theme to dark mode
+
+☐ Any thoughts on integrating InputMask?
+
+***********************************************************************************************************************
+✔ Add Facebook Authentication - Need to create a fake account @done(20-04-04 10:15)
+    I had to create an app and then added privacy policy and terms and conditions
+    I did not have to do anything different 
+
+✔ Create fake identity user for prototype screens @done(20-04-04 09:39)
+
 ✔ convert this to progressive web app @done(20-04-04 07:54)
     all of the changes were in client project
     I had make sure that these files were added in the project
@@ -8,21 +25,11 @@
     Also had to add code in BlazingChat\Client\BlazingChat.Client.csproj
     An observation it does not consider jpg file
 
-☐ Add Facebook and Google authentication
+✔ Add Google authentication @done(20-04-04 08:45)
+    I had to create a new project on google developer console
+    I had to enable google plus api and create oAuth consent screen
+    I had to create crendetials with proper redirect uri -> /google-signin
 
-☐ Create fake identity user for prototype screens
-
-☐ Upgrade the project to use .NET 5 Preview 1
-
-☐ Figure out one on one chatting in SignalR
-
-☐ Make a document which explains what is the project that you are working on
-
-☐ Add functionality to change the theme to dark mode
-
-☐ Any thoughts on integrating InputMask?
-
-***********************************************************************************************************************
 ✔ Make a component for the header and reuse across pages @done(20-04-01 17:24)
 
 ✔ Change Friends to Contacts @done(20-04-01 17:07)

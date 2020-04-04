@@ -1,6 +1,8 @@
 @page "/register"
 @layout LoginLayout
+@using Microsoft.AspNetCore.Components.Authorization
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <h2><b>Register</b></h2>
 <hr>
@@ -8,7 +10,7 @@
 @* -- I need view models for each of prototype *@
 
 <div class="col-12 row">
-    <input type="text" class="form-control" placeholder="email address">
+    <input type="text" @bind="EmailAddress" class="form-control" placeholder="email address">
 </div>
 <br />
 <div class="col-12 row">
@@ -20,20 +22,27 @@
 </div>
 <br />
 
-<div class="col-12 row">   
-    <div class="col-4">
-        <button class="btn btn-danger">Register</button>
-    </div>
-    <div class="col-6">
-        <button class="btn btn-primary" @onclick="@(e => NavigationManager.NavigateTo("/"))">Login</button>
-    </div>
-    <div class="col-4">
-
-    </div>
+<div class="col-12 row">
+    <button class="btn btn-danger" @onclick="RegisterClick" >Register</button>
+    <span>&nbsp;</span>
+    <button class="btn btn-primary" @onclick="@(e => NavigationManager.NavigateTo("/"))">Login</button>
 </div>
 
 <ExternalLogins />
 
 @code {
+
+    public string EmailAddress { get; set; }
+
+    private void RegisterClick()
+    {
+        // need to write login functionality later
+        if(EmailAddress != string.Empty)
+        {
+            ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedIn(EmailAddress);
+            NavigationManager.NavigateTo("/profile");
+        }       
+    }
+
 
 }

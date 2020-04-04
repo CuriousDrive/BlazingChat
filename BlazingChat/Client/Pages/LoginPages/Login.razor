@@ -2,14 +2,13 @@
 @layout LoginLayout
 @using Microsoft.AspNetCore.Components.Authorization
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <h2><b>Login</b></h2>
 <hr>
 
- @* -- I need view models for each of prototype *@
-
 <div class="col-12 row">
-    <input type="text" class="form-control" placeholder="email address">
+    <input type="text" @bind="EmailAddress" class="form-control" placeholder="email address">
 </div>
 <br />
 <div class="col-12 row">
@@ -17,24 +16,18 @@
 </div>
 <br />
 <div class="col-12 row">
-    <div class="col-4">
-        <button class="btn btn-danger" @onclick="LoginClick">Login</button>
-    </div>
-    <div class="col-6">
-        <button class="btn btn-primary" @onclick="@(e => NavigationManager.NavigateTo("/register"))">Register</button>
-    </div>
-    <div class="col-2">
-
-    </div>
+    <button class="btn btn-danger" @onclick="LoginClick">Login</button>
+    <span>&nbsp;</span>
+    <button class="btn btn-primary" @onclick="@(e => NavigationManager.NavigateTo("/register"))">Register</button>    
 </div>
 
 <ExternalLogins />
-
 
 @code{
 
     [CascadingParameter]
     public Task<AuthenticationState> authenticationStateTask { get; set; }
+    public string EmailAddress { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
@@ -47,7 +40,11 @@
     private void LoginClick()
     {
         // need to write login functionality later
-        NavigationManager.NavigateTo("/profile");
+        if(EmailAddress != string.Empty)
+        {
+            ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedIn(EmailAddress);
+            NavigationManager.NavigateTo("/profile");
+        }       
     }
 
 }

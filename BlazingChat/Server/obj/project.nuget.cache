@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "oSHfGow7OMKJeq7ZBm3NrS6zzOt0gQPxDDmOsqJygGLRO1CwW9/lv18ASg8gvX5aWy7eBgDprRNseIKo8RQ1FA==",
+  "dgSpecHash": "xUwNq4iRJopf/wR2MfoaSEeKwyquqpDexVNZxhS5V/pmmsy0utbSsby76RVcfROtqmmu/PCgCscgpkC1qsY6fQ==",
   "success": true,
   "projectFilePath": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\BlazingChat\\Server\\BlazingChat.Server.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.aspnetcore.authentication.facebook\\3.1.1\\microsoft.aspnetcore.authentication.facebook.3.1.1.nupkg.sha512",
+    "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.aspnetcore.authentication.google\\3.1.1\\microsoft.aspnetcore.authentication.google.3.1.1.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.aspnetcore.authentication.twitter\\3.1.1\\microsoft.aspnetcore.authentication.twitter.3.1.1.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.aspnetcore.authorization\\3.1.2\\microsoft.aspnetcore.authorization.3.1.2.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.aspnetcore.blazor.httpclient\\3.2.0-preview3.20168.3\\microsoft.aspnetcore.blazor.httpclient.3.2.0-preview3.20168.3.nupkg.sha512",
