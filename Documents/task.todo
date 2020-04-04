@@ -1,4 +1,12 @@
-☐ convert this to progressive web app
+✔ convert this to progressive web app @done(20-04-04 07:54)
+    all of the changes were in client project
+    I had make sure that these files were added in the project
+    BlazingChat\Client\wwwroot\service-worker.js
+    BlazingChat\Client\wwwroot\service-worker.published.js
+    BlazingChat\Client\wwwroot\manifest.json
+    BlazingChat\Client\wwwroot\icon-512.png
+    Also had to add code in BlazingChat\Client\BlazingChat.Client.csproj
+    An observation it does not consider jpg file
 
 ☐ Add Facebook and Google authentication
 
