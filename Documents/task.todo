@@ -1,10 +1,24 @@
+☐ Add spinner/ activity indicator on the contacts pages
+    I am going to add chase spinner component
+
+☐ Change the font of the application
+
+☐ Add background to the main page so that it does not take up the whole
+
+☐ Design the database by the view models and perform all the database operations on the pages
+    There is going to be only one table as far as pages are concern
+
+☐ Add functionality to change to dark theme
+
+☐ Show notifications on the browser tap
+
+☐ Add file upload/change profile pic functionality
+
 ☐ Upgrade the project to use .NET 5 Preview 1
     
 ☐ Figure out one on one chatting in SignalR
 
 ☐ Make a document which explains what is the project that you are working on
-
-☐ Add functionality to change the theme to dark mode
 
 ☐ Any thoughts on integrating InputMask?
 

@@ -191,6 +191,16 @@ app {
     }
 }
 
+/*adding this for contacts list view*/
+.my-custom-scrollbar {
+    position: relative;
+    height: 600px;
+    overflow: auto;
+    }
+.table-wrapper-scroll-y {
+    display: block;
+}
+
 .box{
     height: 100px;
     width: 200px;
@@ -330,4 +340,5 @@ app {
     left: 0px;
     bottom: 0;
   }
-  
+
+
