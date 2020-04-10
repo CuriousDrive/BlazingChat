@@ -7,22 +7,14 @@
 </div>
 
 <div class="main">
-    
     <div class="top-row">
         <div>
             <AuthorizeView>
                 <Authorized>
-                    <h4>Welcome, <b>@context.User.Identity.Name</b></h4>                
-                </Authorized>            
-            </AuthorizeView>
+                        <h4>Welcome, <b>@context.User.Identity.Name</b></h4>                
+                    </Authorized>            
+                </AuthorizeView>
         </div>
-        @* <div class="px-4">
-            <AuthorizeView>
-                <Authorized>                
-                    <b><button @onclick= "Logout" class="btn btn-primary ml-md-auto">Logout</button></b>
-                </Authorized>            
-            </AuthorizeView>
-        </div>     *@
     </div>
 
     <div class="content px-4">
@@ -30,8 +22,9 @@
     </div>
 </div>
 
-@code{
 
+
+@code{
     private void Logout()
     {
         NavigationManager.NavigateTo("user/signout", true);

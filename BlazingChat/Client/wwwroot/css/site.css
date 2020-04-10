@@ -1,7 +1,7 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'system-ui', Helvetica, Arial, sans-serif   
 }
 
 a, .btn-link {
@@ -26,8 +26,11 @@ app {
     align-items: center;
 }
 
+
+
 .main {
-    flex: 1;
+    /* flex: 1; */
+    width: 700px;
 }
 
     .main .top-row {
@@ -136,15 +139,6 @@ app {
     top: 0.5rem;
 }
 
-.my-custom-scrollbar {
-    position: relative;
-    height: 500px;
-    overflow: auto;
-    }
-    .table-wrapper-scroll-y {
-    display: block;
-    }
-
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
         display: none;
@@ -165,7 +159,7 @@ app {
     }
 
     .sidebar {
-        width: 250px;
+        width: 300px;
         height: 100vh;
         position: sticky;
         top: 0;
@@ -194,7 +188,7 @@ app {
 /*adding this for contacts list view*/
 .my-custom-scrollbar {
     position: relative;
-    height: 600px;
+    height: 800px;
     overflow: auto;
     }
 .table-wrapper-scroll-y {
