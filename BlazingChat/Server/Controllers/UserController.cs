@@ -24,19 +24,6 @@ namespace BlazingChat.Server.Controllers
         {
             this.logger = logger;
         }
-
-        [HttpGet("user")]
-        public Contacts Get()
-        {           
-            var contact = new Contacts();
-
-            if(User.Identity.IsAuthenticated)
-            {
-                contact.FirstName = User.Identity.Name;   
-            }
-
-            return contact;
-        }
     
         [HttpGet("user/twittersignin")]
         public async Task TwitterSignIn(string redirectUri)

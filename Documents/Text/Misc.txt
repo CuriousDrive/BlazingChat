@@ -1,8 +1,7 @@
 dotnet build
 dotnet run --project .\Server\BlazingChat.Server.csproj
 
-dotnet ef dbcontext scaffold "Data Source=C:\Data\CuriousDrive\BlazingChat\BlazingChat\Server\DB\BlazingChat.db;" Microsoft.EntityFrameworkCore.Sqlite --output-dir Models
-
+dotnet ef dbcontext scaffold Name=BlazingChat Microsoft.EntityFrameworkCore.Sqlite --output-dir Models -f
 
 Challenges in upgrading from 3.2 Preview1 to 3.2 Preview2
     - var builder = WebAssemblyHostBuilder.CreateDefault(args); was throwing an error after upgrading the references 

@@ -15,50 +15,116 @@ namespace BlazingChat.Server.Models
         {
         }
 
-        public virtual DbSet<Contacts> Contacts { get; set; }
+        public virtual DbSet<ChatHistory> ChatHistory { get; set; }
+        public virtual DbSet<RefreshToken> RefreshToken { get; set; }
+        public virtual DbSet<User> User { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlite("Data Source=C:\\Data\\CuriousDrive\\BlazingChat\\BlazingChat\\Server\\DB\\BlazingChat.db;");
+                optionsBuilder.UseSqlite("Name=BlazingChat");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Contacts>(entity =>
+            modelBuilder.Entity<ChatHistory>(entity =>
             {
-                entity.HasKey(e => e.ContactId);
-
-                entity.ToTable("contacts");
-
-                entity.HasIndex(e => e.Email)
-                    .IsUnique();
-
-                entity.HasIndex(e => e.Phone)
-                    .IsUnique();
-
-                entity.Property(e => e.ContactId)
-                    .HasColumnName("contact_id")
+                entity.Property(e => e.ChatHistoryId)
+                    .HasColumnName("chat_history_id")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.Email)
+                entity.Property(e => e.CreatedDate)
                     .IsRequired()
-                    .HasColumnName("email");
+                    .HasColumnName("created_date")
+                    .HasColumnType("DATE");
 
-                entity.Property(e => e.FirstName)
-                    .IsRequired()
-                    .HasColumnName("first_name");
+                entity.Property(e => e.FromUserId)
+                    .HasColumnName("from_user_id")
+                    .HasColumnType("INT");
 
-                entity.Property(e => e.LastName)
+                entity.Property(e => e.Message)
                     .IsRequired()
-                    .HasColumnName("last_name");
+                    .HasColumnName("message");
 
-                entity.Property(e => e.Phone)
+                entity.Property(e => e.ToUserId)
+                    .HasColumnName("to_user_id")
+                    .HasColumnType("INT");
+
+                entity.HasOne(d => d.FromUser)
+                    .WithMany(p => p.ChatHistoryFromUser)
+                    .HasForeignKey(d => d.FromUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.ToUser)
+                    .WithMany(p => p.ChatHistoryToUser)
+                    .HasForeignKey(d => d.ToUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<RefreshToken>(entity =>
+            {
+                entity.HasKey(e => e.TokenId);
+
+                entity.Property(e => e.TokenId)
+                    .HasColumnName("token_id")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.ExpiryDate)
                     .IsRequired()
-                    .HasColumnName("phone");
+                    .HasColumnName("expiry_date")
+                    .HasColumnType("DATE");
+
+                entity.Property(e => e.Token)
+                    .IsRequired()
+                    .HasColumnName("token");
+
+                entity.Property(e => e.UserId)
+                    .HasColumnName("user_id")
+                    .HasColumnType("INT");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.RefreshToken)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.UserId)
+                    .HasColumnName("user_id")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.AboutMe).HasColumnName("about_me");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnName("created_date")
+                    .HasColumnType("DATE");
+
+                entity.Property(e => e.DarkTheme)
+                    .HasColumnName("dark_theme")
+                    .HasColumnType("BOOLEAN");
+
+                entity.Property(e => e.DateOfBirth)
+                    .HasColumnName("date_of_birth")
+                    .HasColumnType("DATE");
+
+                entity.Property(e => e.EmailAddress)
+                    .IsRequired()
+                    .HasColumnName("email_address");
+
+                entity.Property(e => e.Notfications)
+                    .HasColumnName("notfications")
+                    .HasColumnType("BOOLEAN");
+
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasColumnName("password");
+
+                entity.Property(e => e.Source)
+                    .IsRequired()
+                    .HasColumnName("source");
             });
 
             OnModelCreatingPartial(modelBuilder);

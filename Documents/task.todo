@@ -1,19 +1,17 @@
+☐ Design the database by the view models and perform all the database operations on the pages
+    There is going to be only one table as far as pages are concern
+
+☐ Figure out one on one chatting in SignalR
+
 ☐ Add functionality to change to dark theme
 
 ☐ Show notifications on the browser tap
 
 ☐ Add file upload/change profile pic functionality
 
-☐ Design the database by the view models and perform all the database operations on the pages
-    There is going to be only one table as far as pages are concern
-
-☐ Figure out one on one chatting in SignalR
-
 ☐ Upgrade the project to use .NET 5 Preview 1
 
 ☐ Make a document which explains what is the project that you are working on
-
-☐ Any thoughts on integrating InputMask?
 
 ***********************************************************************************************************************
 ✔ Add background to the main page so that it does not take up the whole @done(20-04-10 08:43)
