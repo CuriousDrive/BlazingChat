@@ -1,11 +1,11 @@
-﻿//using BlazingChat.Shared.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BlazingChat.Server.Models;
+using BlazingChat.Shared.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Twitter;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -23,6 +23,19 @@ namespace BlazingChat.Server.Controllers
         public UserController(ILogger<UserController> logger)
         {
             this.logger = logger;
+        }
+
+        [HttpGet("user")]
+        public Contacts Get()
+        {           
+            var contact = new Contacts();
+
+            if(User.Identity.IsAuthenticated)
+            {
+                contact.FirstName = User.Identity.Name;   
+            }
+
+            return contact;
         }
     
         [HttpGet("user/twittersignin")]

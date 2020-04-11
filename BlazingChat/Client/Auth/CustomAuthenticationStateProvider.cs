@@ -19,6 +19,8 @@ namespace BlazingChat.Client
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var contact = await _httpClient.GetJsonAsync<Contacts>("user");
+            //contact.FirstName = "Temp User";
+
             var IsAuthenticated = false;
 
             if (contact.FirstName != null)
