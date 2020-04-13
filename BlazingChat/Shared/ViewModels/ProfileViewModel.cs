@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 
-namespace BlazingChat.Client.ViewModels
+namespace BlazingChat.Shared.ViewModels
 {
     public class ProfileViewModel
     {

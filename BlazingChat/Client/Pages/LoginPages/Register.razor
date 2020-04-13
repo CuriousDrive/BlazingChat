@@ -1,48 +1,53 @@
 @page "/register"
 @layout LoginLayout
 @using Microsoft.AspNetCore.Components.Authorization
+@using BlazingChat.Shared.ViewModels
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <h2><b>Register</b></h2>
 <hr>
 
-@* -- I need view models for each of prototype *@
+<EditForm Model="@_registerUserViewModel" OnValidSubmit="RegisterClick">
+     <DataAnnotationsValidator />
 
-<div class="col-12 row">
-    <input type="text" @bind="EmailAddress" class="form-control" placeholder="email address">
-</div>
-<br />
-<div class="col-12 row">
-    <input type="password" class="form-control" placeholder="password">
-</div>
-<br />
-<div class="col-12 row">
-    <input type="password" class="form-control" placeholder="cofirm password">
-</div>
-<br />
+    <div class="col-12 row">
+        <input type="text" @bind="_registerUserViewModel.EmailAddress" class="form-control" placeholder="email address">
+        <ValidationMessage For="@(() => _registerUserViewModel.EmailAddress)" />
+    </div>
+    <br />
+    <div class="col-12 row">
+        <input type="password" @bind="_registerUserViewModel.Password" class="form-control" placeholder="password">
+        <ValidationMessage For="@(() => _registerUserViewModel.Password)" />
+    </div>
+    <br />
+    <div class="col-12 row">
+        <input type="password" @bind="_registerUserViewModel.ConfirmPassword" class="form-control" placeholder="cofirm password">
+        <ValidationMessage For="@(() => _registerUserViewModel.ConfirmPassword)" />
+    </div>
+    <br />
 
-<div class="col-12 row">
-    <button class="btn btn-danger" @onclick="RegisterClick" >Register</button>
-    <span>&nbsp;</span>
-    <button class="btn btn-primary" @onclick="@(e => NavigationManager.NavigateTo("/"))">Login</button>
-</div>
+    <div class="col-12 row">
+        <button class="btn btn-danger">Register</button>
+        <span>&nbsp;</span>
+        <button class="btn btn-primary" @onclick="@(e => NavigationManager.NavigateTo("/"))">Login</button>
+    </div>
+
+</EditForm>
+
 
 <ExternalLogins />
 
 @code {
-
     public string EmailAddress { get; set; }
+    private RegisterUserViewModel _registerUserViewModel { get; set; } = new RegisterUserViewModel();
 
     private void RegisterClick()
     {
         // need to write login functionality later
-        if(EmailAddress != string.Empty)
-        {
-            ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedIn(EmailAddress);
-            NavigationManager.NavigateTo("/profile");
-        }       
+
+        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedIn(EmailAddress);
+        NavigationManager.NavigateTo("/profile");
+
     }
-
-
 }

@@ -8,6 +8,7 @@ using BlazingChat.Server.Hubs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using BlazingChat.Server.Models;
 
 namespace BlazingChat.Server
 {
@@ -25,6 +26,11 @@ namespace BlazingChat.Server
         {
             services.AddMvc();
             services.AddSignalR();
+
+            // services.AddDbContext<BlazingChatContext>(options =>
+            //         options.UseS(Configuration.GetConnectionString("BookStoresDB")));
+
+            services.AddEntityFrameworkSqlite().AddDbContext<BlazingChatContext>();
 
             services.AddAuthentication(options =>
                 {

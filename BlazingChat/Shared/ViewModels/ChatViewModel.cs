@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BlazingChat.Client.ViewModels
+namespace BlazingChat.Shared.ViewModels
 {
     public class ChatViewModel
     {    

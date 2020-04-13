@@ -1,6 +1,10 @@
 ☐ Design the database by the view models and perform all the database operations on the pages
-    There is going to be only one table as far as pages are concern
-
+    There actually 3 tables
+    -> User
+    -> RefreshToken
+    -> ChatHistory    
+    -> CORS
+    
 ☐ Figure out one on one chatting in SignalR
 
 ☐ Add functionality to change to dark theme

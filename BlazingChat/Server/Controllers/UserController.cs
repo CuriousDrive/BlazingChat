@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BlazingChat.Server.Models;
-using BlazingChat.Shared.Models;
+//using BlazingChat.Shared.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Twitter;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -18,11 +18,13 @@ namespace BlazingChat.Server.Controllers
     //[Route("[controller]")]
     public class UserController : ControllerBase
     {        
-        private readonly ILogger<UserController> logger;
+        private readonly ILogger<UserController> _logger;
+        private readonly BlazingChatContext _context;
 
-        public UserController(ILogger<UserController> logger)
+        public UserController(ILogger<UserController> logger,BlazingChatContext context)
         {
-            this.logger = logger;
+            this._logger = logger;
+            this._context = context;
         }
 
         [HttpGet("user")]
@@ -36,6 +38,14 @@ namespace BlazingChat.Server.Controllers
             }
 
             return contact;
+        }
+
+        [HttpGet("user/createuser")]
+        public async Task CreateUser(User user)
+        {   
+            _context.User.Add(user);
+
+            await _context.SaveChangesAsync();
         }
     
         [HttpGet("user/twittersignin")]

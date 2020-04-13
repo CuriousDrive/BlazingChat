@@ -28,3 +28,14 @@ Bill Gates     Fahad Mullaji  message10
 
 
 
+Client -> Shared
+
+Server -> Client, Shared
+    Models
+
+Shared -> nothing
+    ViewModels        
+
+
+
+
