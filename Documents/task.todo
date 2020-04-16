@@ -4,6 +4,13 @@
     -> RefreshToken
     -> ChatHistory    
     -> CORS
+    The challenging part is to convert viewmodels to models
+    The plan is to use implicit operator to do this but we will have make view models partial classes
+    the only way that I see this happening if I have view models in the client 
+    have copy of models in shared assembly
+    then write the code for conversion in view models 
+    send shared model as json and then catch them as server models
+
     
 ☐ Figure out one on one chatting in SignalR
 

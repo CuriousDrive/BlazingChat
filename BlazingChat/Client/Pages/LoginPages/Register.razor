@@ -2,28 +2,30 @@
 @layout LoginLayout
 @using Microsoft.AspNetCore.Components.Authorization
 @using BlazingChat.Shared.ViewModels
+@using BlazingChat.Shared.Models
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject HttpClient HttpClient
 
 <h2><b>Register</b></h2>
 <hr>
 
-<EditForm Model="@_registerUserViewModel" OnValidSubmit="RegisterClick">
+<EditForm Model="@_registerViewModel" OnValidSubmit="RegisterClick">
      <DataAnnotationsValidator />
 
     <div class="col-12 row">
-        <input type="text" @bind="_registerUserViewModel.EmailAddress" class="form-control" placeholder="email address">
-        <ValidationMessage For="@(() => _registerUserViewModel.EmailAddress)" />
+        <input type="text" @bind="_registerViewModel.EmailAddress" class="form-control" placeholder="email address">
+        <ValidationMessage For="@(() => _registerViewModel.EmailAddress)" />
     </div>
     <br />
     <div class="col-12 row">
-        <input type="password" @bind="_registerUserViewModel.Password" class="form-control" placeholder="password">
-        <ValidationMessage For="@(() => _registerUserViewModel.Password)" />
+        <input type="password" @bind="_registerViewModel.Password" class="form-control" placeholder="password">
+        <ValidationMessage For="@(() => _registerViewModel.Password)" />
     </div>
     <br />
     <div class="col-12 row">
-        <input type="password" @bind="_registerUserViewModel.ConfirmPassword" class="form-control" placeholder="cofirm password">
-        <ValidationMessage For="@(() => _registerUserViewModel.ConfirmPassword)" />
+        <input type="password" @bind="_registerViewModel.ConfirmPassword" class="form-control" placeholder="cofirm password">
+        <ValidationMessage For="@(() => _registerViewModel.ConfirmPassword)" />
     </div>
     <br />
 
@@ -32,21 +34,22 @@
         <span>&nbsp;</span>
         <button class="btn btn-primary" @onclick="@(e => NavigationManager.NavigateTo("/"))">Login</button>
     </div>
-
 </EditForm>
-
 
 <ExternalLogins />
 
 @code {
     public string EmailAddress { get; set; }
-    private RegisterUserViewModel _registerUserViewModel { get; set; } = new RegisterUserViewModel();
+    private RegisterViewModel _registerViewModel { get; set; } = new RegisterViewModel();
 
-    private void RegisterClick()
+    private async Task RegisterClick()
     {
-        // need to write login functionality later
+        // need to write register functionality later
+        User user = _registerViewModel;
 
-        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedIn(EmailAddress);
+        await HttpClient.PostJsonAsync("user/createuser",user);
+
+        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedIn(user.EmailAddress);
         NavigationManager.NavigateTo("/profile");
 
     }

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BlazingChat.Server.Models;
-//using BlazingChat.Shared.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Twitter;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -40,9 +39,11 @@ namespace BlazingChat.Server.Controllers
             return contact;
         }
 
-        [HttpGet("user/createuser")]
+        [HttpPost("user/createuser")]
         public async Task CreateUser(User user)
         {   
+            user.UserId = _context.User.Max(u => u.UserId) + 1;
+            user.Source = "APPL";
             _context.User.Add(user);
 
             await _context.SaveChangesAsync();
