@@ -1,17 +1,13 @@
-☐ Design the database by the view models and perform all the database operations on the pages
-    There actually 3 tables
-    -> User
-    -> RefreshToken
-    -> ChatHistory    
-    -> CORS
-    The challenging part is to convert viewmodels to models
-    The plan is to use implicit operator to do this but we will have make view models partial classes
-    the only way that I see this happening if I have view models in the client 
-    have copy of models in shared assembly
-    then write the code for conversion in view models 
-    send shared model as json and then catch them as server models
-
+☐ Finish up database operations like Login, Saving profile, list down users on chat page, and storing settings for theme and notifications
+    ✔ Login Page @done(20-04-19 13:49)
+    ✔ Register Page @done(20-04-19 13:49)
+    ☐ Profile Page
+    ☐ Contacts Page
+    ☐ Settings page
     
+☐ Chat Page
+    Make sure that people are talking to the users in the database instead of fake people on the view model
+
 ☐ Figure out one on one chatting in SignalR
 
 ☐ Add functionality to change to dark theme
@@ -25,19 +21,31 @@
 ☐ Make a document which explains what is the project that you are working on
 
 ***********************************************************************************************************************
+✔ Design the database by the view models and lay down the data flow pipeline through API @done(20-04-19 11:41)
+    There actually 3 tables
+    -> User
+    -> RefreshToken
+    -> ChatHistory    
+    -> CORS
+    The challenging part is to convert viewmodels to models
+    The plan is to use implicit operator to do this but we will have make view models partial classes
+    the only way that I see this happening if I have view models in the client 
+    have copy of models in shared assembly
+    then write the code for conversion in view models 
+    send shared model as json and then catch them as server models
+
 ✔ Add background to the main page so that it does not take up the whole @done(20-04-10 08:43)
-
 ✔ Change the font of the application @done(20-04-08 07:44)
-
 ✔ Add spinner/ activity indicator on the contacts pages @done(20-04-08 07:35)
     I am going to add chase spinner component
+
 
 ✔ Add Facebook Authentication - Need to create a fake account @done(20-04-04 10:15)
     I had to create an app and then added privacy policy and terms and conditions
     I did not have to do anything different 
 
-✔ Create fake identity user for prototype screens @done(20-04-04 09:39)
 
+✔ Create fake identity user for prototype screens @done(20-04-04 09:39)
 ✔ convert this to progressive web app @done(20-04-04 07:54)
     all of the changes were in client project
     I had make sure that these files were added in the project
@@ -54,9 +62,7 @@
     I had to create crendetials with proper redirect uri -> /google-signin
 
 ✔ Make a component for the header and reuse across pages @done(20-04-01 17:24)
-
 ✔ Change Friends to Contacts @done(20-04-01 17:07)
-
 ✔ Create ViewModels for the prototypes which are created @done(20-04-01 17:07)
     ✔ Profile @done(20-04-01 16:35)
     ✔ Settings @done(20-04-01 16:42)
@@ -65,12 +71,10 @@
     Created all the view models and found an article to convert view model to model
     Need to map these view models to the screens and test form validations
 
-
 ✔ Blazor webassembly 3.2 preview 3 - need to upgrade this prtoject @done(20-03-28 10:11)
    we made this work and it's working like a charm
 
 ✔ Change the color of navigation menu -> Green @done(20-03-28 08:51)
-
 ✔ Make the login page fit right for half screen and find a logo for your app @done(20-03-27 07:39)
     found a logo online and increased the size of login layout to fill up the page
 

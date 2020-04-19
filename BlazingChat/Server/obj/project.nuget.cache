@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "b9dJo2PbnOMIMMqf71kv2FZhLSzZP6dzb6Z+/JLhGP0pwPfplaBHXG0JLs0OY714YX7x0roa7qAEDeZcb+ndNQ==",
+  "dgSpecHash": "Hkw8z84NKe9DBJt7jIDTzM85Gkx8eAesiVIZJDUTKeqM25wCVYRFp7/PM6bIH3zv9F9Ss7oEPiql8vtD+0lahg==",
   "success": true,
   "projectFilePath": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\BlazingChat\\Server\\BlazingChat.Server.csproj",
   "expectedPackageFiles": [
@@ -62,7 +62,7 @@
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.1\\microsoft.netcore.platforms.1.1.1.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.netcore.targets\\1.1.3\\microsoft.netcore.targets.1.1.3.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\mono.cecil\\0.10.1\\mono.cecil.0.10.1.nupkg.sha512",
-    "C:\\Users\\fahad.mullaji\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
+    "C:\\Users\\fahad.mullaji\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\runtime.native.system.security.cryptography\\4.0.0\\runtime.native.system.security.cryptography.4.0.0.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.0.2\\sqlitepclraw.bundle_e_sqlite3.2.0.2.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\sqlitepclraw.core\\2.0.2\\sqlitepclraw.core.2.0.2.nupkg.sha512",

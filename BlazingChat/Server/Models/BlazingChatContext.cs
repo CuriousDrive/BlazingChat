@@ -108,19 +108,25 @@ namespace BlazingChat.Server.Models
 
                 entity.Property(e => e.DateOfBirth)
                     .HasColumnName("date_of_birth")
-                    .HasColumnType("DATE");
+                    .HasColumnType("DATETIME");
 
                 entity.Property(e => e.EmailAddress)
                     .IsRequired()
                     .HasColumnName("email_address");
 
-                entity.Property(e => e.Notfications)
-                    .HasColumnName("notfications")
+                entity.Property(e => e.FirstName).HasColumnName("first_name");
+
+                entity.Property(e => e.LastName).HasColumnName("last_name");
+
+                entity.Property(e => e.Notifications)
+                    .HasColumnName("notifications")
                     .HasColumnType("BOOLEAN");
 
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasColumnName("password");
+
+                entity.Property(e => e.ProfilePictureUrl).HasColumnName("profile_picture_url");
 
                 entity.Property(e => e.Source)
                     .IsRequired()

@@ -3,9 +3,11 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using BlazingChat.Shared.ViewModels
 @using BlazingChat.Shared.Models
+@using Newtonsoft.Json
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject HttpClient HttpClient
+
 
 <h2><b>Register</b></h2>
 <hr>
@@ -39,7 +41,7 @@
 <ExternalLogins />
 
 @code {
-    public string EmailAddress { get; set; }
+    
     private RegisterViewModel _registerViewModel { get; set; } = new RegisterViewModel();
 
     private async Task RegisterClick()
@@ -47,10 +49,25 @@
         // need to write register functionality later
         User user = _registerViewModel;
 
-        await HttpClient.PostJsonAsync("user/createuser",user);
+       string serializedUser = JsonConvert.SerializeObject(user);
+
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, "user/register");
+        requestMessage.Content = new StringContent(serializedUser);
+
+        requestMessage.Content.Headers.ContentType
+            = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+
+        var response = await HttpClient.SendAsync(requestMessage);
+
+        var responseStatusCode = response.StatusCode;
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        var returnedUser = JsonConvert.DeserializeObject<User>(responseBody);
+
+        user = await Task.FromResult(returnedUser);
 
         ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedIn(user.EmailAddress);
-        NavigationManager.NavigateTo("/profile");
+        NavigationManager.NavigateTo("/profile/" + user.UserId);
 
     }
 }

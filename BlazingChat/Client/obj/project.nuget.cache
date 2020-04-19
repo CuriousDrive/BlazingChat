@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "E9IGS1ZilwzPsUg0wGPfY8C6m0J3yyrtivon1/GyHJjP4sn3v/oUleFXjn//DiG15XNJfwNDtK56Om/XbmzNSA==",
+  "dgSpecHash": "N2Qb5ZyEtcCtA71UnyBpvtWJGfpWS+S8Bj9X6BP74C1cTftTddNsvy8a+HEwhqhov5iMDRE9vhCJCF3T4QvbkQ==",
   "success": true,
   "projectFilePath": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\BlazingChat\\Client\\BlazingChat.Client.csproj",
   "expectedPackageFiles": [
@@ -46,6 +46,7 @@
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.jsinterop.webassembly\\3.2.0-preview3.20168.3\\microsoft.jsinterop.webassembly.3.2.0-preview3.20168.3.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.1\\microsoft.netcore.platforms.1.1.1.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.netcore.targets\\1.1.3\\microsoft.netcore.targets.1.1.3.nupkg.sha512",
+    "C:\\Users\\fahad.mullaji\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.buffers\\4.5.0\\system.buffers.4.5.0.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\system.componentmodel.annotations\\4.7.0\\system.componentmodel.annotations.4.7.0.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\system.io.pipelines\\4.7.0\\system.io.pipelines.4.7.0.nupkg.sha512",

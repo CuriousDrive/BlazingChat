@@ -1,50 +1,75 @@
 @page "/"
 @layout LoginLayout
 @using Microsoft.AspNetCore.Components.Authorization
+@using BlazingChat.Shared.ViewModels
+@using BlazingChat.Shared.Models
+@using Newtonsoft.Json
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject HttpClient HttpClient
 
 <h2><b>Login</b></h2>
 <hr>
 
-<div class="col-12 row">
-    <input type="text" @bind="EmailAddress" class="form-control" placeholder="email address">
-</div>
-<br />
-<div class="col-12 row">
-    <input type="password" class="form-control" placeholder="password">
-</div>
-<br />
-<div class="col-12 row">
-    <button class="btn btn-danger" @onclick="LoginClick">Login</button>
-    <span>&nbsp;</span>
-    <button class="btn btn-primary" @onclick="@(e => NavigationManager.NavigateTo("/register"))">Register</button>    
-</div>
+<EditForm Model="@_loginViewModel" OnValidSubmit="LoginClick">
+     <DataAnnotationsValidator />
 
-<ExternalLogins />
+    <div class="col-12 row">
+        <input type="text" @bind="_loginViewModel.EmailAddress" class="form-control" placeholder="email address">
+        <ValidationMessage For="@(() => _loginViewModel.EmailAddress)" />
+    </div>
+    <br />
+    <div class="col-12 row">
+        <input type="password" @bind="_loginViewModel.Password" class="form-control" placeholder="password">
+        <ValidationMessage For="@(() => _loginViewModel.Password)" />
+    </div>
+    <br />
+    <div class="col-12 row">
+        <button class="btn btn-danger">Login</button>
+        <span>&nbsp;</span>
+        <button class="btn btn-primary" @onclick="@(e => NavigationManager.NavigateTo("register/"))">Register</button>
+    </div>
+</EditForm>
+
+<ExternalLogins></ExternalLogins>
 
 @code{
-
     [CascadingParameter]
     public Task<AuthenticationState> authenticationStateTask { get; set; }
-    public string EmailAddress { get; set; }
+    private LoginViewModel _loginViewModel { get; set; } = new LoginViewModel();
 
     protected async override Task OnInitializedAsync()
     {
         var user = (await authenticationStateTask).User;
 
-        if(user.Identity.IsAuthenticated)
-            NavigationManager.NavigateTo("/profile");
+        if (user.Identity.IsAuthenticated)
+            NavigationManager.NavigateTo("/profile/" + 0);
     }
 
-    private void LoginClick()
+    private async Task LoginClick()
     {
-        // need to write login functionality later
-        if(EmailAddress != string.Empty)
-        {
-            ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedIn(EmailAddress);
-            NavigationManager.NavigateTo("/profile");
-        }       
+        User user = _loginViewModel;
+
+        string serializedUser = JsonConvert.SerializeObject(user);
+
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, "user/login");
+        requestMessage.Content = new StringContent(serializedUser);
+
+        requestMessage.Content.Headers.ContentType
+            = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+
+        var response = await HttpClient.SendAsync(requestMessage);
+
+        var responseStatusCode = response.StatusCode;
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        var returnedUser = JsonConvert.DeserializeObject<User>(responseBody);
+
+        user = await Task.FromResult(returnedUser);
+
+        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedIn(user.EmailAddress);
+        NavigationManager.NavigateTo("/profile/" + user.UserId);
+
     }
 
 }

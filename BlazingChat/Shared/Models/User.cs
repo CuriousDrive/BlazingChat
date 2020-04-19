@@ -16,9 +16,12 @@ namespace BlazingChat.Shared.Models
         public string EmailAddress { get; set; }
         public string Password { get; set; }
         public string Source { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string ProfilePictureUrl { get; set; }
         public byte[] DateOfBirth { get; set; }
         public string AboutMe { get; set; }
-        public byte[] Notfications { get; set; }
+        public byte[] Notifications { get; set; }
         public byte[] DarkTheme { get; set; }
         public byte[] CreatedDate { get; set; }
 

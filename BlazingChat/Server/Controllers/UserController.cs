@@ -39,14 +39,42 @@ namespace BlazingChat.Server.Controllers
             return contact;
         }
 
-        [HttpPost("user/createuser")]
-        public async Task CreateUser(User user)
+        [HttpPost("user/register")]
+        public async Task RegisterUser(User user)
         {   
             user.UserId = _context.User.Max(u => u.UserId) + 1;
             user.Source = "APPL";
             _context.User.Add(user);
 
             await _context.SaveChangesAsync();
+        }
+
+        [HttpPost("user/login")]
+        public async Task<User> LoginUser(User user)
+        {   
+            return _context.User.Where(u => u.EmailAddress == user.EmailAddress && u.Password == user.Password)
+                                .ToList()
+                                .FirstOrDefault();
+        }
+
+        [HttpPost("user/getprofile/{userId}")]
+        public async Task<User> GetProfile(int userId)
+        {   
+            return _context.User.Where(u => u.UserId == userId).FirstOrDefault();
+        }
+
+        [HttpPost("user/updateprofile")]
+        public async Task<User> UpdateProfile(User user)
+        {   
+            
+            User userToUpdate = _context.User.Where(u => u.UserId == user.UserId).FirstOrDefault();
+            userToUpdate = user;
+
+            await _context.SaveChangesAsync();
+            
+            return _context.User.Where(u => u.EmailAddress == user.EmailAddress && u.Password == user.Password)
+                                .ToList()
+                                .FirstOrDefault();
         }
     
         [HttpGet("user/twittersignin")]
