@@ -21,6 +21,13 @@ namespace BlazingChat.Shared.ViewModels
         public string AboutMe { get; set; }
         public string ProfilePictureUrl { get; set; }
 
+        public long UserId { get; set; }
+        public string Password { get; set; }
+        public string Source { get; set; }
+        public bool Notifications { get; set; }
+        public bool DarkTheme { get; set; }
+
+
         public static implicit operator ProfileViewModel(User user)
         {
             return new ProfileViewModel
@@ -28,8 +35,14 @@ namespace BlazingChat.Shared.ViewModels
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 EmailAddress = user.EmailAddress,
-                DateOfBirth = DateTime.FromBinary(BitConverter.ToInt64(user.DateOfBirth, 0)),
-                AboutMe = user.AboutMe
+                //DateOfBirth = DateTime.FromBinary(BitConverter.ToInt64(user.DateOfBirth, 0)),
+                AboutMe = user.AboutMe,
+
+                UserId = user.UserId,
+                Password = user.Password,
+                Source = user.Source
+                //Notifications = BitConverter.ToBoolean(user.Notifications),
+                //DarkTheme = BitConverter.ToBoolean(user.DarkTheme)
             };
         }
 
@@ -40,8 +53,14 @@ namespace BlazingChat.Shared.ViewModels
                 FirstName = profileViewModel.FirstName,
                 LastName = profileViewModel.LastName,
                 EmailAddress = profileViewModel.EmailAddress,
-                DateOfBirth = BitConverter.GetBytes(profileViewModel.DateOfBirth.Ticks),
-                AboutMe = profileViewModel.AboutMe
+                //DateOfBirth = BitConverter.GetBytes(profileViewModel.DateOfBirth.Ticks),
+                AboutMe = profileViewModel.AboutMe,
+
+                UserId = profileViewModel.UserId,
+                Password = profileViewModel.Password,
+                Source = profileViewModel.Source
+                //Notifications = Convert.ToB(profileViewModel.Notifications),
+                //DarkTheme = BitConverter.ToBoolean(profileViewModel.DarkTheme)
             };
         }
     }

@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Blazored.LocalStorage;
 
 namespace BlazingChat.Client
 {
@@ -18,6 +19,7 @@ namespace BlazingChat.Client
             builder.Services.AddBaseAddressHttpClient();
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
+            builder.Services.AddBlazoredLocalStorage();
             
             builder.Services.AddScoped<AuthenticationStateProvider,CustomAuthenticationStateProvider>();        
             

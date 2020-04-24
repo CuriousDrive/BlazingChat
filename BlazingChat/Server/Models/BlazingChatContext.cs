@@ -102,9 +102,7 @@ namespace BlazingChat.Server.Models
                     .HasColumnName("created_date")
                     .HasColumnType("DATE");
 
-                entity.Property(e => e.DarkTheme)
-                    .HasColumnName("dark_theme")
-                    .HasColumnType("BOOLEAN");
+                entity.Property(e => e.DarkTheme).HasColumnName("dark_theme");
 
                 entity.Property(e => e.DateOfBirth)
                     .HasColumnName("date_of_birth")
@@ -118,9 +116,7 @@ namespace BlazingChat.Server.Models
 
                 entity.Property(e => e.LastName).HasColumnName("last_name");
 
-                entity.Property(e => e.Notifications)
-                    .HasColumnName("notifications")
-                    .HasColumnType("BOOLEAN");
+                entity.Property(e => e.Notifications).HasColumnName("notifications");
 
                 entity.Property(e => e.Password)
                     .IsRequired()

@@ -12,8 +12,8 @@ CREATE TABLE User
    profile_picture_url  TEXT,
    date_of_birth        DATETIME,
    about_me             TEXT,
-   notifications        BOOLEAN,
-   dark_theme           BOOLEAN,
+   notifications        INTEGER,
+   dark_theme           INTEGER,
    created_date         DATE
 );
 

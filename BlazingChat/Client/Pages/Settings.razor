@@ -1,16 +1,20 @@
 @page "/settings"
 @using BlazingChat.Shared.ViewModels
+@using BlazingChat.Shared.Models
+@inject HttpClient HttpClient
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorageService
 
-<Header />
+<h2><b>Settings</b></h2> 
+<hr />
 
-<EditForm Model="@_settingsViewModel" OnValidSubmit="SubmitForm">
+<EditForm Model="@_settingsViewModel">
     
     <div class="col-12">
-        <input type="checkbox" @bind="_settingsViewModel.Notification" id="chkNotification" name="Notification">
+        <input type="checkbox" value="_settingsViewModel.Notification" id="chkNotification" name="Notification">
         <label for="chkNotification"> Notification </label>
         <br>
 
-        <input type="checkbox" @bind="_settingsViewModel.DarkTheme" id="chkDarkTheme" name="Dark Theme">
+        <input type="checkbox" value="_settingsViewModel.DarkTheme" id="chkDarkTheme" name="Dark Theme" @onchange="@(e => UpdateTheme(e))">
         <label for="chkDarkTheme"> Dark Theme </label>
         <br>
     </div>
@@ -19,10 +23,19 @@
 
 @code {
     private SettingsViewModel _settingsViewModel = new SettingsViewModel();
+    long UserId;
 
-    private void SubmitForm()
+    protected override async Task OnInitializedAsync()
     {
+        UserId = await LocalStorageService.GetItemAsync<long>("userId");
+        User user = await HttpClient.GetJsonAsync<User>("user/getprofile/" + UserId);
 
+        _settingsViewModel = user;
+    }
+
+    private async Task UpdateTheme(ChangeEventArgs changeEventArgs)
+    {
+        await HttpClient.GetJsonAsync<object>($"user/updatetheme?userId={UserId}&value={changeEventArgs.Value}");
     }
 
 }

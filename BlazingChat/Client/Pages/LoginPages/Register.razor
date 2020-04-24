@@ -36,6 +36,7 @@
         <span>&nbsp;</span>
         <button class="btn btn-primary" @onclick="@(e => NavigationManager.NavigateTo("/"))">Login</button>
     </div>
+    
 </EditForm>
 
 <ExternalLogins />
@@ -49,7 +50,7 @@
         // need to write register functionality later
         User user = _registerViewModel;
 
-       string serializedUser = JsonConvert.SerializeObject(user);
+        string serializedUser = JsonConvert.SerializeObject(user);
 
         var requestMessage = new HttpRequestMessage(HttpMethod.Post, "user/register");
         requestMessage.Content = new StringContent(serializedUser);
@@ -62,12 +63,10 @@
         var responseStatusCode = response.StatusCode;
         var responseBody = await response.Content.ReadAsStringAsync();
 
-        var returnedUser = JsonConvert.DeserializeObject<User>(responseBody);
+        user = JsonConvert.DeserializeObject<User>(responseBody);
 
-        user = await Task.FromResult(returnedUser);
-
-        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedIn(user.EmailAddress);
-        NavigationManager.NavigateTo("/profile/" + user.UserId);
+        await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedIn(user);
+        NavigationManager.NavigateTo("/profile");
 
     }
 }

@@ -14,6 +14,19 @@
           "lib/netstandard2.0/BlazorComponentUtilities.dll": {}
         }
       },
+      "Blazored.LocalStorage/2.1.5": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Components": "3.1.2",
+          "Microsoft.AspNetCore.Components.Web": "3.1.2"
+        },
+        "compile": {
+          "lib/netstandard2.0/Blazored.LocalStorage.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Blazored.LocalStorage.dll": {}
+        }
+      },
       "BlazorPro.Spinkit/1.2.0": {
         "type": "package",
         "dependencies": {
@@ -1291,6 +1304,7 @@
         "dependencies": {
           "BlazingChat.Shared": "1.0.0",
           "BlazorPro.Spinkit": "1.2.0",
+          "Blazored.LocalStorage": "2.1.5",
           "Microsoft.AspNetCore.Blazor.HttpClient": "3.2.0-preview3.20168.3",
           "Microsoft.AspNetCore.Components.Authorization": "3.1.2",
           "Microsoft.AspNetCore.Components.WebAssembly": "3.2.0-preview3.20168.3",
@@ -1333,6 +1347,18 @@
         "blazorcomponentutilities.1.6.0.nupkg.sha512",
         "blazorcomponentutilities.nuspec",
         "lib/netstandard2.0/BlazorComponentUtilities.dll"
+      ]
+    },
+    "Blazored.LocalStorage/2.1.5": {
+      "sha512": "/gqhAXbGOwgom2R/oh4YCh2QOR6Sf0JIHBvNShWiSfvaFjJYCGJgM4onj/Upt/a8q9SBdq4R0zglNH9MM7nqlQ==",
+      "type": "package",
+      "path": "blazored.localstorage/2.1.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "blazored.localstorage.2.1.5.nupkg.sha512",
+        "blazored.localstorage.nuspec",
+        "lib/netstandard2.0/Blazored.LocalStorage.dll"
       ]
     },
     "BlazorPro.Spinkit/1.2.0": {
@@ -4246,7 +4272,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300-preview-015048\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300-preview-015095\\RuntimeIdentifierGraph.json"
       }
     }
   }

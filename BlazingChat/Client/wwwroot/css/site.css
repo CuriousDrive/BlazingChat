@@ -188,7 +188,7 @@ app {
 /*adding this for contacts list view*/
 .my-custom-scrollbar {
     position: relative;
-    height: 800px;
+    height: 700px;
     overflow: auto;
     }
 .table-wrapper-scroll-y {

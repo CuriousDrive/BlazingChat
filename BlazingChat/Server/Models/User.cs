@@ -21,8 +21,8 @@ namespace BlazingChat.Server.Models
         public string ProfilePictureUrl { get; set; }
         public byte[] DateOfBirth { get; set; }
         public string AboutMe { get; set; }
-        public byte[] Notifications { get; set; }
-        public byte[] DarkTheme { get; set; }
+        public long? Notifications { get; set; }
+        public long? DarkTheme { get; set; }
         public byte[] CreatedDate { get; set; }
 
         public virtual ICollection<ChatHistory> ChatHistoryFromUser { get; set; }

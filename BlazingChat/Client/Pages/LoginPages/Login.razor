@@ -63,12 +63,10 @@
         var responseStatusCode = response.StatusCode;
         var responseBody = await response.Content.ReadAsStringAsync();
 
-        var returnedUser = JsonConvert.DeserializeObject<User>(responseBody);
-
-        user = await Task.FromResult(returnedUser);
-
-        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedIn(user.EmailAddress);
-        NavigationManager.NavigateTo("/profile/" + user.UserId);
+        user = JsonConvert.DeserializeObject<User>(responseBody);
+        
+        await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedIn(user);
+        NavigationManager.NavigateTo("/profile");
 
     }
 

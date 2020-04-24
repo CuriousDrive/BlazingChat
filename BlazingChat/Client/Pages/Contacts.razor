@@ -1,14 +1,20 @@
 @page "/contacts"
 @using BlazingChat.Shared.ViewModels
+@using BlazingChat.Shared.Models
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims;
 @inject NavigationManager NavigationManager
+@inject HttpClient HttpClient
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-<Header />
+<h2><b>Contacts</b></h2> 
+<hr />
 
 <div class="list-group table-wrapper-scroll-y my-custom-scrollbar">
     <SpinLoader IsLoading =@(_contactsViewModel.ChatViewModelList == null)>
         
         <LoadingTemplate>
-            <div style="height: 800px; background-color: lightgray; vertical-align: middle;">
+            <div style="height: 700px; background-color: lightgray; vertical-align: middle;">
                 <br/><br/>
                 <Chase Center="true" Size="70px"></Chase>
             </div>
@@ -21,7 +27,15 @@
                 {
                     <a @onclick="@(e => NavigateToChat(chatViewModel.FirstName))" class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-1"><b>@chatViewModel.FirstName<span> </span>@chatViewModel.LastName</b></h6>
+                            @if(chatViewModel.FirstName != null || chatViewModel.LastName != null)
+                            {
+                                <h6 class="mb-1"><b>@chatViewModel.FirstName<span> </span>@chatViewModel.LastName</b></h6>
+                            }
+                            else
+                            {
+                                <h6 class="mb-1"><b>@chatViewModel.EmailAddress</b></h6>
+                            }
+                            
                             <small>@chatViewModel.TimeSinceLastMessage</small>
                         </div>
                         <p class="mb-1">@chatViewModel.LastMessage</p>
@@ -34,10 +48,15 @@
 
 @code {
     
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationStateTask { get; set; }
     private ContactsViewModel _contactsViewModel = new ContactsViewModel();
+    ClaimsPrincipal loggedinUser;
 
     protected async override Task OnInitializedAsync()
     {
+        loggedinUser = (await authenticationStateTask).User;
+
         await LoadContacts();
     }
 
@@ -48,24 +67,14 @@
 
     private async Task LoadContacts()
     {
-        await Task.Delay(1000);
-
+        //hopefully this will be something that I can do properly    
+        List<User> UserList = await HttpClient.GetJsonAsync<List<User>>("user/getallusers");
         _contactsViewModel.ChatViewModelList = new List<ChatViewModel>();
         
-        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Paolo","Accorti"));
-        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Aria","Cruz"));
-        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Philip","Cramer"));
-        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Francisco","Chang"));
-        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Helen","Brown"));
-        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Victoria","Bennett"));
-        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Paul","Ashworth"));
-        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Peter","Afonso"));
-        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Anabela","Hernadez"));
-        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Ann","Franken"));
-        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("John","Smith"));
-        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Bill","Gates"));
-        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Steve","Jobs"));
-        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("Mahatma","Gandhi"));
-        _contactsViewModel.ChatViewModelList.Add(new ChatViewModel("James","Bond"));
+        foreach(User user in UserList)
+        {
+            if(loggedinUser.Identity.Name != user.EmailAddress)
+                _contactsViewModel.ChatViewModelList.Add(new ChatViewModel(user.FirstName, user.LastName, user.EmailAddress));
+        }
     }
 }

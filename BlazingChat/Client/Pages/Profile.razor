@@ -1,9 +1,11 @@
-@page "/profile/{userId:int}"
+@page "/profile"
 @using BlazingChat.Shared.ViewModels
 @using BlazingChat.Shared.Models
 @inject HttpClient HttpClient
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorageService
 
-<Header />
+<h2><b>Profile</b></h2> 
+<hr />
 
 <EditForm Model="_profileViewModel" OnValidSubmit="SubmitForm">
     <div class="col-12 row">
@@ -39,17 +41,22 @@
 
 @code {
     private ProfileViewModel _profileViewModel = new ProfileViewModel();
-    public int userId { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        User user = await HttpClient.GetJsonAsync<User>("user/getprofile/" + userId);
+        var userId = await LocalStorageService.GetItemAsync<long>("userId");
 
-        _profileViewModel = user;
-
+        if (userId > 0)
+        {
+            User user = await HttpClient.GetJsonAsync<User>("user/getprofile/" + userId);
+            _profileViewModel = user;
+        }
     }
-    private void SubmitForm()
+
+    private async Task SubmitForm()
     {
-        //Need to write functionality to save this in DB
+        User user = _profileViewModel;
+
+        await HttpClient.PutJsonAsync("user/updateprofile/" + user.UserId, user);
     }
 }
