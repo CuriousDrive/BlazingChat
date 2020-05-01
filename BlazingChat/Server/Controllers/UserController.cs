@@ -87,26 +87,26 @@ namespace BlazingChat.Server.Controllers
             return NoContent();
         }
 
-        [HttpPost("user/updatetheme")]
-        public async Task<IActionResult> UpdateTheme([FromQuery] int userId, [FromQuery] bool value)
+        [HttpGet("user/updatetheme")]
+        public async Task<Object> UpdateTheme(string userId,string value)
         {
-            User user = _context.User.Where(u => u.UserId == userId).FirstOrDefault();
-            user.DarkTheme = value? 1 : 0;
+            User user = _context.User.Where(u => u.UserId == Convert.ToInt32(userId)).FirstOrDefault();
+            user.DarkTheme = value == "True" ? 1 : 0;
 
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return await Task.FromResult(new Object());
         }
 
-        [HttpPost("user/updatenotifications")]
-        public async Task<IActionResult> UpdateNotifications([FromQuery] int userId, [FromQuery] bool value)
+        [HttpGet("user/updatenotifications")]
+        public async Task<Object> UpdateNotifications(string userId, string value)
         {
-            User user = _context.User.Where(u => u.UserId == userId).FirstOrDefault();
-            user.Notifications = value? 1 : 0;
+            User user = _context.User.Where(u => u.UserId == Convert.ToInt32(userId)).FirstOrDefault();
+            user.Notifications = value == "True" ? 1 : 0;
 
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return await Task.FromResult(new Object());
         }
 
 

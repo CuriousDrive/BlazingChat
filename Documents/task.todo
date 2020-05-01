@@ -1,14 +1,7 @@
-☐ Add LocalStorage 
-    Instead of sending userId in the route, add local storage and get userId from there?
-
-☐ Finish up database operations like Login, Saving profile, list down users on chat page, and storing settings for theme and notifications
-    ✔ Login Page @done(20-04-19 13:49)
-    ✔ Register Page @done(20-04-19 13:49)
-    ✔ Profile Page @done(20-04-20 10:44)
-    ✔ Contacts Page @done(20-04-20 12:44)
-    ☐ Settings page
-
 ☐ Migrate to preview 3.2 Preview 4
+    There are some http client related changes
+
+☐ Migrate to 3.2 rc1
     There are some http client related changes
 
 ☐ Figure out one on one chatting in SignalR
@@ -20,11 +13,19 @@
 
 ☐ Add file upload/change profile pic functionality
 
-☐ Upgrade the project to use .NET 5 Preview 1
-
 ☐ Make a document which explains what is the project that you are working on
 
 ***********************************************************************************************************************
+✔ Add LocalStorage @done(20-05-01 08:52)
+    Instead of sending userId in the route, add local storage and get userId from there?
+
+✔ Finish up database operations like Login, Saving profile, list down users on chat page, and storing settings for theme and notifications @done(20-05-01 08:52)
+    ✔ Login Page @done(20-04-19 13:49)
+    ✔ Register Page @done(20-04-19 13:49)
+    ✔ Profile Page @done(20-04-20 10:44)
+    ✔ Contacts Page @done(20-04-20 12:44)
+    ✔ Settings page @done(20-05-01 08:50)
+
 ✔ Design the database by the view models and lay down the data flow pipeline through API @done(20-04-19 11:41)
     There actually 3 tables
     -> User

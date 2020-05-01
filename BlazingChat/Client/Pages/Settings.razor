@@ -10,12 +10,12 @@
 <EditForm Model="@_settingsViewModel">
     
     <div class="col-12">
-        <input type="checkbox" value="_settingsViewModel.Notification" id="chkNotification" name="Notification">
-        <label for="chkNotification"> Notification </label>
+        <input type="checkbox" checked="@_settingsViewModel.Notifications" id="chkNotification" @onchange="@(e => UpdateNotifications(e))">
+        <label> Notification </label>
         <br>
 
-        <input type="checkbox" value="_settingsViewModel.DarkTheme" id="chkDarkTheme" name="Dark Theme" @onchange="@(e => UpdateTheme(e))">
-        <label for="chkDarkTheme"> Dark Theme </label>
+        <input type="checkbox" checked="@_settingsViewModel.DarkTheme" id="chkDarkTheme" @onchange="@(e => UpdateTheme(e))">
+        <label> Dark Theme </label>
         <br>
     </div>
 
@@ -35,7 +35,13 @@
 
     private async Task UpdateTheme(ChangeEventArgs changeEventArgs)
     {
-        await HttpClient.GetJsonAsync<object>($"user/updatetheme?userId={UserId}&value={changeEventArgs.Value}");
+        
+        object obj = await HttpClient.GetJsonAsync<object>($"user/updatetheme?userId={UserId}&value={changeEventArgs.Value.ToString()}");
+    }
+
+    private async Task UpdateNotifications(ChangeEventArgs changeEventArgs)
+    {
+        object obj = await HttpClient.GetJsonAsync<object>($"user/updatenotifications?userId={UserId}&value={changeEventArgs.Value.ToString()}");
     }
 
 }
