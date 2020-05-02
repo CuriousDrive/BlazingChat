@@ -48,7 +48,7 @@
 
         if (userId > 0)
         {
-            User user = await HttpClient.GetJsonAsync<User>("user/getprofile/" + userId);
+            User user = await HttpClient.GetFromJsonAsync<User>("user/getprofile/" + userId);
             _profileViewModel = user;
         }
     }
@@ -57,6 +57,6 @@
     {
         User user = _profileViewModel;
 
-        await HttpClient.PutJsonAsync("user/updateprofile/" + user.UserId, user);
+        await HttpClient.PutAsJsonAsync("user/updateprofile/" + user.UserId, user);
     }
 }

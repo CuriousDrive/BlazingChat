@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Blazored.LocalStorage;
+using System.Net.Http;
+using BlazingChat.Client.Service;
 
 namespace BlazingChat.Client
 {
@@ -16,7 +18,8 @@ namespace BlazingChat.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             
             // added this with Blazor 3.2 preview 2
-            builder.Services.AddBaseAddressHttpClient();
+            builder.Services.AddTransient(httpClient => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
             builder.Services.AddBlazoredLocalStorage();

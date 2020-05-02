@@ -68,7 +68,7 @@
     private async Task LoadContacts()
     {
         //hopefully this will be something that I can do properly    
-        List<User> UserList = await HttpClient.GetJsonAsync<List<User>>("user/getallusers");
+        List<User> UserList = await HttpClient.GetFromJsonAsync<List<User>>("user/getallusers");
         _contactsViewModel.ChatViewModelList = new List<ChatViewModel>();
         
         foreach(User user in UserList)

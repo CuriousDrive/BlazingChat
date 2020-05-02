@@ -1,4 +1,5 @@
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using BlazingChat.Shared.Models;
@@ -21,7 +22,7 @@ namespace BlazingChat.Client
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var user = await _httpClient.GetJsonAsync<Contacts>("user");
+            var user = await _httpClient.GetFromJsonAsync<Contacts>("user");
 
             var IsAuthenticated = false;
 

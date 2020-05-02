@@ -28,7 +28,7 @@
     protected override async Task OnInitializedAsync()
     {
         UserId = await LocalStorageService.GetItemAsync<long>("userId");
-        User user = await HttpClient.GetJsonAsync<User>("user/getprofile/" + UserId);
+        User user = await HttpClient.GetFromJsonAsync<User>("user/getprofile/" + UserId);
 
         _settingsViewModel = user;
     }
@@ -36,12 +36,12 @@
     private async Task UpdateTheme(ChangeEventArgs changeEventArgs)
     {
         
-        object obj = await HttpClient.GetJsonAsync<object>($"user/updatetheme?userId={UserId}&value={changeEventArgs.Value.ToString()}");
+        object obj = await HttpClient.GetFromJsonAsync<object>($"user/updatetheme?userId={UserId}&value={changeEventArgs.Value.ToString()}");
     }
 
     private async Task UpdateNotifications(ChangeEventArgs changeEventArgs)
     {
-        object obj = await HttpClient.GetJsonAsync<object>($"user/updatenotifications?userId={UserId}&value={changeEventArgs.Value.ToString()}");
+        object obj = await HttpClient.GetFromJsonAsync<object>($"user/updatenotifications?userId={UserId}&value={changeEventArgs.Value.ToString()}");
     }
 
 }
