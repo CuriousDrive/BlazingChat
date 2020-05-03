@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using BlazingChat.Server.Models;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace BlazingChat.Server
 {
@@ -27,10 +29,11 @@ namespace BlazingChat.Server
             services.AddMvc();
             services.AddSignalR();
 
-            // services.AddDbContext<BlazingChatContext>(options =>
-            //         options.UseS(Configuration.GetConnectionString("BookStoresDB")));
-
             services.AddEntityFrameworkSqlite().AddDbContext<BlazingChatContext>();
+
+            services.AddMvc(option => option.EnableEndpointRouting = false)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             services.AddAuthentication(options =>
                 {
@@ -40,30 +43,27 @@ namespace BlazingChat.Server
                 .AddTwitter(twitterOptions =>
                 {
                     twitterOptions.ConsumerKey = Configuration["Authentication:Twitter:ConsumerKey"];
-                    twitterOptions.ConsumerSecret = Configuration["Authentication:Twitter:ConsumerSecret"];                   
+                    twitterOptions.ConsumerSecret = Configuration["Authentication:Twitter:ConsumerSecret"];
+                    twitterOptions.RetrieveUserDetails = true;
                 })
                 .AddGoogle(googleOptions =>
                 {
                     googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
-                    googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];                   
+                    googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
                 })
                 .AddFacebook(facebookOptions =>
                 {
                     facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];                   
+                    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
                 });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //this is handled in .NET framework
-            //app.UseResponseCompression();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseBlazorDebugging();
                 app.UseWebAssemblyDebugging();
             }
 

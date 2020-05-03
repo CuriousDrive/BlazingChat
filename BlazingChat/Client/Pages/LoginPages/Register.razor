@@ -6,6 +6,7 @@
 @using Newtonsoft.Json
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorageService
 @inject HttpClient HttpClient
 
 
@@ -65,8 +66,7 @@
 
         user = JsonConvert.DeserializeObject<User>(responseBody);
 
-        await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedIn(user);
-        NavigationManager.NavigateTo("/profile");
+        NavigationManager.NavigateTo("/profile",true);
 
     }
 }

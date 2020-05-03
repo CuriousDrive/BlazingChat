@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BlazingChat.Server.Controllers
 {
@@ -28,28 +29,57 @@ namespace BlazingChat.Server.Controllers
         }
 
         [HttpGet("user")]
-        public Contacts Get()
+        public async Task<User> Get()
         {
-            var contact = new Contacts();
+            User user = new User();
+            User returnedUser = new User();
 
             if (User.Identity.IsAuthenticated)
             {
-                contact.FirstName = User.Identity.Name;
-            }
+                var emailAddress = User.FindFirstValue(ClaimTypes.Email);
+                returnedUser = _context.User.Where(u => u.EmailAddress == emailAddress)
+                                            .ToList()
+                                            .FirstOrDefault();
 
-            return contact;
+                //case 1: Application User logging in
+                //case 2: Application User Registering
+                //case 3: External User Logging in 
+                if (returnedUser != null && (returnedUser.Source == "APPL" || returnedUser.Source == "EXTL"))
+                {
+                    return returnedUser;
+                }
+                //case 4: External User Registering
+                else
+                {
+                    user.EmailAddress = User.FindFirstValue(ClaimTypes.Email);
+                    user.Password = user.EmailAddress;
+                    user.Source = "EXTL";
+
+                    if (_context.User.Count() > 0)
+                        user.UserId = _context.User.Max(u => u.UserId) + 1;
+                    else
+                        user.UserId = 1;
+
+                    _context.User.Add(user);
+
+                    await _context.SaveChangesAsync();
+                    return user;
+                }
+            }
+            //case 5: User is not logged in
+            else
+                return returnedUser;
         }
 
-        [HttpGet("user/getallusers")]
-        public async Task<ActionResult<List<User>>> GetAllUsers()
+        [HttpGet("claimsprincipal")]
+        public string ClaimsPrincipal()
         {
-            return await Task.FromResult(_context.User.ToList());
+            return User.FindFirstValue(ClaimTypes.Email);
         }
 
         [HttpPost("user/register")]
         public async Task<ActionResult<User>> RegisterUser(User user)
         {
-
             if (_context.User.Count() > 0)
                 user.UserId = _context.User.Max(u => u.UserId) + 1;
             else
@@ -60,16 +90,38 @@ namespace BlazingChat.Server.Controllers
 
             await _context.SaveChangesAsync();
 
+            var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Email, user.EmailAddress) }, "serverauth");
+            var claimsPrincipal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(claimsPrincipal);
+
             return await Task.FromResult(user);
         }
 
         [HttpPost("user/login")]
         public async Task<ActionResult<User>> LoginUser(User user)
         {
-            return _context.User.Where(u => u.EmailAddress == user.EmailAddress && u.Password == user.Password)
+            User returnUser = _context.User.Where(u => u.EmailAddress == user.EmailAddress && u.Password == user.Password)
                                 .ToList()
                                 .FirstOrDefault();
+
+            if (returnUser != null)
+            {
+                var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Email, returnUser.EmailAddress) }, "serverauth");
+                var claimsPrincipal = new ClaimsPrincipal(identity);
+
+                await HttpContext.SignInAsync(claimsPrincipal);
+            }
+
+            return returnUser;
         }
+
+        [HttpGet("user/getallusers")]
+        public async Task<ActionResult<List<User>>> GetAllUsers()
+        {
+            return await Task.FromResult(_context.User.ToList());
+        }
+
 
         [HttpGet("user/getprofile/{userId}")]
         public async Task<ActionResult<User>> GetProfile(int userId)
@@ -88,7 +140,7 @@ namespace BlazingChat.Server.Controllers
         }
 
         [HttpGet("user/updatetheme")]
-        public async Task<Object> UpdateTheme(string userId,string value)
+        public async Task<Object> UpdateTheme(string userId, string value)
         {
             User user = _context.User.Where(u => u.UserId == Convert.ToInt32(userId)).FirstOrDefault();
             user.DarkTheme = value == "True" ? 1 : 0;

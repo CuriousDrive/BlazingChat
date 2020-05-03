@@ -22,17 +22,20 @@ namespace BlazingChat.Client
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var user = await _httpClient.GetFromJsonAsync<Contacts>("user");
+            var user = await _httpClient.GetFromJsonAsync<User>("user");
 
             var IsAuthenticated = false;
 
-            if (user.FirstName != null)
+            if (user != null && user.EmailAddress != null)
+            {
                 IsAuthenticated = true;
+                await _localStorageService.SetItemAsync("userId", user.UserId);
+            }                
 
             var identity = IsAuthenticated
-                 ? new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.FirstName) }, "serverauth")
-                 : new ClaimsIdentity();
-
+                 ? new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.EmailAddress) }, "serverauth")
+                 : new ClaimsIdentity();            
+            
             return new AuthenticationState(new ClaimsPrincipal(identity));
         }
 

@@ -1,3 +1,6 @@
+☐ Insert social network users in the database
+    Need to check if I get there email address or not
+
 ☐ Figure out one on one chatting in SignalR
     Make sure that people are talking to the users in the database instead of fake people on the view model
 
