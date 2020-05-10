@@ -7,6 +7,7 @@ namespace BlazingChat.Shared.ViewModels
 {
     public class ChatViewModel
     {    
+        public long UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string EmailAddress { get; set; }
@@ -19,8 +20,9 @@ namespace BlazingChat.Shared.ViewModels
 
         }
 
-        public ChatViewModel(string firstName, string lastName, string emailAddress)
+        public ChatViewModel(long userId, string firstName, string lastName, string emailAddress)
         {
+            this.UserId = userId;
             this.FirstName = firstName;
             this.LastName = lastName;
             this.EmailAddress = emailAddress;
@@ -32,6 +34,7 @@ namespace BlazingChat.Shared.ViewModels
         {
             return new ChatViewModel
             {
+                UserId = user.UserId,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 EmailAddress = user.EmailAddress
@@ -42,6 +45,7 @@ namespace BlazingChat.Shared.ViewModels
         {
             return new User
             {
+                UserId = chatViewModel.UserId,
                 FirstName = chatViewModel.FirstName,
                 LastName = chatViewModel.LastName,
                 EmailAddress = chatViewModel.EmailAddress

@@ -1,5 +1,5 @@
 ﻿@page "/chat"
-@page "/chat/{id}"
+@page "/chat/{ToUserId}"
 @using Microsoft.AspNetCore.SignalR.Client
 @using BlazingChat.Shared.Models
 @using Microsoft.AspNetCore.Components.Authorization
@@ -7,6 +7,8 @@
 @inject NavigationManager NavigationManager
 @inject HttpClient Http
 @inject IJSRuntime JSRuntime
+@inject HttpClient HttpClient
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorageService
 
 <div style="border:0px;height:100vh;">
     
@@ -15,10 +17,15 @@
         <div class="panel-heading top-bar">
         <div class="col-md-8 col-xs-8">
             <h3 class="panel-title">
-                <span class="glyphicon glyphicon-comment" style="margin-right:6px;">                
-                </span>
-                    @id
-                </h3>
+                @if(ToUser.FirstName != null || ToUser.LastName != null)
+                {
+                    <p class="mb-1"><b>@ToUser.FirstName<span> </span>@ToUser.LastName</b></p>
+                }
+                else
+                {
+                    <p class="mb-1"><b>@ToUser.EmailAddress</b></p>
+                }
+            </h3>
         </div>
         </div>
 
@@ -26,12 +33,14 @@
             
             @foreach (var messagePack in messagePacks)
             {            
-                @if(messagePack.UserName == user.Identity.Name)
+                @if(messagePack.FromUserId == FromUserId)
                 {
                     <div class="row msg_container base_sent">
                         <div class="col-md-10 col-xs-10">
                             <div class="messages msg_sent">
                                 <p>@messagePack.Message</p>
+                                <p>Message From User Id : @messagePack.FromUserId</p>
+                                <p>From User Id : @FromUserId</p>
                             </div>
                         </div>
                     </div>
@@ -42,6 +51,8 @@
                         <div class="col-md-10 col-xs-10">
                             <div class="messages msg_receive">
                                 <p>@messagePack.Message</p>
+                                <p>Message To User Id : @messagePack.ToUserId</p>
+                                <p>To User Id : @ToUserId</p>
                             </div>
                         </div>
                     </div>
@@ -61,11 +72,13 @@
 
 </div>
 
-
 @code {
-    
     [Parameter]
-    public string id { get; set; }
+    public string ToUserId { get; set; }
+    public User ToUser { get; set; } = new User();
+    public string FromUserId { get; set; }
+    public User FromUser { get; set; } = new User();
+    
     private HubConnection _hubConnection;
     private List<string> _messages = new List<string>();
     private List<MessagePack> messagePacks = new List<MessagePack>();
@@ -73,16 +86,23 @@
     public bool IsEnterPressed;
     [CascadingParameter]
     public Task<AuthenticationState> authenticationStateTask { get; set; }
-    public System.Security.Claims.ClaimsPrincipal user { get; set; }
+    public System.Security.Claims.ClaimsPrincipal claimsPrincipal { get; set; }
     private ChatViewModel _chatViewModel = new ChatViewModel();
+   
 
     protected override async Task OnInitializedAsync()
-    {       
-        
-        user = (await authenticationStateTask).User;
+    {
+        claimsPrincipal = (await authenticationStateTask).User;
 
-        if(!user.Identity.IsAuthenticated)
+        if (!claimsPrincipal.Identity.IsAuthenticated)
             NavigationManager.NavigateTo("/");
+
+        FromUserId = Convert.ToString(await LocalStorageService.GetItemAsync<long>("userId"));
+
+        if (Convert.ToInt32(ToUserId) > 0)
+        {
+            ToUser = await HttpClient.GetFromJsonAsync<User>("user/getprofile/" + ToUserId);
+        }
 
         _hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("/chatHub"))
@@ -90,17 +110,21 @@
 
         _hubConnection.On<MessagePack>("ReceiveMessage", (messagePack) =>
         {
-            messagePacks.Add(messagePack);
-
-            StateHasChanged();
+            //case 1: from user should see the message
+            //case 2: to user should see the message            
+            if(messagePack.FromUserId == FromUserId || messagePack.ToUserId == FromUserId)
+            {
+                messagePacks.Add(messagePack);
+                StateHasChanged();
+            }
+            
         });
 
 
         await _hubConnection.StartAsync();
 
-        if(_hubConnection.State == HubConnectionState.Connected)
+        if (_hubConnection.State == HubConnectionState.Connected)
             IsConnected = true;
-    
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -109,32 +133,34 @@
     }
 
     public async Task OnKeyDownEvent(KeyboardEventArgs eventArgs)
-    {        
-        if(eventArgs.Key == "Enter")
+    {
+        if (eventArgs.Key == "Enter")
         {
             string messsageToBeSent = await JSRuntime.InvokeAsync<string>("getMessageInput");
-            await Send(messsageToBeSent);     
+            await Send(messsageToBeSent);
+        }
+    }
+
+    public async Task OnKeyDownEventChat(KeyboardEventArgs eventArgs)
+    {
+        if (eventArgs.Key == "Enter")
+        {
+            string messsageToBeSent = await JSRuntime.InvokeAsync<string>("getMessageInput");
+            await Send(messsageToBeSent);
         }
     }
 
     public async Task Send(string message)
     {
-        if(message != null && message.Length > 0)
+        if (message != null && message.Length > 0)
         {
             MessagePack messagePack = new MessagePack();
-            messagePack.UserName = id;
+            messagePack.ToUserId = ToUserId;
+            messagePack.FromUserId = FromUserId;
             messagePack.Message = message;
 
             await _hubConnection.SendAsync("SendMessage", messagePack);
-        }            
-    }
-
-    public async Task OnKeyDownEventChat(KeyboardEventArgs eventArgs)
-    {        
-        if(eventArgs.Key == "Enter")
-        {
-            string messsageToBeSent = await JSRuntime.InvokeAsync<string>("getMessageInput");
-            await Send(messsageToBeSent);                     
         }
     }
+
 }

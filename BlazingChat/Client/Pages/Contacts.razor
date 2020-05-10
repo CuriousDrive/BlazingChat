@@ -25,7 +25,7 @@
             {
                 @foreach(ChatViewModel chatViewModel in _contactsViewModel.ChatViewModelList)
                 {
-                    <a @onclick="@(e => NavigateToChat(chatViewModel.FirstName))" class="list-group-item list-group-item-action flex-column align-items-start">
+                    <a @onclick="@(e => NavigateToChat(chatViewModel.UserId))" class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
                             @if(chatViewModel.FirstName != null || chatViewModel.LastName != null)
                             {
@@ -60,9 +60,10 @@
         await LoadContacts();
     }
 
-    private void NavigateToChat(string id)
+    private void NavigateToChat(long userId)
     {
-        NavigationManager.NavigateTo("chat/" + id);
+        string argUserId = Convert.ToString(userId);
+        NavigationManager.NavigateTo("chat/" + argUserId);
     }
 
     private async Task LoadContacts()
@@ -74,7 +75,7 @@
         foreach(User user in UserList)
         {
             if(loggedinUser.Identity.Name != user.EmailAddress)
-                _contactsViewModel.ChatViewModelList.Add(new ChatViewModel(user.FirstName, user.LastName, user.EmailAddress));
+                _contactsViewModel.ChatViewModelList.Add(new ChatViewModel(user.UserId,user.FirstName, user.LastName, user.EmailAddress));
         }
     }
 }
