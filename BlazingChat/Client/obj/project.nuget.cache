@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "q8EtL4E2223N4+f3Lt8QWty1WJgeRQuXXTsUf37DosmCOFB3OIerkTYSHOSQPm5CgEB7GBtADgVL4VFae5AqWg==",
+  "dgSpecHash": "LNvsmMVHI6b46D/2B7Bfgku6HRNmJ/hjTeKj6uVSU1638xivpqSI2dQY0edc0c4UEvMtufM0UeXU64UNuCs3vQ==",
   "success": true,
   "projectFilePath": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\BlazingChat\\Client\\BlazingChat.Client.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\blazorcomponentutilities\\1.6.0\\blazorcomponentutilities.1.6.0.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\blazored.localstorage\\2.1.5\\blazored.localstorage.2.1.5.nupkg.sha512",
+    "C:\\Users\\fahad.mullaji\\.nuget\\packages\\blazorinputfile\\0.2.0\\blazorinputfile.0.2.0.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\blazorpro.spinkit\\1.2.0\\blazorpro.spinkit.1.2.0.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.aspnetcore.authorization\\3.1.3\\microsoft.aspnetcore.authorization.3.1.3.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.aspnetcore.components\\3.1.3\\microsoft.aspnetcore.components.3.1.3.nupkg.sha512",

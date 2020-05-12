@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "o+YhRc368sPZOzO5vpIVXl5cl28WyUtrfXXkpnt0gEnPDGtQw2lJkKIn0SzlZBliaKzs3lBqY3fNKennWfbMOQ==",
+  "dgSpecHash": "5fN1PbA0esANmeHGSqJHmpAd4c79EJKRs4er2ugvVT1EAL0xoA+S6PDP5xoJTaXP5Ho0FvJSn/ZyVwd3/pKg9g==",
   "success": true,
   "projectFilePath": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\BlazingChat\\Server\\BlazingChat.Server.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\blazorcomponentutilities\\1.6.0\\blazorcomponentutilities.1.6.0.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\blazored.localstorage\\2.1.5\\blazored.localstorage.2.1.5.nupkg.sha512",
+    "C:\\Users\\fahad.mullaji\\.nuget\\packages\\blazorinputfile\\0.2.0\\blazorinputfile.0.2.0.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\blazorpro.spinkit\\1.2.0\\blazorpro.spinkit.1.2.0.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.aspnetcore.authentication.facebook\\3.1.1\\microsoft.aspnetcore.authentication.facebook.3.1.1.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\microsoft.aspnetcore.authentication.google\\3.1.1\\microsoft.aspnetcore.authentication.google.3.1.1.nupkg.sha512",

@@ -47,6 +47,10 @@
       "frameworks": {
         "netstandard2.1": {
           "dependencies": {
+            "BlazorInputFile": {
+              "target": "Package",
+              "version": "[0.2.0, )"
+            },
             "BlazorPro.Spinkit": {
               "target": "Package",
               "version": "[1.2.0, )"
