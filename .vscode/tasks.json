@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/BlazingChat/Server/BlazingChat.Server.csproj",
+                "${workspaceFolder}/Final Episode/BlazingChat/Client/BlazingChat.Client.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/BlazingChat/Server/BlazingChat.Server.csproj",
+                "${workspaceFolder}/Final Episode/BlazingChat/Client/BlazingChat.Client.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -32,7 +32,7 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/BlazingChat/Server/BlazingChat.Server.csproj",
+                "${workspaceFolder}/Final Episode/BlazingChat/Client/BlazingChat.Client.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

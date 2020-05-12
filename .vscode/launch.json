@@ -5,40 +5,12 @@
    "version": "0.2.0",
    "configurations": [
         {
-            "name": ".NET Core Launch (web)",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/BlazingChat/Server/bin/Debug/netcoreapp3.1/BlazingChat.Server.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}/BlazingChat/Server",
-            "stopAtEntry": false,
-            // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
-            "serverReadyAction": {
-                "action": "openExternally",
-                "pattern": "^\\s*Now listening on:\\s+(https?://\\S+)"                
-            },
-            "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            },
-            "sourceFileMap": {
-                "/Views": "${workspaceFolder}/Views"
-            }
-        },
-        {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach",
-            "processId": "${command:pickProcess}"
-        },
-        {
             "name": ".NET Core Launch (Blazor Standalone)",
             "type": "coreclr",
             "request": "launch",
             "program": "dotnet",
             "args": ["run"],
-            "cwd": "${workspaceFolder}/BlazingChat/Server",
+            "cwd": "${workspaceFolder}/Final Episode/BlazingChat/Client",
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
@@ -49,8 +21,8 @@
             "request": "launch",
             "timeout": 30000,
             // If you have changed the default port / launch URL make sure to update the expectation below
-            "url": "https://localhost:4001",
-            "webRoot": "${workspaceFolder}/BlazingChat/Server",
+            "url": "https://localhost:5001",
+            "webRoot": "${workspaceFolder}/Final Episode/BlazingChat/Client",
             "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}"
         }
     ]
