@@ -1,6 +1,3 @@
-✔ Figure out one on one chatting in SignalR @done(20-05-10 12:57)
-    Make sure that people are talking to the users in the database instead of fake people on the view model
-
 ☐ Add functionality to change to dark theme
     Need to look into Ed's book to figure out how can I make this happen
 
@@ -14,6 +11,9 @@
 ☐ Make a document which explains what is the project that you are working on
 
 ***********************************************************************************************************************
+✔ Figure out one on one chatting in SignalR @done(20-05-10 12:57)
+    Make sure that people are talking to the users in the database instead of fake people on the view model
+
 ✔ Insert social network users in the database @done(20-05-03 09:29)
     Need to check if I get there email address or not
 
