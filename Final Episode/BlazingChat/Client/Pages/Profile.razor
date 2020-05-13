@@ -3,6 +3,8 @@
 @using BlazingChat.Shared.Models
 @inject HttpClient HttpClient
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorageService
+@inject IJSRuntime JSRuntime
+
 
 <h2><b>Profile</b></h2> 
 <hr />
@@ -58,7 +60,8 @@
 
         if (userId > 0)
         {
-            User user = await HttpClient.GetFromJsonAsync<User>("user/getprofile/" + userId);
+            User user = await HttpClient.GetFromJsonAsync<User>("user/getprofile/" + userId);            
+            await JSRuntime.InvokeVoidAsync("setTheme", "site" + user.DarkTheme);
             _profileViewModel = user;
         }
     }

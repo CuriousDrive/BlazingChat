@@ -54,6 +54,8 @@ namespace BlazingChat.Server.Controllers
                     user.EmailAddress = User.FindFirstValue(ClaimTypes.Email);
                     user.Password = user.EmailAddress;
                     user.Source = "EXTL";
+                    user.Notifications = 0;
+                    user.DarkTheme = 0;
 
                     if (_context.User.Count() > 0)
                         user.UserId = _context.User.Max(u => u.UserId) + 1;
@@ -85,6 +87,8 @@ namespace BlazingChat.Server.Controllers
             else
                 user.UserId = 1;
 
+            user.Notifications = 0;
+            user.DarkTheme = 0;
             user.Source = "APPL";
             _context.User.Add(user);
 
@@ -140,25 +144,25 @@ namespace BlazingChat.Server.Controllers
         }
 
         [HttpGet("user/updatetheme")]
-        public async Task<Object> UpdateTheme(string userId, string value)
+        public async Task<User> UpdateTheme(string userId, string value)
         {
             User user = _context.User.Where(u => u.UserId == Convert.ToInt32(userId)).FirstOrDefault();
             user.DarkTheme = value == "True" ? 1 : 0;
 
             await _context.SaveChangesAsync();
 
-            return await Task.FromResult(new Object());
+            return await Task.FromResult(user);
         }
 
         [HttpGet("user/updatenotifications")]
-        public async Task<Object> UpdateNotifications(string userId, string value)
+        public async Task<User> UpdateNotifications(string userId, string value)
         {
             User user = _context.User.Where(u => u.UserId == Convert.ToInt32(userId)).FirstOrDefault();
             user.Notifications = value == "True" ? 1 : 0;
 
             await _context.SaveChangesAsync();
 
-            return await Task.FromResult(new Object());
+            return await Task.FromResult(user);
         }
 
 

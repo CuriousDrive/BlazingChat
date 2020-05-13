@@ -36,8 +36,9 @@
 
     private async Task UpdateTheme(ChangeEventArgs changeEventArgs)
     {
-        object obj = await HttpClient.GetFromJsonAsync<object>($"user/updatetheme?userId={UserId}&value={changeEventArgs.Value.ToString()}");
-        await JSRuntime.InvokeVoidAsync("setTheme", "site2");
+        User user = await HttpClient.GetFromJsonAsync<User>($"user/updatetheme?userId={UserId}&value={changeEventArgs.Value.ToString()}");
+        
+        await JSRuntime.InvokeVoidAsync("setTheme", "site" + user.DarkTheme);
     }
 
     private async Task UpdateNotifications(ChangeEventArgs changeEventArgs)
