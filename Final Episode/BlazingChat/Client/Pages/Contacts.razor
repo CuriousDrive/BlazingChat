@@ -14,7 +14,7 @@
     <SpinLoader IsLoading =@(_contactsViewModel.ChatViewModelList == null)>
         
         <LoadingTemplate>
-            <div style="height: 700px; background-color: lightgray; vertical-align: middle;">
+            <div style="height: 900px; background-color: lightgray; vertical-align: middle;">
                 <br/><br/>
                 <Chase Center="true" Size="70px"></Chase>
             </div>
@@ -68,6 +68,7 @@
 
     private async Task LoadContacts()
     {
+        await Task.Delay(1000);
         //hopefully this will be something that I can do properly    
         List<User> UserList = await HttpClient.GetFromJsonAsync<List<User>>("user/getallusers");
         _contactsViewModel.ChatViewModelList = new List<ChatViewModel>();

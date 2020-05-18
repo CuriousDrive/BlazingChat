@@ -92,6 +92,11 @@
 
         FromUserId = Convert.ToString(await LocalStorageService.GetItemAsync<long>("userId"));
 
+        if(Convert.ToInt32(FromUserId) > 0)
+        {
+            FromUser = await HttpClient.GetFromJsonAsync<User>("user/getprofile/" + FromUserId);
+        }
+
         if (Convert.ToInt32(ToUserId) > 0)
         {
             ToUser = await HttpClient.GetFromJsonAsync<User>("user/getprofile/" + ToUserId);
@@ -117,7 +122,7 @@
         {
             messagePacks.Add(messagePack);
             
-            if(messagePack.ToUserId == FromUserId && FromUser.Notifications == 1)
+            if(FromUser.UserId == Convert.ToInt32(messagePack.ToUserId) && FromUser.Notifications == 1)
                 await JSRuntime.InvokeVoidAsync("changeTitle");
             
             StateHasChanged();

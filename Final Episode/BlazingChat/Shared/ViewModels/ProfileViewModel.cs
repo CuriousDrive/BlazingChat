@@ -24,8 +24,8 @@ namespace BlazingChat.Shared.ViewModels
         public long UserId { get; set; }
         public string Password { get; set; }
         public string Source { get; set; }
-        public bool Notifications { get; set; }
-        public bool DarkTheme { get; set; }
+        public long Notifications { get; set; }
+        public long DarkTheme { get; set; }
 
 
         public static implicit operator ProfileViewModel(User user)
@@ -40,9 +40,9 @@ namespace BlazingChat.Shared.ViewModels
 
                 UserId = user.UserId,
                 Password = user.Password,
-                Source = user.Source
-                //Notifications = BitConverter.ToBoolean(user.Notifications),
-                //DarkTheme = BitConverter.ToBoolean(user.DarkTheme)
+                Source = user.Source,
+                Notifications = (long)user.Notifications,
+                DarkTheme = (long)user.DarkTheme
             };
         }
 
@@ -58,9 +58,9 @@ namespace BlazingChat.Shared.ViewModels
 
                 UserId = profileViewModel.UserId,
                 Password = profileViewModel.Password,
-                Source = profileViewModel.Source
-                //Notifications = Convert.ToB(profileViewModel.Notifications),
-                //DarkTheme = BitConverter.ToBoolean(profileViewModel.DarkTheme)
+                Source = profileViewModel.Source,
+                Notifications = profileViewModel.Notifications,
+                DarkTheme = profileViewModel.DarkTheme
             };
         }
     }
