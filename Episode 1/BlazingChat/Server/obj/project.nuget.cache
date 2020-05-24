@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kRGBO1EQ3UPzCx9sMRvAxg8sz+wFCu+WtCGBXGB3yEYlNCPBQP37FUb8I+7EBO99mL4CWFdD8d73KNPa96H1Sg==",
+  "dgSpecHash": "lBGcEKmZTaGjDYEGZLh4CrnHouvhstzzlRh+XXDLWL1f3NszlvHHZIQA1y4ptUgwq+meKmdiqOTdWLkRHHRNFQ==",
   "success": true,
-  "projectFilePath": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Final Episode\\BlazingChat\\Server\\BlazingChat.Server.csproj",
+  "projectFilePath": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Episode 1\\BlazingChat\\Server\\BlazingChat.Server.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\blazorcomponentutilities\\1.6.0\\blazorcomponentutilities.1.6.0.nupkg.sha512",
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\blazored.localstorage\\2.1.5\\blazored.localstorage.2.1.5.nupkg.sha512",

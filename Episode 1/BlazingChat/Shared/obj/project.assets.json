@@ -117,11 +117,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Final Episode\\BlazingChat\\Shared\\BlazingChat.Shared.csproj",
+      "projectUniqueName": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Episode 1\\BlazingChat\\Shared\\BlazingChat.Shared.csproj",
       "projectName": "BlazingChat.Shared",
-      "projectPath": "c:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Final Episode\\BlazingChat\\Shared\\BlazingChat.Shared.csproj",
+      "projectPath": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Episode 1\\BlazingChat\\Shared\\BlazingChat.Shared.csproj",
       "packagesPath": "C:\\Users\\fahad.mullaji\\.nuget\\packages\\",
-      "outputPath": "c:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Final Episode\\BlazingChat\\Shared\\obj\\",
+      "outputPath": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Episode 1\\BlazingChat\\Shared\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -137,7 +137,8 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.telerik.com/nuget": {}
       },
       "frameworks": {
         "netstandard2.1": {

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "pLjx47CTeuoXEfVdvbaM6OcG/qGZuOLJK4HhnesgFoZ1895/Yzwh1Gcq7lQt2vWMSU08FxHAW86Ggg+y3hp6PQ==",
+  "dgSpecHash": "Zh9ZFIaEkXtSiZlrjUkjC6NyvnW40quefzY15ZIGsdrGzNbNzkfinUQfJmka9IagE01ANMGAGMKnJ8t0wIwVLw==",
   "success": true,
-  "projectFilePath": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Final Episode\\BlazingChat\\Shared\\BlazingChat.Shared.csproj",
+  "projectFilePath": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Episode 1\\BlazingChat\\Shared\\BlazingChat.Shared.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fahad.mullaji\\.nuget\\packages\\system.componentmodel.annotations\\4.7.0\\system.componentmodel.annotations.4.7.0.nupkg.sha512"
   ],
