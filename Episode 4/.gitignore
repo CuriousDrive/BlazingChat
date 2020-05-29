@@ -12,6 +12,10 @@
 **/BlazingChat/Shared/obj/
 **/BlazingChat/Shared/bin/
 
+# Ignore bin folder on YouTubeLib
+**/BlazingChat/YouTubeLib/obj/
+**/BlazingChat/YouTubeLib/bin/
+
 # Ignore .vscode and .vs
 **/.vscode/
 **/BlazingChat/.vs/

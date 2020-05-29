@@ -518,6 +518,7 @@
       "path": "netstandard.library/2.0.3",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "build/netstandard2.0/NETStandard.Library.targets",
@@ -952,25 +953,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\fahad.mullaji\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\User\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Episode 4\\BlazingChat\\YouTubeLib\\YouTubeLib.csproj",
+      "projectUniqueName": "c:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Episode 4\\BlazingChat\\YouTubeLib\\YouTubeLib.csproj",
       "projectName": "YouTubeLib",
-      "projectPath": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Episode 4\\BlazingChat\\YouTubeLib\\YouTubeLib.csproj",
-      "packagesPath": "C:\\Users\\fahad.mullaji\\.nuget\\packages\\",
-      "outputPath": "C:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Episode 4\\BlazingChat\\YouTubeLib\\obj\\",
+      "projectPath": "c:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Episode 4\\BlazingChat\\YouTubeLib\\YouTubeLib.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "c:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Episode 4\\BlazingChat\\YouTubeLib\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "C:\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\fahad.mullaji\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
@@ -979,8 +978,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {},
-        "https://nuget.telerik.com/nuget": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netstandard2.0": {
