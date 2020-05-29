@@ -518,7 +518,6 @@
       "path": "netstandard.library/2.0.3",
       "files": [
         ".nupkg.metadata",
-        ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "build/netstandard2.0/NETStandard.Library.targets",
@@ -953,8 +952,9 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\User\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\fahad.mullaji\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
@@ -962,14 +962,15 @@
       "projectUniqueName": "c:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Episode 4\\BlazingChat\\YouTubeLib\\YouTubeLib.csproj",
       "projectName": "YouTubeLib",
       "projectPath": "c:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Episode 4\\BlazingChat\\YouTubeLib\\YouTubeLib.csproj",
-      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\fahad.mullaji\\.nuget\\packages\\",
       "outputPath": "c:\\Data\\CuriousDrive\\Repos\\BlazingChat\\Episode 4\\BlazingChat\\YouTubeLib\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\"
+        "C:\\Microsoft\\Xamarin\\NuGet\\",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\fahad.mullaji\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
@@ -978,7 +979,8 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.telerik.com/nuget": {}
       },
       "frameworks": {
         "netstandard2.0": {
