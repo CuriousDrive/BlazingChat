@@ -1,7 +1,6 @@
 C:\Data\CuriousDrive\Repos\BlazingChat\Episode 4\BlazingChat\YouTubeLib\bin\Debug\netstandard2.0\YouTubeLib.deps.json
 C:\Data\CuriousDrive\Repos\BlazingChat\Episode 4\BlazingChat\YouTubeLib\bin\Debug\netstandard2.0\YouTubeLib.dll
 C:\Data\CuriousDrive\Repos\BlazingChat\Episode 4\BlazingChat\YouTubeLib\bin\Debug\netstandard2.0\YouTubeLib.pdb
-C:\Data\CuriousDrive\Repos\BlazingChat\Episode 4\BlazingChat\YouTubeLib\obj\Debug\netstandard2.0\YouTubeLib.csprojAssemblyReference.cache
 C:\Data\CuriousDrive\Repos\BlazingChat\Episode 4\BlazingChat\YouTubeLib\obj\Debug\netstandard2.0\YouTubeLib.AssemblyInfoInputs.cache
 C:\Data\CuriousDrive\Repos\BlazingChat\Episode 4\BlazingChat\YouTubeLib\obj\Debug\netstandard2.0\YouTubeLib.AssemblyInfo.cs
 C:\Data\CuriousDrive\Repos\BlazingChat\Episode 4\BlazingChat\YouTubeLib\obj\Debug\netstandard2.0\YouTubeLib.csproj.CoreCompileInputs.cache
@@ -21,3 +20,4 @@ C:\Data\CuriousDrive\Repos\BlazingChat\Episode 4\BlazingChat\YouTubeLib\obj\Debu
 C:\Data\CuriousDrive\Repos\BlazingChat\Episode 4\BlazingChat\YouTubeLib\obj\Debug\netstandard2.0\staticwebassets\YouTubeLib.StaticWebAssets.xml
 C:\Data\CuriousDrive\Repos\BlazingChat\Episode 4\BlazingChat\YouTubeLib\obj\Debug\netstandard2.0\YouTubeLib.dll
 C:\Data\CuriousDrive\Repos\BlazingChat\Episode 4\BlazingChat\YouTubeLib\obj\Debug\netstandard2.0\YouTubeLib.pdb
+C:\Data\CuriousDrive\Repos\BlazingChat\Episode 4\BlazingChat\YouTubeLib\obj\Debug\netstandard2.0\YouTubeLib.csprojAssemblyReference.cache

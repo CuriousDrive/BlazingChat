@@ -10,18 +10,22 @@
 @inject HttpClient HttpClient
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorageService
 
+<div class="col-12">
+    <p></p>
+</div>
+
 <div style="border:0px;height:90vh;">    
     <div class="panel panel-primary" style="height: 100%;">
         <div class="panel-heading top-bar">
         <div class="col-md-8 col-xs-8">
             <h3 class="panel-title">
                 @if(ToUser.FirstName != null || ToUser.LastName != null)
-                {
-                    <p class="mb-1"><b>@ToUser.FirstName<span> </span>@ToUser.LastName</b></p>
+                {                    
+                    <b>@ToUser.FirstName<span> </span>@ToUser.LastName</b>
                 }
                 else
                 {
-                    <p class="mb-1"><b>@ToUser.EmailAddress</b></p>
+                    <b>@ToUser.EmailAddress</b>
                 }
             </h3>
         </div>
