@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shared\BlazingChat.Shared.csproj" />
-    <ProjectReference Include="..\YouTubeLib\YouTubeLib.csproj" />
+    <ProjectReference Include="..\ThirdPartyChatLib\ThirdPartyChatLib.csproj" />    
   </ItemGroup>
 
   <ItemGroup>

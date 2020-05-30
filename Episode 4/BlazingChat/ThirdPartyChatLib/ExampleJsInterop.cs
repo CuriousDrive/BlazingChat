@@ -1,7 +1,7 @@
 using Microsoft.JSInterop;
 using System.Threading.Tasks;
 
-namespace YouTubeLib
+namespace ThirdPartyChatLib
 {
     public class ExampleJsInterop
     {
