@@ -1,19 +1,39 @@
 @page "/contacts"
 @using BlazingChat.Shared
 @inject HttpClient Http
-@inject NavigationManager NavigationManager
 
+<h1>Weather forecast</h1>
 
-<div class="col-12">
+<p>This component demonstrates fetching data from the server.</p>
 
-    @foreach (var contact in ContactList)
-    {
-        <a href="/chat/@contact.ContactId" class="list-group-item list-group-item-action flex-column align-items-start">
-            @contact.FirstName
-        </a>
-    }
-
-</div>
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
 		private WeatherForecast[] forecasts;
