@@ -1,0 +1,21 @@
+# Ignore bin folder on Blazor Client
+**/BlazingChat/Client/obj/
+**/BlazingChat/Client/bin/
+
+# Ignore bin folder on Blazor Server
+**/BlazingChat/Server/Properties/
+**/BlazingChat/Server/obj/
+**/BlazingChat/Server/bin/
+
+
+# Ignore bin folder on Blazor Shared
+**/BlazingChat/Shared/obj/
+**/BlazingChat/Shared/bin/
+
+# Ignore bin folder on YouTubeLib
+**/BlazingChat/ThirdPartyChatLib/obj/
+**/BlazingChat/ThirdPartyChatLib/bin/
+
+# Ignore .vscode and .vs
+**/.vscode/
+**/BlazingChat/.vs/
