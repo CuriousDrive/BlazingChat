@@ -17,5 +17,4 @@
 **/BlazingChat/ThirdPartyChatLib/bin/
 
 # Ignore .vscode and .vs
-**/.vscode/
 **/BlazingChat/.vs/
