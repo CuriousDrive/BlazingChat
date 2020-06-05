@@ -3,7 +3,6 @@
 **/BlazingChat/Client/bin/
 
 # Ignore bin folder on Blazor Server
-**/BlazingChat/Server/Properties/
 **/BlazingChat/Server/obj/
 **/BlazingChat/Server/bin/
 
