@@ -1,7 +1,7 @@
 -- SQLite
 -- drop table User;
 
-CREATE TABLE User
+CREATE TABLE Users
 (
    user_id              INTEGER     PRIMARY KEY AUTOINCREMENT,
    email_address        TEXT        NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE User
 
 -- drop table RefreshToken
 
-CREATE TABLE RefreshToken
+CREATE TABLE RefreshTokens
 (
    token_id          INTEGER     PRIMARY KEY AUTOINCREMENT,
    user_id           INT         NOT NULL,
@@ -40,9 +40,5 @@ CREATE TABLE ChatHistory
    FOREIGN KEY(from_user_id) REFERENCES User(user_id),
    FOREIGN KEY(to_user_id) REFERENCES User(user_id)
 );
-
-drop table COMPANY;
-
-
 
 
