@@ -15,24 +15,23 @@
 </div>
 
 @code {
-		private WeatherForecast[] forecasts;
-       	private List<Contact> ContactList { get; set; } = new List<Contact>();
+    private WeatherForecast[] forecasts;
+    private List<Contact> ContactList { get; set; } = new List<Contact>();
 
-       protected override async Task OnInitializedAsync()
-       {
-           forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+    protected override async Task OnInitializedAsync()
+    {
+        //forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");       
+        ContactList = await Http.GetFromJsonAsync<List<Contact>>("User");    
 
-           ContactList.Add(new Contact(1, "Julius", "Caesar"));
-           ContactList.Add(new Contact(2, "Daniel", "Tonini"));
-           ContactList.Add(new Contact(3, "Gary", "Thomas"));
-           ContactList.Add(new Contact(4, "Martin", "Sommer"));
-           ContactList.Add(new Contact(5, "Howard", "Snyder"));
+        //ContactList.Add(new Contact(1, "Julius", "Caesar"));
+        //ContactList.Add(new Contact(2, "Daniel", "Tonini"));
+        //ContactList.Add(new Contact(3, "Gary", "Thomas"));
+        //ContactList.Add(new Contact(4, "Martin", "Sommer"));
+        //ContactList.Add(new Contact(5, "Howard", "Snyder"));
+    }
 
-           Console.WriteLine(ContactList[2].FirstName);
-       }
-
-       private void NavigateToChat()
-       {
-           NavigationManager.NavigateTo("/chat");
-       }
+    private void NavigateToChat()
+    {
+        NavigationManager.NavigateTo("/chat");
+    }
 }

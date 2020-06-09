@@ -28,9 +28,18 @@ namespace BlazingChat.Server.Controllers
         }
 
         [HttpGet]
-        public List<User> Get()
+        public List<Contact> Get()
         {
-            return _context.Users.ToList();
+            List<User> userList = _context.Users.ToList();
+
+            List<Contact> contacts = new List<Contact>();
+
+            foreach(User user in userList)
+            {
+                contacts.Add(new Contact(user.FirstName, user.LastName));                
+            }
+
+            return contacts;
         }
     }
 }
