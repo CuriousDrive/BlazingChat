@@ -1,3 +1,5 @@
+-- create the database and tables
+
 -- adding entity framework core tool
 dotnet tool install --global dotnet-ef
 dotnet tool update --global dotnet-ef
