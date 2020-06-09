@@ -1,4 +1,6 @@
-CREATE TABLE Users
+DROP table User;
+
+CREATE TABLE User
 (
    user_id              INTEGER     PRIMARY KEY AUTOINCREMENT,
    email_address        TEXT        NOT NULL,
@@ -14,7 +16,7 @@ CREATE TABLE Users
    created_date         DATE
 );
 
-INSERT INTO Users (user_id,email_address,password,source,first_name,last_name,profile_picture_url,
+INSERT INTO User (user_id,email_address,password,source,first_name,last_name,profile_picture_url,
 date_of_birth,about_me,notifications,dark_theme,created_date)
 VALUES
 ( 1,'julius.caesar@gmail.com','julius.caesar','APPL','Julius','Caesar',NULL,NULL,NULL,1,1,NULL),
