@@ -21,24 +21,22 @@ namespace BlazingChat.Server.Controllers
         private readonly ILogger<UserController> logger;
         private readonly BlazingChatContext _context;
 
-        public UserController(ILogger<UserController> logger, BlazingChatContext _blazingChatContext)
+        public UserController(ILogger<UserController> logger, BlazingChatContext context)
         {
             this.logger = logger;
-            this._context = _blazingChatContext;
+            this._context = context;
         }
 
         [HttpGet]
         public List<Contact> Get()
         {
-            List<User> userList = _context.Users.ToList();
-
+            List<User> users = _context.Users.ToList();
             List<Contact> contacts = new List<Contact>();
 
-            foreach(User user in userList)
+            foreach(var user in users)
             {
-                contacts.Add(new Contact(user.FirstName, user.LastName));                
+                contacts.Add(new Contact(user.FirstName, user.LastName));
             }
-
             return contacts;
         }
     }

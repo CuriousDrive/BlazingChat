@@ -5,6 +5,12 @@ namespace BlazingChat.Server.Models
 {
     public partial class User
     {
+        public User()
+        {
+            ChatHistoryFromUsers = new HashSet<ChatHistory>();
+            ChatHistoryToUsers = new HashSet<ChatHistory>();
+        }
+
         public long UserId { get; set; }
         public string EmailAddress { get; set; }
         public string Password { get; set; }
@@ -17,5 +23,8 @@ namespace BlazingChat.Server.Models
         public long? Notifications { get; set; }
         public long? DarkTheme { get; set; }
         public byte[] CreatedDate { get; set; }
+
+        public virtual ICollection<ChatHistory> ChatHistoryFromUsers { get; set; }
+        public virtual ICollection<ChatHistory> ChatHistoryToUsers { get; set; }
     }
 }

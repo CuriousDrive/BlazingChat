@@ -15,6 +15,7 @@ namespace BlazingChat.Server.Models
         {
         }
 
+        public virtual DbSet<ChatHistory> ChatHistories { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -27,6 +28,42 @@ namespace BlazingChat.Server.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ChatHistory>(entity =>
+            {
+                entity.ToTable("ChatHistory");
+
+                entity.Property(e => e.ChatHistoryId)
+                    .HasColumnName("chat_history_id")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.CreatedDate)
+                    .IsRequired()
+                    .HasColumnName("created_date")
+                    .HasColumnType("DATE");
+
+                entity.Property(e => e.FromUserId)
+                    .HasColumnName("from_user_id")
+                    .HasColumnType("INT");
+
+                entity.Property(e => e.Message)
+                    .IsRequired()
+                    .HasColumnName("message");
+
+                entity.Property(e => e.ToUserId)
+                    .HasColumnName("to_user_id")
+                    .HasColumnType("INT");
+
+                entity.HasOne(d => d.FromUser)
+                    .WithMany(p => p.ChatHistoryFromUsers)
+                    .HasForeignKey(d => d.FromUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.ToUser)
+                    .WithMany(p => p.ChatHistoryToUsers)
+                    .HasForeignKey(d => d.ToUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("User");
