@@ -1,0 +1,13 @@
+Blazing Chat 
+
+I am going to create ViewModels in the clients so that I can use httpClient dependency in the code
+I also need to write some functions that I can call functions from the web api
+
+Advantages of using MVVM :
+
+1. MVVM gives developers the freedom of designing their UI like they/client wants it. 
+It is not tightly coupled to your UI fields
+
+2. MVVM lets you write most of the code in the ViewModels that way it gets easier to migrate to any other 
+UI framework. like WPF, Desktop Apps, Xamarin Apps
+

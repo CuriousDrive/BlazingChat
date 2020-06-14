@@ -5,13 +5,14 @@
 
 <div class="col-12">
 
+    <input type="text" class="form-control" placeholder="search"/>
+    <br />
     @foreach (var contact in ContactList)
     {
         <a href="/chat/@contact.ContactId" class="list-group-item list-group-item-action flex-column align-items-start">
             @contact.FirstName <span> </span> @contact.LastName
         </a>
     }
-
 </div>
 
 @code {
@@ -21,7 +22,7 @@
     protected override async Task OnInitializedAsync()
     {
         //forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");        
-        ContactList = await Http.GetFromJsonAsync<List<Contact>>("user");        
+        ContactList = await Http.GetFromJsonAsync<List<Contact>>("user");
         
         //ContactList.Add(new Contact(1, "Julius", "Caesar"));
         //ContactList.Add(new Contact(2, "Daniel", "Tonini"));

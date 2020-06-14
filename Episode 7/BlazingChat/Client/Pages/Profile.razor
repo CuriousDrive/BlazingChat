@@ -1,6 +1,15 @@
 ﻿@page "/"
+@using BlazingChat.ViewModels
+@inject ProfileViewModel _profileViewModel
 
-<h1>Hello, world!</h1>
-<p>Welcome to your new app.</p>
+<div class="col-12">
+    <input type="text" @bind-value="_profileViewModel.FirstName" class="form-control" placeholder="first name">
+    <br/>
+    <input type="text" @bind-value="_profileViewModel.LastName" class="form-control" placeholder="last name">
+    <br/>
+    <input type="text" @bind-value="_profileViewModel.EmailAddress" class="form-control" placeholder="email address">
+    <br/>
+    <button class="btn btn-primary" @onclick="_profileViewModel.UpdateProfile">Update</button>
+    <span>&nbsp;&nbsp;</span>@_profileViewModel.Message
+</div>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
