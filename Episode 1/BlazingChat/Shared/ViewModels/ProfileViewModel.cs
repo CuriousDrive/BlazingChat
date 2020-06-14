@@ -20,13 +20,11 @@ namespace BlazingChat.Shared.ViewModels
         [StringLength(200, MinimumLength = 10, ErrorMessage ="about me should be more than 10 chars and less than 200 chars")]
         public string AboutMe { get; set; }
         public string ProfilePictureUrl { get; set; }
-
         public long UserId { get; set; }
         public string Password { get; set; }
         public string Source { get; set; }
         public long Notifications { get; set; }
         public long DarkTheme { get; set; }
-
 
         public static implicit operator ProfileViewModel(User user)
         {
