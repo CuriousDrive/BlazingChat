@@ -45,10 +45,12 @@ namespace BlazingChat.Server.Controllers
         [HttpPut("updateprofile/{userId}")]
         public async Task<User> UpdateProfile(int userId, [FromBody] User user)
         {
-            //_context.Entry(user).State = EntityState.Modified;
-
+            
             User userToUpdate = await _context.Users.Where(u => u.UserId == userId).FirstOrDefaultAsync();
+            
             userToUpdate.FirstName = user.FirstName;
+            userToUpdate.LastName = user.LastName;
+            userToUpdate.EmailAddress = user.EmailAddress;
 
             await _context.SaveChangesAsync();
 

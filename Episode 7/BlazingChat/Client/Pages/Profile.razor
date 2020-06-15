@@ -17,17 +17,18 @@
 
 @code {
 
+    public int UserId { get; set; } = 10;
     public ProfileViewModel _profileViewModel { get; set; } = new ProfileViewModel();
     
     private async Task UpdateProfile()
     {
         User user = _profileViewModel;
-        await HttpClient.PutAsJsonAsync("user/updateprofile/10", user);
+        await HttpClient.PutAsJsonAsync("user/updateprofile/" + UserId, user);
     }
 
     private async Task GetProfile()
     {
-        User user = await HttpClient.GetFromJsonAsync<User>("user/getprofile/1");
+        User user = await HttpClient.GetFromJsonAsync<User>("user/getprofile/" + UserId);
         _profileViewModel = user;
     }
 }

@@ -1,7 +1,4 @@
-using System.Net.Http;
 using BlazingChat.Shared.Models;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace BlazingChat.ViewModels
 {
