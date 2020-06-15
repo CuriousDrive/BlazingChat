@@ -5,7 +5,10 @@
 
 <div class="col-12">
 
-    <input type="text" class="form-control" placeholder="search"/>
+    <div class="col-12 row">
+        <input type="text" class="col-9 form-control" placeholder="search"/>
+        <span>&nbsp;</span><button class="btn btn-primary">Search</button>
+    </div>
     <br />
     @foreach (var contact in ContactList)
     {
