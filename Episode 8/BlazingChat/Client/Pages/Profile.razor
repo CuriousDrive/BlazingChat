@@ -1,0 +1,35 @@
+﻿@page "/"
+@using BlazingChat.ViewModels
+@using BlazingChat.Shared.Models
+@inject HttpClient HttpClient
+
+<div class="col-12">
+    <input type="text" @bind-value="_profileViewModel.FirstName" class="form-control" placeholder="first name">
+    <br/>
+    <input type="text" @bind-value="_profileViewModel.LastName" class="form-control" placeholder="last name">
+    <br/>
+    <input type="text" @bind-value="_profileViewModel.EmailAddress" class="form-control" placeholder="email address">
+    <br/>
+    <button class="btn btn-primary" @onclick="UpdateProfile">Update Profile</button>
+    <button class="btn btn-primary" @onclick="GetProfile">Get Profile</button>
+    <span>&nbsp;&nbsp;</span>@_profileViewModel.Message
+</div>
+
+@code {
+
+    private ProfileViewModel _profileViewModel = new ProfileViewModel();
+    
+    private async Task UpdateProfile()
+    {
+        User user = _profileViewModel;
+        await HttpClient.PutAsJsonAsync("user/updateprofile/10",user);
+        _profileViewModel.Message = "Profile updated successfully";
+    }
+
+    private async Task GetProfile()
+    {
+        User user = await HttpClient.GetFromJsonAsync<User>("user/getprofile/10");
+        _profileViewModel = user;
+        _profileViewModel.Message = "Profile loaded successfully";
+    }
+}
