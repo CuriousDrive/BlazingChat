@@ -1,7 +1,7 @@
 To use Named HttpClient I had to write below code 
 
-using System.Net.Http;
-using System.Net.Http.Json;
+        using System.Net.Http;
+        using System.Net.Http.Json;
 
 
         public ProfileViewModel(HttpClient httpClient)
