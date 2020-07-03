@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Http;
+using BlazingChat.ViewModels;
 
 namespace BlazingChat.Client
 {
@@ -19,7 +20,15 @@ namespace BlazingChat.Client
             builder.RootComponents.Add<App>("app");            
             
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-            await builder.Build().RunAsync();
+            
+            builder.Services.AddSingleton<IProfileViewModel, ProfileViewModel>();
+
+            var host = builder.Build();
+
+            var profileViewModel = host.Services.GetRequiredService<IProfileViewModel>();
+            profileViewModel.GetProfile();
+
+            await host.RunAsync();
         }
     }
 }
