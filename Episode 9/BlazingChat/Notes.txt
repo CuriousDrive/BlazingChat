@@ -1,11 +1,11 @@
 To use Named HttpClient I had to write below code
-        
-        @code {
-            protected override async Task OnInitializedAsync() => await _profileViewModel.GetProfile();
-        }
+    
+        --adding some namespaces in ProfileViewModel
 
         using System.Net.Http;
         using System.Net.Http.Json;
+
+        -- changes in ProfileViewModel
 
         private readonly HttpClient _httpClient;
         
@@ -38,7 +38,9 @@ To use Named HttpClient I had to write below code
             this.EmailAddress = profileViewModel.EmailAddress;
             //add more fields
         }
-                    
+
+        -- Chages in Program.cs 
+
         //builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             
         builder.Services.AddHttpClient<IProfileViewModel, ProfileViewModel>
