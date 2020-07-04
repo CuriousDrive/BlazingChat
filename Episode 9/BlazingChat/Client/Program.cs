@@ -23,12 +23,7 @@ namespace BlazingChat.Client
             
             builder.Services.AddSingleton<IProfileViewModel, ProfileViewModel>();
 
-            var host = builder.Build();
-
-            var profileViewModel = host.Services.GetRequiredService<IProfileViewModel>();
-            profileViewModel.GetProfile();
-
-            await host.RunAsync();
+            await builder.Build().RunAsync();
         }
     }
 }
