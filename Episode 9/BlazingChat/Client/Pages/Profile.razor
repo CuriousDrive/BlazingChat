@@ -13,3 +13,8 @@
     <button class="btn btn-primary" @onclick="_profileViewModel.UpdateProfile">Update Profile</button>
     <span>&nbsp;&nbsp;</span>@_profileViewModel.Message
 </div>
+
+
+@code {
+    protected override async Task OnInitializedAsync() => _profileViewModel.GetProfile();
+}
