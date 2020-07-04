@@ -1,0 +1,26 @@
+To use Named HttpClient I had to write below code 
+
+        using System.Net.Http;
+        using System.Net.Http.Json;
+
+
+        public ProfileViewModel(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
+
+        public async Task GetProfileAsync()
+        {
+            User user = await _httpClient.GetFromJsonAsync<User>("user/getprofile/10");
+            LoadProfileViewModel(user);
+            this.Message = "Profile loaded successfully";
+        }
+
+        public async Task UpdateProfile()
+        {
+            User user = this;            
+            await _httpClient.PutAsJsonAsync("user/updateprofile/10", user);
+            this.Message = "Profile updated successfully";
+        }
+
+-----------------------------------------------------------------------------------------------        
