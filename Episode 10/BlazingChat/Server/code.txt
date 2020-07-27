@@ -1,0 +1,23 @@
+-- create the database and tables
+
+-- adding entity framework core tool
+dotnet tool install --global dotnet-ef
+dotnet tool update --global dotnet-ef
+
+-- adding design package to generate code for the project
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 3.1.4
+dotnet remove package Microsoft.EntityFrameworkCore.Design
+
+-- adding sqlite package/provider
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite --version 3.1.4
+
+-- adding EntityFrameworkCore Pluralizer
+dotnet add package Bricelam.EntityFrameworkCore.Pluralizer --version 1.0.0
+
+-- scaffolding command 
+dotnet ef dbcontext scaffold Name=BlazingChat Microsoft.EntityFrameworkCore.Sqlite -o Models -f
+
+-- injecting db context dependency 
+services.AddEntityFrameworkSqlite().AddDbContext<BlazingChatContext>();
+
+
