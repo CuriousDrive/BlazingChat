@@ -25,6 +25,9 @@ namespace BlazingChat.Client
             builder.Services.AddHttpClient<IProfileViewModel, ProfileViewModel>
                     ("BlazingChatClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 
+            builder.Services.AddHttpClient<ISettingsViewModel, SettingsViewModel>
+                    ("BlazingChatClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+
             await builder.Build().RunAsync();
         }
     }

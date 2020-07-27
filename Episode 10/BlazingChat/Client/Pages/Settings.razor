@@ -1,16 +1,29 @@
 ﻿@page "/settings"
+@using BlazingChat.ViewModels
+@inject ISettingsViewModel _settingsViewModel
 
-<h1>Counter</h1>
+<div class="col-12">
+    <input type="checkbox" checked="@_settingsViewModel.Notifications" id="chkNotification">
+    <label> Notification </label>
+    <button class="btn btn-primary" @onclick="UpdateNotification">Update Notifications</button>
+    <br>   
 
-<p>Current count: @currentCount</p>
-
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+    <input type="checkbox" checked="@_settingsViewModel.DarkTheme" id="chkDarkTheme">
+    <label> Dark Theme </label>
+    <button class="btn btn-primary" @onclick="UpdateTheme">Update Theme</button>
+    <br>
+</div>
 
 @code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
+   
+    private async Task UpdateNotification()
     {
-        currentCount++;
+        await _settingsViewModel.UpdateNotifications(10);
     }
+
+    private async Task UpdateTheme()
+    {
+        await _settingsViewModel.UpdateTheme(10);
+    }
+
 }

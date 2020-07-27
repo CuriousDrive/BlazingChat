@@ -40,7 +40,6 @@ namespace BlazingChat.Server.Controllers
             }
             return contacts;
         }
-
         
         [HttpPut("updateprofile/{userId}")]
         public async Task<User> UpdateProfile(int userId, [FromBody] User user)
@@ -61,6 +60,28 @@ namespace BlazingChat.Server.Controllers
         public async Task<User> GetProfile(int userId)
         {
             return await _context.Users.Where(u => u.UserId == userId).FirstOrDefaultAsync();
+        }
+
+        [HttpGet("updatetheme")]
+        public async Task<User> UpdateTheme(string userId, string value)
+        {
+            User user = _context.Users.Where(u => u.UserId == Convert.ToInt32(userId)).FirstOrDefault();
+            user.DarkTheme = value == "True" ? 1 : 0;
+
+            await _context.SaveChangesAsync();
+
+            return await Task.FromResult(user);
+        }
+
+        [HttpGet("updatenotifications")]
+        public async Task<User> UpdateNotifications(string userId, string value)
+        {
+            User user = _context.Users.Where(u => u.UserId == Convert.ToInt32(userId)).FirstOrDefault();
+            user.Notifications = value == "True" ? 1 : 0;
+
+            await _context.SaveChangesAsync();
+
+            return await Task.FromResult(user);
         }
     }
 }
