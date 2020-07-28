@@ -1,4 +1,4 @@
-namespace BlazingChat.Shared
+namespace BlazingChat.ViewModels
 {
     public class Contact
     {
