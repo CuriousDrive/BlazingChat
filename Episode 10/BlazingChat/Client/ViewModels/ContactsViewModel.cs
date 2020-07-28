@@ -24,32 +24,19 @@ namespace BlazingChat.ViewModels
         }
         public async Task GetContacts()
         {
-            User user = await _httpClient.GetFromJsonAsync<User>("user/getprofile/10");
-            LoadCurrentObject(user);
+            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>("user/getcontacts");            
+            LoadCurrentObject(users);
         }
         
-        private void LoadCurrentObject(ContactsViewModel contactsViewModel)
+        private void LoadCurrentObject(List<User> users)
         {
-            //this.DarkTheme = settingsViewModel.DarkTheme;
-            //this.Notifications = settingsViewModel.Notifications;
+            this.Contacts = new List<Contact>();
+            foreach(User user in users)
+            {
+                this.Contacts.Add(user);
+            }
         }
 
-        //operators
-        public static implicit operator ContactsViewModel(User user)
-        {
-            return new ContactsViewModel
-            {
-                //Notifications = (user.Notifications == null || (long)user.Notifications == 0) ? false : true,
-                //DarkTheme = (user.DarkTheme == null || (long)user.DarkTheme == 0) ? false : true
-            };
-        }
-        public static implicit operator User(ContactsViewModel contactsViewModel)
-        {
-            return new User
-            {
-                //Notifications = settingsViewModel.Notifications ? 1 : 0,
-                //DarkTheme = settingsViewModel.DarkTheme ? 1 : 0
-            };
-        }
+       
     }
 }

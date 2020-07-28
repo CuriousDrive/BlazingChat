@@ -1,6 +1,6 @@
 @page "/contacts"
 @using BlazingChat.ViewModels
-@inject HttpClient Http
+@inject IContactsViewModel _contactsViewModel
 @inject NavigationManager NavigationManager
 
 <div class="col-12">
@@ -9,30 +9,21 @@
         <span>&nbsp;</span><button class="btn btn-primary">Search</button>
     </div>
     <br />
-    @foreach (var contact in ContactList)
+    
+    @if(_contactsViewModel.Contacts != null && _contactsViewModel.Contacts.Count() > 0)
     {
-        <a href="/chat/@contact.ContactId" class="list-group-item list-group-item-action flex-column align-items-start">
-            @contact.FirstName <span> </span> @contact.LastName
-        </a>
+        @foreach (var contact in _contactsViewModel.Contacts)
+        {
+            <a href="/chat/@contact.ContactId" class="list-group-item list-group-item-action flex-column align-items-start">
+                @contact.FirstName <span> </span> @contact.LastName
+            </a>
+        }
     }
 </div>
 
 @code {
     
-    private List<Contact> ContactList { get; set; } = new List<Contact>();
-
-    protected override async Task OnInitializedAsync()
-    {
-        //forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");        
-        ContactList = await Http.GetFromJsonAsync<List<Contact>>("user");
-        
-        //ContactList.Add(new Contact(1, "Julius", "Caesar"));
-        //ContactList.Add(new Contact(2, "Daniel", "Tonini"));
-        //ContactList.Add(new Contact(3, "Gary", "Thomas"));
-        //ContactList.Add(new Contact(4, "Martin", "Sommer"));
-        //ContactList.Add(new Contact(5, "Howard", "Snyder"));
-    }
-
+    protected override async Task OnInitializedAsync() => await _contactsViewModel.GetContacts();
     private void NavigateToChat()
     {
         NavigationManager.NavigateTo("/chat");

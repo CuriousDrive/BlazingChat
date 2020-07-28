@@ -1,3 +1,5 @@
+using BlazingChat.Shared.Models;
+
 namespace BlazingChat.ViewModels
 {
     public class Contact
@@ -21,6 +23,26 @@ namespace BlazingChat.ViewModels
             this.ContactId = contactId;
             this.FirstName = firstName;
             this.LastName = lastName;
+        }
+
+         //operators
+        public static implicit operator Contact(User user)
+        {
+            return new Contact
+            {
+                ContactId = (int)user.UserId,
+                FirstName = user.FirstName,
+                LastName = user.LastName
+            };
+        }
+        public static implicit operator User(Contact contact)
+        {
+            return new User
+            {
+                UserId = contact.ContactId,
+                FirstName = contact.FirstName,
+                LastName = contact.LastName
+            };
         }
     }
 }

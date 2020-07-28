@@ -28,28 +28,21 @@ namespace BlazingChat.Server.Controllers
             this._context = context;
         }
 
-        [HttpGet]
-        public List<Contact> Get()
+        [HttpGet("getcontacts")]
+        public List<User> GetContacts()
         {
-            List<User> users = _context.Users.ToList();
-            List<Contact> contacts = new List<Contact>();
-
-            foreach(var user in users)
-            {
-                contacts.Add(new Contact(user.FirstName, user.LastName));
-            }
-            return contacts;
+            return _context.Users.ToList();
         }
         
         [HttpPut("updateprofile/{userId}")]
         public async Task<User> UpdateProfile(int userId, [FromBody] User user)
-        {
-            
+        {            
             User userToUpdate = await _context.Users.Where(u => u.UserId == userId).FirstOrDefaultAsync();
             
             userToUpdate.FirstName = user.FirstName;
             userToUpdate.LastName = user.LastName;
             userToUpdate.EmailAddress = user.EmailAddress;
+            userToUpdate.AboutMe = user.AboutMe;
 
             await _context.SaveChangesAsync();
 
@@ -64,8 +57,7 @@ namespace BlazingChat.Server.Controllers
 
         [HttpGet("updatetheme")]
         public async Task<User> UpdateTheme(string userId, string value)
-        {
-            
+        {            
             User user = _context.Users.Where(u => u.UserId == Convert.ToInt32(userId)).FirstOrDefault();
             user.DarkTheme = value == "True" ? 1 : 0;
 
