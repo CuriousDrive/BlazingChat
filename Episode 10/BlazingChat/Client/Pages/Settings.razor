@@ -3,27 +3,18 @@
 @inject ISettingsViewModel _settingsViewModel
 
 <div class="col-12">
-    <input type="checkbox" checked="@_settingsViewModel.Notifications" id="chkNotification">
-    <label> Notification </label>
-    <button class="btn btn-primary" @onclick="UpdateNotification">Update Notifications</button>
+    <input type="checkbox" @bind="@_settingsViewModel.Notifications" id="chkNotification">
+    <label> Notification </label>    
     <br>   
 
-    <input type="checkbox" checked="@_settingsViewModel.DarkTheme" id="chkDarkTheme">
-    <label> Dark Theme </label>
-    <button class="btn btn-primary" @onclick="UpdateTheme">Update Theme</button>
+    <input type="checkbox" @bind="@_settingsViewModel.DarkTheme" id="chkDarkTheme">
+    <label> Dark Theme </label>    
     <br>
+</div>
+<div class="col-12">
+    <button class="btn btn-primary" @onclick="_settingsViewModel.Save">Save</button>
 </div>
 
 @code {
-   
-    private async Task UpdateNotification()
-    {
-        await _settingsViewModel.UpdateNotifications(10);
-    }
-
-    private async Task UpdateTheme()
-    {
-        await _settingsViewModel.UpdateTheme(10);
-    }
-
+    protected override async Task OnInitializedAsync() => await _settingsViewModel.GetProfile();
 }

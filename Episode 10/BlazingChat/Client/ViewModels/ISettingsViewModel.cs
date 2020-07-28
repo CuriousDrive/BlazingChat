@@ -11,7 +11,7 @@ namespace BlazingChat.ViewModels
         public bool Notifications { get; set; }
         public bool DarkTheme { get; set; }
 
-        public Task UpdateTheme(int userId);
-        public Task UpdateNotifications(int userId);
+        public Task Save();
+        public Task GetProfile();
     }
 }

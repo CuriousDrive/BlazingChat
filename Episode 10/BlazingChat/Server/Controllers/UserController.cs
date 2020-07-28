@@ -65,6 +65,7 @@ namespace BlazingChat.Server.Controllers
         [HttpGet("updatetheme")]
         public async Task<User> UpdateTheme(string userId, string value)
         {
+            
             User user = _context.Users.Where(u => u.UserId == Convert.ToInt32(userId)).FirstOrDefault();
             user.DarkTheme = value == "True" ? 1 : 0;
 
