@@ -2,6 +2,9 @@
 @using BlazingChat.ViewModels
 @inject ISettingsViewModel _settingsViewModel
 
+<h2><b>Settings</b></h2> 
+<hr />
+
 <div class="col-12">
     <input type="checkbox" @bind="@_settingsViewModel.Notifications" id="chkNotification">
     <label> Notification </label>    
