@@ -1,0 +1,49 @@
+To use Named HttpClient I had to write below code
+    
+        --adding some namespaces in ProfileViewModel
+
+        using System.Net.Http;
+        using System.Net.Http.Json;
+
+        -- changes in ProfileViewModel
+
+        private readonly HttpClient _httpClient;
+        
+        public ProfileViewModel() {}
+
+        public ProfileViewModel(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
+
+        public async Task UpdateProfile()
+        {
+            User user = this;
+            await _httpClient.PutAsJsonAsync("user/updateprofile/10", user);
+            this.Message = "Profile updated successfully";
+        }
+
+        public async Task GetProfile()
+        {
+            User user = await _httpClient.GetFromJsonAsync<User>("user/getprofile/10");
+            ProfileViewModel profileViewModel = user;
+            LoadCurrentObject(profileViewModel);
+            this.Message = "Profile loaded successfully";
+        }
+
+        private void LoadCurrentObject(ProfileViewModel profileViewModel)
+        {
+            this.FirstName = profileViewModel.FirstName;
+            this.LastName = profileViewModel.LastName;
+            this.EmailAddress = profileViewModel.EmailAddress;
+            //add more fields
+        }
+
+        -- Chages in Program.cs 
+
+        //builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            
+        builder.Services.AddHttpClient<IProfileViewModel, ProfileViewModel>
+            ("BlazingChatAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+
+-----------------------------------------------------------------------------------------------        
