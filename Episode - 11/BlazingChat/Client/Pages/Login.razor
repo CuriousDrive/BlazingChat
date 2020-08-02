@@ -5,7 +5,7 @@
 @inject NavigationManager _navigationManager
 
 <h2><b>Login</b></h2>
-<hr>    
+<hr>
 
 <div class="col-6">
     <input type="text" @bind="_loginViewModel.EmailAddress" class="form-control" placeholder="email address">
@@ -16,13 +16,5 @@
 </div>
 <br />
 <div class="col-6">
-    <button class="btn btn-danger" @onclick="LoginUser">Login</button>
+    <button class="btn btn-danger" @onclick="_loginViewModel.LoginUser">Login</button>
 </div>
-
-@code{
-
-    private void LoginUser()
-    {
-        _navigationManager.NavigateTo("/profile");
-    }
-}
