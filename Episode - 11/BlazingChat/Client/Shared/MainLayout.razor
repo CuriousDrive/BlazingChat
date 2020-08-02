@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager _navigationManager
 
 <div class="sidebar">
     <NavMenu />
@@ -6,10 +7,19 @@
 
 <div class="main">
     <div class="top-row px-4">
-        <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+        <button class="btn btn-danger" @onclick="LogoutUser">Logout</button>
     </div>
 
     <div class="content px-4">
         @Body
     </div>
 </div>
+
+@code{
+
+    private void LogoutUser()
+    {
+        _navigationManager.NavigateTo("/");
+    }
+
+}
