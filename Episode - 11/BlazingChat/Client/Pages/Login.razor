@@ -16,5 +16,15 @@
 </div>
 <br />
 <div class="col-6">
-    <button class="btn btn-danger" @onclick="_loginViewModel.LoginUser">Login</button>
+    <button class="btn btn-danger" @onclick="LoginUser">Login</button>
 </div>
+
+@code {
+    public void LoginUser()
+    {
+        _loginViewModel.LoginUser();
+        _navigationManager.NavigateTo("/profile");
+    }
+
+}
+

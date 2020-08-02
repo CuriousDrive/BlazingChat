@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using BlazingChat.Shared.Models;
-using Microsoft.AspNetCore.Components;
 
 namespace BlazingChat.ViewModels
 {
@@ -13,20 +12,18 @@ namespace BlazingChat.ViewModels
         public string Password { get; set; }
 
         private HttpClient _httpClient;
-        private NavigationManager _navigationManager;
         public LoginViewModel()        
         {
                 
         }
-        public LoginViewModel(HttpClient httpClient, NavigationManager navigationManager)
+        public LoginViewModel(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _navigationManager = navigationManager;
         }
 
         public void LoginUser()
         {
-            _navigationManager.NavigateTo("/profile");
+            
         }
 
         public static implicit operator LoginViewModel(User user)
