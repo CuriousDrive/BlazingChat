@@ -15,9 +15,23 @@ namespace BlazingChat.Client
         {
             _httpClient = httpClient;
         }
-        public override Task<AuthenticationState> GetAuthenticationStateAsync()
+        public async override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            User user = await _httpClient.GetFromJsonAsync<User>("getloggedinuser");
+            User user = await _httpClient.GetFromJsonAsync<User>("user/getloggedinuser");
+            ClaimsIdentity identity;
+            
+            if(user.EmailAddress != null) 
+            {
+                identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.FirstName) });
+            }
+            else
+            {
+                identity = new ClaimsIdentity();
+            }
+            
+            var claimsPrincipal = new ClaimsPrincipal(identity);
+
+            return new AuthenticationState(claimsPrincipal);
         }
 
         public void MarkUserAsLoggedIn(User user)

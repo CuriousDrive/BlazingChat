@@ -30,7 +30,6 @@ namespace BlazingChat.Server.Controllers
         }
 
         //Authentication Methods
-
         [HttpPost("loginuser")]
         public async Task<ActionResult<User>> LoginUser(User user)
         {

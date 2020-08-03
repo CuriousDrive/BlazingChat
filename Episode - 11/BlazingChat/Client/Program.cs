@@ -20,8 +20,8 @@ namespace BlazingChat.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");            
             
-            //builder.Services.AddTransient(sp => 
-            //        new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddTransient(sp => 
+                    new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             
             builder.Services.AddHttpClient<IProfileViewModel, ProfileViewModel>
                     ("BlazingChatClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
@@ -35,6 +35,7 @@ namespace BlazingChat.Client
             builder.Services.AddHttpClient<ILoginViewModel, LoginViewModel>
                     ("BlazingChatClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 
+            builder.Services.AddAuthorizationCore();
             builder.Services.AddSingleton<AuthenticationStateProvider, CustomAuthenticationStateProvider>();   
 
             await builder.Build().RunAsync();
