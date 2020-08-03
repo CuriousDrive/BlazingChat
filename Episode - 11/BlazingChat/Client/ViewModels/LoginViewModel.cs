@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
+using System.Threading.Tasks;
+using BlazingChat.Client;
 using BlazingChat.Shared.Models;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BlazingChat.ViewModels
 {
@@ -12,18 +16,26 @@ namespace BlazingChat.ViewModels
         public string Password { get; set; }
 
         private HttpClient _httpClient;
+        AuthenticationStateProvider _authenticationStateProvider;
         public LoginViewModel()        
         {
                 
         }
-        public LoginViewModel(HttpClient httpClient)
+        public LoginViewModel(HttpClient httpClient, AuthenticationStateProvider authenticationStateProvider)
         {
             _httpClient = httpClient;
+            _authenticationStateProvider = authenticationStateProvider;
         }
 
-        public void LoginUser()
+        public async Task LoginUser()
         {
-            
+            HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync<User>("user/loginuser",this);
+
+            if(httpResponseMessage.IsSuccessStatusCode)
+            {
+                User user = await httpResponseMessage.Content.ReadFromJsonAsync<User>();
+                ((CustomAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedIn(user);
+            }            
         }
 
         public static implicit operator LoginViewModel(User user)

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BlazingChat.Server.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 
 namespace BlazingChat.Server.Controllers
 {
@@ -21,11 +23,53 @@ namespace BlazingChat.Server.Controllers
 
         private readonly ILogger<UserController> logger;
         private readonly BlazingChatContext _context;
-
         public UserController(ILogger<UserController> logger, BlazingChatContext context)
         {
             this.logger = logger;
             this._context = context;
+        }
+
+        //Authentication Methods
+
+        [HttpPost("loginuser")]
+        public async Task<ActionResult<User>> LoginUser(User user)
+        {
+            User loginUser = _context.Users.Where(u => u.EmailAddress == user.EmailAddress && u.Password == user.Password)
+                                .ToList()
+                                .FirstOrDefault();
+
+            if (loginUser != null)
+            {
+                var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Email, loginUser.EmailAddress) });
+                var claimsPrincipal = new ClaimsPrincipal(identity);
+
+                await HttpContext.SignInAsync(claimsPrincipal);
+            }
+
+            return loginUser;
+        }
+
+        [HttpGet("logoutuser")]
+        public async Task<IActionResult> LogOutUser()
+        {
+            await HttpContext.SignOutAsync();
+            return Redirect("~/");
+        }
+
+        [HttpGet("getloggedinuser")]
+        public async Task<ActionResult<User>> GetLoggedInUser()
+        {
+            User returnedUser = new User();
+            
+            if (User.Identity.IsAuthenticated)
+            {
+                var emailAddress = User.FindFirstValue(ClaimTypes.Email);
+                returnedUser = _context.Users.Where(u => u.EmailAddress == emailAddress)
+                                            .ToList()
+                                            .FirstOrDefault();
+            }
+
+            return await Task.FromResult(returnedUser);
         }
 
         [HttpGet("getcontacts")]

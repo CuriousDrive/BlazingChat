@@ -6,10 +6,22 @@
 </div>
 
 <div class="main">
-    <div class="top-row px-4">
-        <button class="btn btn-danger" @onclick="LogoutUser">Logout</button>
-    </div>
-
+    
+    <AuthorizeView>
+        <Authorized>
+            <div class="top-row px-4">
+            @context.User.Identity.Name
+            <button class="btn btn-danger" @onclick="LogoutUser">Logout</button>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <div class="top-row px-4">
+                <button class="btn btn-primary" @onclick="LoginUser">Login</button>
+            </div>    
+        </NotAuthorized>
+    </AuthorizeView>
+    
+    
     <div class="content px-4">
         @Body
     </div>
@@ -18,6 +30,11 @@
 @code{
 
     private void LogoutUser()
+    {
+        _navigationManager.NavigateTo("/");
+    }
+
+    private void LoginUser()
     {
         _navigationManager.NavigateTo("/");
     }
