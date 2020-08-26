@@ -60,7 +60,7 @@ namespace BlazingChat.Server.Controllers
         public async Task<ActionResult<User>> GetLoggedInUser()
         {
             User returnedUser = new User();
-            
+
             if (User.Identity.IsAuthenticated)
             {
                 var emailAddress = User.FindFirstValue(ClaimTypes.Email);
@@ -77,12 +77,12 @@ namespace BlazingChat.Server.Controllers
         {
             return _context.Users.ToList();
         }
-        
+
         [HttpPut("updateprofile/{userId}")]
         public async Task<User> UpdateProfile(int userId, [FromBody] User user)
-        {            
+        {
             User userToUpdate = await _context.Users.Where(u => u.UserId == userId).FirstOrDefaultAsync();
-            
+
             userToUpdate.FirstName = user.FirstName;
             userToUpdate.LastName = user.LastName;
             userToUpdate.EmailAddress = user.EmailAddress;
@@ -101,7 +101,7 @@ namespace BlazingChat.Server.Controllers
 
         [HttpGet("updatetheme")]
         public async Task<User> UpdateTheme(string userId, string value)
-        {            
+        {
             User user = _context.Users.Where(u => u.UserId == Convert.ToInt32(userId)).FirstOrDefault();
             user.DarkTheme = value == "True" ? 1 : 0;
 

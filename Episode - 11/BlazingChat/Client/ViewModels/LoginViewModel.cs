@@ -17,9 +17,9 @@ namespace BlazingChat.ViewModels
 
         private HttpClient _httpClient;
         AuthenticationStateProvider _authenticationStateProvider;
-        public LoginViewModel()        
+        public LoginViewModel()
         {
-                
+
         }
         public LoginViewModel(HttpClient httpClient, AuthenticationStateProvider authenticationStateProvider)
         {
@@ -29,13 +29,13 @@ namespace BlazingChat.ViewModels
 
         public async Task LoginUser()
         {
-            HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync<User>("user/loginuser",this);
+            HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync<User>("user/loginuser", this);
 
-            if(httpResponseMessage.IsSuccessStatusCode)
+            if (httpResponseMessage.IsSuccessStatusCode)
             {
                 User user = await httpResponseMessage.Content.ReadFromJsonAsync<User>();
                 ((CustomAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedIn(user);
-            }            
+            }
         }
 
         public static implicit operator LoginViewModel(User user)
