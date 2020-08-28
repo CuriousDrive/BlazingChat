@@ -18,14 +18,14 @@ namespace BlazingChat.ViewModels
             this.LastName = lastName;
         }
 
-        public Contact(int contactId,string firstName, string lastName)
+        public Contact(int contactId, string firstName, string lastName)
         {
             this.ContactId = contactId;
             this.FirstName = firstName;
             this.LastName = lastName;
         }
 
-         //operators
+        //operators
         public static implicit operator Contact(User user)
         {
             return new Contact

@@ -16,7 +16,7 @@ namespace BlazingChat.ViewModels
 
         //methods
         public ContactsViewModel()
-        {            
+        {
         }
         public ContactsViewModel(HttpClient httpClient)
         {
@@ -24,19 +24,19 @@ namespace BlazingChat.ViewModels
         }
         public async Task GetContacts()
         {
-            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>("user/getcontacts");            
+            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>("user/getcontacts");
             LoadCurrentObject(users);
         }
-        
+
         private void LoadCurrentObject(List<User> users)
         {
             this.Contacts = new List<Contact>();
-            foreach(User user in users)
+            foreach (User user in users)
             {
                 this.Contacts.Add(user);
             }
         }
 
-       
+
     }
 }

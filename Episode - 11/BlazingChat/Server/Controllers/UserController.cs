@@ -33,12 +33,31 @@ namespace BlazingChat.Server.Controllers
         {
             return _context.Users.ToList();
         }
-        
+
+        //Authentication Methods
+        [HttpPost("loginuser")]
+        public async Task<ActionResult<User>> LoginUser(User user)
+        {
+            return await Task.FromResult(new User());
+        }
+
+        [HttpGet("logoutuser")]
+        public async Task<IActionResult> LogOutUser()
+        {
+            return Redirect("~/");
+        }
+
+        [HttpGet("getloggedinuser")]
+        public async Task<ActionResult<User>> GetLoggedInUser()
+        {
+            return await Task.FromResult(new User());
+        }
+
         [HttpPut("updateprofile/{userId}")]
         public async Task<User> UpdateProfile(int userId, [FromBody] User user)
-        {            
+        {
             User userToUpdate = await _context.Users.Where(u => u.UserId == userId).FirstOrDefaultAsync();
-            
+
             userToUpdate.FirstName = user.FirstName;
             userToUpdate.LastName = user.LastName;
             userToUpdate.EmailAddress = user.EmailAddress;
@@ -57,7 +76,7 @@ namespace BlazingChat.Server.Controllers
 
         [HttpGet("updatetheme")]
         public async Task<User> UpdateTheme(string userId, string value)
-        {            
+        {
             User user = _context.Users.Where(u => u.UserId == Convert.ToInt32(userId)).FirstOrDefault();
             user.DarkTheme = value == "True" ? 1 : 0;
 

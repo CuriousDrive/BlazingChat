@@ -17,7 +17,7 @@ namespace BlazingChat.ViewModels
 
         public ProfileViewModel()
         {
-            
+
         }
 
         public ProfileViewModel(HttpClient httpClient)
