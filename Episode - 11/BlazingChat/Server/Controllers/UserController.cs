@@ -41,17 +41,17 @@ namespace BlazingChat.Server.Controllers
             return await Task.FromResult(new User());
         }
 
+        [HttpGet("getautheticationstate")]
+        public async Task<ActionResult<User>> GetAutheticationState()
+        {
+            return await Task.FromResult(new User());
+        }
+
         [HttpGet("logoutuser")]
         public async Task<IActionResult> LogOutUser()
         {
             return Redirect("~/");
-        }
-
-        [HttpGet("getloggedinuser")]
-        public async Task<ActionResult<User>> GetLoggedInUser()
-        {
-            return await Task.FromResult(new User());
-        }
+        }       
 
         [HttpPut("updateprofile/{userId}")]
         public async Task<User> UpdateProfile(int userId, [FromBody] User user)
