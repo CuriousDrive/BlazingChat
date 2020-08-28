@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Blazored.LocalStorage;
 using System.Net.Http;
-using BlazingChat.Client.Service;
+//using BlazingChat.Client.Service;
 
 namespace BlazingChat.Client
 {

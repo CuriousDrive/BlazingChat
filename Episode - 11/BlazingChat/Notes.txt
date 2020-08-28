@@ -1,5 +1,7 @@
 -- this is how I am going to go about this
 
+Remove - AddEntityFrameworkCore from services
+
 Agenda  - How it is different from Blazor Server App
         - What we are going to do in this demo
 
@@ -10,8 +12,8 @@ LoginUser   - Web API call
 Authentication State Provider   - Need to Add a package
                                 - Create CustomAuthenticationStateProvider Implement
                                         - LoginUser
-                                        - LogoutUser
                                         - Getting the Current User
+                                        - LogoutUser                                        
                                 - Import statement for App.razor - CascadingAuthenticationStateProvider
                                 - Explain 
 

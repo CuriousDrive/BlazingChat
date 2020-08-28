@@ -40,7 +40,7 @@ namespace BlazingChat.Server.Controllers
 
             if (loginUser != null)
             {
-                var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Email, loginUser.EmailAddress) });
+                var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Email, loginUser.EmailAddress) }, "serverAuth");
                 var claimsPrincipal = new ClaimsPrincipal(identity);
 
                 await HttpContext.SignInAsync(claimsPrincipal);
@@ -70,6 +70,22 @@ namespace BlazingChat.Server.Controllers
             }
 
             return await Task.FromResult(returnedUser);
+        }
+
+        [HttpGet("getcurrentuser")]
+        public async Task<ActionResult<bool>> GetCurrentUser()
+        {
+            User returnedUser = new User();
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var emailAddress = User.FindFirstValue(ClaimTypes.Email);
+                returnedUser = _context.Users.Where(u => u.EmailAddress == emailAddress)
+                                            .ToList()
+                                            .FirstOrDefault();
+            }
+
+            return await Task.FromResult(User.Identity.IsAuthenticated);
         }
 
         [HttpGet("getcontacts")]

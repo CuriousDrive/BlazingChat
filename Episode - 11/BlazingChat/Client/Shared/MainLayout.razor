@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager _navigationManager
+@inject HttpClient _httpClient
 
 <div class="sidebar">
     <NavMenu />
@@ -10,7 +11,7 @@
     <AuthorizeView>
         <Authorized>
             <div class="top-row px-4">
-            @context.User.Identity.Name
+            <h4><b>Hello, @context.User.Identity.Name</b></h4> &nbsp;
             <button class="btn btn-danger" @onclick="LogoutUser">Logout</button>
             </div>
         </Authorized>
@@ -19,8 +20,7 @@
                 <button class="btn btn-primary" @onclick="LoginUser">Login</button>
             </div>    
         </NotAuthorized>
-    </AuthorizeView>
-    
+    </AuthorizeView>    
     
     <div class="content px-4">
         @Body
@@ -29,9 +29,10 @@
 
 @code{
 
-    private void LogoutUser()
+    private async Task LogoutUser()
     {
-        _navigationManager.NavigateTo("/");
+        await _httpClient.GetAsync("user/logoutuser");
+        _navigationManager.NavigateTo("/", true);
     }
 
     private void LoginUser()

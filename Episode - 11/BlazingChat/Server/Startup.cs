@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
 using BlazingChat.Server.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace BlazingChat.Server
 {
@@ -23,11 +24,17 @@ namespace BlazingChat.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddMvc();
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddEntityFrameworkSqlite().AddDbContext<BlazingChatContext>();
+            services.AddDbContext<BlazingChatContext>();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                //options.RequireAuthenticatedSignIn = true;
+            }).AddCookie();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +57,9 @@ namespace BlazingChat.Server
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

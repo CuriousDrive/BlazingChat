@@ -20,10 +20,9 @@
 </div>
 
 @code {
-    public void LoginUser()
+    public async Task LoginUser()
     {
-        _loginViewModel.LoginUser();
-        _navigationManager.NavigateTo("/profile");
+        await _loginViewModel.LoginUser();
+        _navigationManager.NavigateTo("/profile",true);
     }
 }
-
