@@ -17,7 +17,7 @@ namespace BlazingChat.ViewModels
 
         //methods
         public SettingsViewModel()
-        {
+        {            
         }
         public SettingsViewModel(HttpClient httpClient)
         {
@@ -29,7 +29,7 @@ namespace BlazingChat.ViewModels
             LoadCurrentObject(user);
         }
         public async Task Save()
-        {
+        {   
             await _httpClient.GetFromJsonAsync<User>($"user/updatetheme?userId={10}&value={this.DarkTheme.ToString()}");
 
             await _httpClient.GetFromJsonAsync<User>($"user/updatenotifications?userId={10}&value={this.Notifications.ToString()}");
