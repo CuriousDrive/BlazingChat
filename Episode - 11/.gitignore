@@ -17,3 +17,4 @@
 
 # Ignore .vscode and .vs
 **/BlazingChat/.vs/
+**/BlazingChat/Notes.txt
