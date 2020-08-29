@@ -50,10 +50,10 @@ namespace BlazingChat.Server.Controllers
         }
 
         [HttpGet("logoutuser")]
-        public async Task<IActionResult> LogOutUser()
+        public async Task<ActionResult<String>> LogOutUser()
         {
             await Task.Delay(1000);
-            return Redirect("~/");
+            return "Success";
         }       
 
         [HttpPut("updateprofile/{userId}")]

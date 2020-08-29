@@ -7,8 +7,8 @@
 
 <div class="main">
     <div class="top-row px-4">
-    <h4><b>Hello, Email Address/User Name</b></h4> &nbsp;
-    <button class="btn btn-danger" @onclick="LogoutUser">Logout</button>
+        <h4><b>Hello, Email Address/User Name</b></h4> &nbsp;
+        <button class="btn btn-danger" @onclick="LogoutUser">Logout</button>
     </div>
     <div class="top-row px-4">
         <button class="btn btn-primary" @onclick="LoginUser">Login</button>
@@ -23,12 +23,12 @@
 
     private void LogoutUser()
     {
-        _navigationManager.NavigateTo("/");
+        _navigationManager.NavigateTo("/", true);
     }
 
     private void LoginUser()
     {
-        _navigationManager.NavigateTo("/");
+        _navigationManager.NavigateTo("/", true);
     }
 
 }
