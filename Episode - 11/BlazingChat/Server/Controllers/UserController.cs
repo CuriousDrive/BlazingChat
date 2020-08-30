@@ -42,8 +42,8 @@ namespace BlazingChat.Server.Controllers
             return await Task.FromResult(loggedInUser);
         }
 
-        [HttpGet("getautheticationstate")]
-        public async Task<ActionResult<User>> GetAutheticationState()
+        [HttpGet("getcurrentuser")]
+        public async Task<ActionResult<User>> GetCurrentUser()
         {
             User currentUser = new User();
             return await Task.FromResult(currentUser);
