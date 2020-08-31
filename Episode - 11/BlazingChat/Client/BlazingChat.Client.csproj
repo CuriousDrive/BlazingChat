@@ -13,6 +13,7 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.5" />
     <PackageReference Include="System.Net.Http.Json" Version="3.2.0" />
     <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="3.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.7" />
   </ItemGroup>
 
   <ItemGroup>
