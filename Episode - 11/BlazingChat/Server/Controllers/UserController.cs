@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BlazingChat.Server.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 
 namespace BlazingChat.Server.Controllers
 {
@@ -38,7 +40,20 @@ namespace BlazingChat.Server.Controllers
         [HttpPost("loginuser")]
         public async Task<ActionResult<User>> LoginUser(User user)
         {
-            User loggedInUser = new User();
+            User loggedInUser = await _context.Users.Where(u => u.EmailAddress == user.EmailAddress && u.Password == user.Password).FirstOrDefaultAsync();
+
+            if (loggedInUser != null)
+            {
+                //create a claim
+                var claim = new Claim(ClaimTypes.Name, loggedInUser.EmailAddress);
+                //create claimsIdentity
+                var claimsIdentity = new ClaimsIdentity(new[] { claim }, "serverAuth");
+                //create claimsPrincipal
+                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                //Sign In User
+                await HttpContext.SignInAsync(claimsPrincipal);
+            }
+
             return await Task.FromResult(loggedInUser);
         }
 
@@ -46,13 +61,19 @@ namespace BlazingChat.Server.Controllers
         public async Task<ActionResult<User>> GetCurrentUser()
         {
             User currentUser = new User();
+
+            if (User.Identity.IsAuthenticated)
+            {
+                currentUser.EmailAddress = User.FindFirstValue(ClaimTypes.Name);
+            }
+
             return await Task.FromResult(currentUser);
         }
 
         [HttpGet("logoutuser")]
         public async Task<ActionResult<String>> LogOutUser()
         {
-            await Task.Delay(1000);
+            await HttpContext.SignOutAsync();
             return "Success";
         }       
 
