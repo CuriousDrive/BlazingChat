@@ -10,9 +10,31 @@ namespace BlazingChat.Client
 {
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {
-        public override Task<AuthenticationState> GetAuthenticationStateAsync()
+
+        private readonly HttpClient _httpClient;
+
+        public CustomAuthenticationStateProvider(HttpClient httpClient)
         {
-            throw new System.NotImplementedException();
+            _httpClient = httpClient;
+        }
+
+        public async override Task<AuthenticationState> GetAuthenticationStateAsync()
+        {
+            User currentUser = await _httpClient.GetFromJsonAsync<User>("user/getcurrentuser");
+
+            if (currentUser != null && currentUser.EmailAddress != null)
+            { 
+                 //create a claim
+                var claim = new Claim(ClaimTypes.Name, currentUser.EmailAddress);
+                //create claimsIdentity
+                var claimsIdentity = new ClaimsIdentity(new[] { claim }, "serverAuth");
+                //create claimsPrincipal
+                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+                return new AuthenticationState(claimsPrincipal);
+            }
+            else
+                return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
     }
 } 
