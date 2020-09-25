@@ -21,5 +21,8 @@
 
 
 @code {
-    protected override async Task OnInitializedAsync() => await _profileViewModel.GetProfile();
+    protected override async Task OnInitializedAsync() 
+    {
+        await _profileViewModel.GetProfile();
+    }
 }

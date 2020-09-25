@@ -40,6 +40,7 @@ namespace BlazingChat.Server.Controllers
         [HttpPost("loginuser")]
         public async Task<ActionResult<User>> LoginUser(User user)
         {
+            user.Password = Utility.Encrypt(user.Password);
             User loggedInUser = await _context.Users.Where(u => u.EmailAddress == user.EmailAddress && u.Password == user.Password).FirstOrDefaultAsync();
 
             if (loggedInUser != null)
@@ -53,7 +54,6 @@ namespace BlazingChat.Server.Controllers
                 //Sign In User
                 await HttpContext.SignInAsync(claimsPrincipal);
             }
-
             return await Task.FromResult(loggedInUser);
         }
 
