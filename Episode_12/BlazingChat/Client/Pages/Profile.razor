@@ -3,7 +3,7 @@
 @using BlazingChat.Shared.Models
 @using System.Security.Claims
 @inject IProfileViewModel _profileViewModel
-@inject AuthenticationStateProvider _authenticationStateProvider
+@inject NavigationManager _navigationManager
 
 <h2><b>Profile</b></h2> 
 <hr />
@@ -23,9 +23,13 @@
 
 
 @code {
+
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+
     protected override async Task OnInitializedAsync() 
     {
-        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var authState = await authenticationState;//_authenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
         if(user.Identity.IsAuthenticated)
@@ -36,7 +40,7 @@
         }
         else
         {
-
+            _navigationManager.NavigateTo("/");
         }
         
     }
