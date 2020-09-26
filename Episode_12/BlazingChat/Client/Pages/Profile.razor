@@ -1,7 +1,9 @@
 ﻿@page "/profile"
 @using BlazingChat.ViewModels
 @using BlazingChat.Shared.Models
+@using System.Security.Claims
 @inject IProfileViewModel _profileViewModel
+@inject AuthenticationStateProvider _authenticationStateProvider
 
 <h2><b>Profile</b></h2> 
 <hr />
@@ -23,6 +25,19 @@
 @code {
     protected override async Task OnInitializedAsync() 
     {
-        await _profileViewModel.GetProfile();
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if(user.Identity.IsAuthenticated)
+        {
+            var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
+            _profileViewModel.UserId = Convert.ToInt64(claim?.Value) ;
+            await _profileViewModel.GetProfile();
+        }
+        else
+        {
+
+        }
+        
     }
 }
