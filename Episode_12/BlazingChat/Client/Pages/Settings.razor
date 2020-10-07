@@ -1,6 +1,8 @@
 ﻿@page "/settings"
 @using BlazingChat.ViewModels
+@using System.Security.Claims
 @inject ISettingsViewModel _settingsViewModel
+@inject NavigationManager _navigationManager
 
 <h2><b>Settings</b></h2> 
 <hr />
@@ -19,5 +21,23 @@
 </div>
 
 @code {
-    protected override async Task OnInitializedAsync() => await _settingsViewModel.GetProfile();
+
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+    protected override async Task OnInitializedAsync() 
+    {
+        var authState = await authenticationState;//_authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if(user.Identity.IsAuthenticated)
+        {
+            var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
+            _settingsViewModel.UserId = Convert.ToInt64(claim?.Value);
+            await _settingsViewModel.GetProfile();
+        }
+        else
+        {
+            _navigationManager.NavigateTo("/");
+        }
+    } 
 }

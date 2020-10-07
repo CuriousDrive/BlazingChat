@@ -11,6 +11,7 @@ namespace BlazingChat.ViewModels
     public class SettingsViewModel : ISettingsViewModel
     {
         //properties
+        public long UserId { get; set; }
         public bool Notifications { get; set; }
         public bool DarkTheme { get; set; }
         private HttpClient _httpClient;
@@ -25,14 +26,14 @@ namespace BlazingChat.ViewModels
         }
         public async Task GetProfile()
         {
-            User user = await _httpClient.GetFromJsonAsync<User>("user/getprofile/10");
+            User user = await _httpClient.GetFromJsonAsync<User>($"user/getprofile/{this.UserId}");
             LoadCurrentObject(user);
         }
         public async Task Save()
         {
-            await _httpClient.GetFromJsonAsync<User>($"user/updatetheme?userId={10}&value={this.DarkTheme.ToString()}");
+            await _httpClient.GetFromJsonAsync<User>($"user/updatetheme?userId={this.UserId}&value={this.DarkTheme.ToString()}");
 
-            await _httpClient.GetFromJsonAsync<User>($"user/updatenotifications?userId={10}&value={this.Notifications.ToString()}");
+            await _httpClient.GetFromJsonAsync<User>($"user/updatenotifications?userId={this.UserId}&value={this.Notifications.ToString()}");
         }
         private void LoadCurrentObject(SettingsViewModel settingsViewModel)
         {
