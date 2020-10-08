@@ -64,8 +64,8 @@ namespace BlazingChat.Server.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                var emailAddress = User.FindFirstValue(ClaimTypes.Name);
-                currentUser = await _context.Users.Where(u => u.EmailAddress == emailAddress).FirstOrDefaultAsync();
+                currentUser.EmailAddress = User.FindFirstValue(ClaimTypes.Name);
+                currentUser = await _context.Users.Where(u => u.EmailAddress == currentUser.EmailAddress).FirstOrDefaultAsync();
             }
 
             return await Task.FromResult(currentUser);
