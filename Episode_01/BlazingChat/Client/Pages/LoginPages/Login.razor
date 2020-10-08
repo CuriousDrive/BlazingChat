@@ -44,7 +44,14 @@
         var user = (await authenticationStateTask).User;
 
         if (user.Identity.IsAuthenticated)
+        {
             NavigationManager.NavigateTo("/profile/" + 0);
+        }
+        else
+        {
+            _loginViewModel.EmailAddress = "john.smith@gmail.com";
+            _loginViewModel.Password = "john.smith";
+        }
     }
 
     private async Task LoginClick()
