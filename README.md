@@ -1,6 +1,6 @@
 ## BlazingChat
 
-Blazing Chat is a demo app made as part of YouTube tutorial. The front-end is made using Blazor WebAssembly and the back-end is made using ASP.NET Core Web API + Entity Framework Core. SQLite is used to store the data. You can run this app on Windows, Mac or Linux operating systems. The repo is maintained episode by episode so that you can go back to particular episode and the code related it.
+Blazing Chat is a demo app made as a part of YouTube tutorial. The front-end is made using Blazor WebAssembly and the back-end is made using ASP.NET Core Web API + Entity Framework Core. SQLite is used to store the data. You can run this app on Windows, Mac or Linux operating systems. The repo is maintained episode by episode so that you can go back to particular episode and the code related it.
 
 ![Demo_App](https://github.com/CuriousDrive/BlazingChat/blob/master/Documents/Gifs/Intro.gif)
 
@@ -21,7 +21,7 @@ Blazing Chat is a demo app made as part of YouTube tutorial. The front-end is ma
 
 ## Videos
 
-The best part about Blazing that it's been documented while it was getting built. Please check out below videos if you want to learn how to make apps in Blazor WebAssembly
+The best part about Blazing Chat app is that it's been documented while it was getting built. Please check out below videos if you want to learn how to make apps in Blazor WebAssembly
 | Video Series | Topics |
 | ----- | ---- |
 | [Start Watching](https://www.youtube.com/playlist?list=PL4WEkbdagHIRjjBJvK_TSfddJSvEEAtnt) | Blazor WebAssembly |
