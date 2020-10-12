@@ -9,6 +9,7 @@ using BlazingChat.Server.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Twitter;
 
 namespace BlazingChat.Server.Controllers
 {
@@ -66,6 +67,13 @@ namespace BlazingChat.Server.Controllers
             {
                 currentUser.EmailAddress = User.FindFirstValue(ClaimTypes.Name);
                 currentUser = await _context.Users.Where(u => u.EmailAddress == currentUser.EmailAddress).FirstOrDefaultAsync();
+
+                if (currentUser == null)
+                {
+                    currentUser = new User();
+                    currentUser.EmailAddress = User.FindFirstValue(ClaimTypes.Email);
+                    currentUser.UserId = 10;
+                }
             }
 
             return await Task.FromResult(currentUser);
@@ -119,6 +127,13 @@ namespace BlazingChat.Server.Controllers
             await _context.SaveChangesAsync();
 
             return await Task.FromResult(user);
+        }
+
+        [HttpGet("TwitterSignIn")]
+        public async Task TwitterSignIn()
+        {
+            await HttpContext.ChallengeAsync(TwitterDefaults.AuthenticationScheme, 
+                new AuthenticationProperties { RedirectUri = "/profile" });
         }
     }
 }
