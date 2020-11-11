@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Twitter;
+using Microsoft.AspNetCore.Authentication.Facebook;
 
 namespace BlazingChat.Server.Controllers
 {
@@ -133,6 +134,13 @@ namespace BlazingChat.Server.Controllers
         public async Task TwitterSignIn()
         {
             await HttpContext.ChallengeAsync(TwitterDefaults.AuthenticationScheme, 
+                new AuthenticationProperties { RedirectUri = "/profile" });
+        }
+
+        [HttpGet("FacebookSignIn")]
+        public async Task FacebookSignIn()
+        {
+            await HttpContext.ChallengeAsync(FacebookDefaults.AuthenticationScheme, 
                 new AuthenticationProperties { RedirectUri = "/profile" });
         }
     }

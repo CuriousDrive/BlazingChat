@@ -24,7 +24,12 @@
         <span class="fa fa-twitter"></span> <b>Sign in with Twitter</b>
     </a>
 </div>
-
+<br />
+<div class="col-6">
+    <a class="btn btn-block btn-social btn-facebook" @onclick="FacebookSignIn">
+        <span class="fa fa-facebook"></span> <b>Sign in with Facebook</b>
+    </a>
+</div>
 
 @code {
     public async Task LoginUser()
@@ -36,5 +41,10 @@
     private void TwitterSignIn()
     {
         _navigationManager.NavigateTo("user/TwitterSignIn", true);
+    }
+
+    private void FacebookSignIn()
+    {
+        _navigationManager.NavigateTo("user/FacebookSignIn", true);
     }
 }
