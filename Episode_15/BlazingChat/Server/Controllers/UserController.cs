@@ -11,6 +11,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Twitter;
 using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication.Google;
 
 namespace BlazingChat.Server.Controllers
 {
@@ -141,6 +142,13 @@ namespace BlazingChat.Server.Controllers
         public async Task FacebookSignIn()
         {
             await HttpContext.ChallengeAsync(FacebookDefaults.AuthenticationScheme, 
+                new AuthenticationProperties { RedirectUri = "/profile" });
+        }
+
+        [HttpGet("GoogleSignIn")]
+        public async Task GoogleSignIn()
+        {
+            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, 
                 new AuthenticationProperties { RedirectUri = "/profile" });
         }
     }

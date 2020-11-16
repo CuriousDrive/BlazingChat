@@ -30,6 +30,12 @@
         <span class="fa fa-facebook"></span> <b>Sign in with Facebook</b>
     </a>
 </div>
+<br />
+<div class="col-6">
+    <a class="btn btn-block btn-social btn-google" @onclick="GoogleSignIn">
+        <span class="fa fa-google"></span> <b>Sign in with Google</b>
+    </a>
+</div>
 
 @code {
     public async Task LoginUser()
@@ -46,5 +52,10 @@
     private void FacebookSignIn()
     {
         _navigationManager.NavigateTo("user/FacebookSignIn", true);
+    }
+
+    private void GoogleSignIn()
+    {
+        _navigationManager.NavigateTo("user/GoogleSignIn", true);
     }
 }
