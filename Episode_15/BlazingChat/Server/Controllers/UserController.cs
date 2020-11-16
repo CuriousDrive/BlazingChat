@@ -49,7 +49,7 @@ namespace BlazingChat.Server.Controllers
             if (loggedInUser != null)
             {
                 //create a claim
-                var claim = new Claim(ClaimTypes.Name, loggedInUser.EmailAddress);
+                var claim = new Claim(ClaimTypes.Email, loggedInUser.EmailAddress);
                 //create claimsIdentity
                 var claimsIdentity = new ClaimsIdentity(new[] { claim }, "serverAuth");
                 //create claimsPrincipal
@@ -67,14 +67,19 @@ namespace BlazingChat.Server.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                currentUser.EmailAddress = User.FindFirstValue(ClaimTypes.Name);
+                currentUser.EmailAddress = User.FindFirstValue(ClaimTypes.Email);
                 currentUser = await _context.Users.Where(u => u.EmailAddress == currentUser.EmailAddress).FirstOrDefaultAsync();
 
                 if (currentUser == null)
                 {
                     currentUser = new User();
+                    currentUser.UserId = _context.Users.Max(user => user.UserId) + 1;
                     currentUser.EmailAddress = User.FindFirstValue(ClaimTypes.Email);
-                    currentUser.UserId = 10;
+                    currentUser.Password = Utility.Encrypt(currentUser.EmailAddress);
+                    currentUser.Source = "EXTL";
+
+                    _context.Users.Add(currentUser);
+                    await _context.SaveChangesAsync();
                 }
             }
 
