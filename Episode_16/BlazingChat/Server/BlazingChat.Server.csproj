@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>      
@@ -9,15 +9,15 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>      
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="3.2.0" />      
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.5">
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.0" />      
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>      
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="3.1.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
