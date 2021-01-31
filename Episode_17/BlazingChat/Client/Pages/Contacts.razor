@@ -1,7 +1,7 @@
 @page "/contacts"
 @using BlazingChat.ViewModels
 @inject IContactsViewModel _contactsViewModel
-@inject NavigationManager NavigationManager
+@inject NavigationManager _navigationManager
 
 <h2><b>Contacts</b></h2>
 <hr />
@@ -26,10 +26,19 @@
 </div>
 
 @code {
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
     
-    protected override async Task OnInitializedAsync() => await _contactsViewModel.GetContacts();
+    protected override async Task OnInitializedAsync() 
+    {
+        var authState = await authenticationState;//_authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if(user.Identity.IsAuthenticated) await _contactsViewModel.GetContacts();
+        else _navigationManager.NavigateTo("/");
+    }
     private void NavigateToChat()
     {
-        NavigationManager.NavigateTo("/chat");
+        _navigationManager.NavigateTo("/chat");
     }
 }
