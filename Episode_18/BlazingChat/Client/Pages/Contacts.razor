@@ -1,0 +1,44 @@
+@page "/contacts"
+@using BlazingChat.ViewModels
+@inject IContactsViewModel _contactsViewModel
+@inject NavigationManager _navigationManager
+
+<h2><b>Contacts</b></h2>
+<hr />
+
+<div class="col-12">
+    <div class="col-12 row">
+        <input type="text" class="col-9 form-control" placeholder="search"/>
+        <span>&nbsp;</span><button class="btn btn-primary">Search</button>
+    </div>
+    <br />
+    
+    @if(_contactsViewModel.Contacts != null && _contactsViewModel.Contacts.Count() > 0)
+    {
+        @foreach (var contact in _contactsViewModel.Contacts)
+        {
+            <a href="/chat/@contact.ContactId" 
+                class="list-group-item list-group-item-action flex-column align-items-start bold-text">
+                @contact.FirstName <span> </span> @contact.LastName
+            </a>
+        }
+    }
+</div>
+
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+    
+    protected override async Task OnInitializedAsync() 
+    {
+        var authState = await authenticationState;//_authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if(user.Identity.IsAuthenticated) await _contactsViewModel.GetContacts();
+        else _navigationManager.NavigateTo("/");
+    }
+    private void NavigateToChat()
+    {
+        _navigationManager.NavigateTo("/chat");
+    }
+}

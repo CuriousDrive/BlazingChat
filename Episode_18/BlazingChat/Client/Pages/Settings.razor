@@ -1,0 +1,43 @@
+﻿@page "/settings"
+@using BlazingChat.ViewModels
+@using System.Security.Claims
+@inject ISettingsViewModel _settingsViewModel
+@inject NavigationManager _navigationManager
+
+<h2><b>Settings</b></h2> 
+<hr />
+
+<div class="col-12">
+    <input type="checkbox" @bind="@_settingsViewModel.Notifications" id="chkNotification">
+    <label> Notification </label>    
+    <br>   
+
+    <input type="checkbox" @bind="@_settingsViewModel.DarkTheme" id="chkDarkTheme">
+    <label> Dark Theme </label>    
+    <br>
+</div>
+<div class="col-12">
+    <button class="btn btn-primary" @onclick="_settingsViewModel.Save">Save</button>
+</div>
+
+@code {
+
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+    protected override async Task OnInitializedAsync() 
+    {
+        var authState = await authenticationState;//_authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if(user.Identity.IsAuthenticated)
+        {
+            var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
+            _settingsViewModel.UserId = Convert.ToInt64(claim?.Value);
+            await _settingsViewModel.GetProfile();
+        }
+        else
+        {
+            _navigationManager.NavigateTo("/");
+        }
+    } 
+}
