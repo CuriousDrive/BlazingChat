@@ -10,6 +10,11 @@
 
 <div class="row col-12">
 
+    <div class="col-4">
+        <img src="@ProfilePicDataUrl" style="width: 250px; height: 250px;"> <br/> <br/>
+        <InputFile OnChange="@OnInputFileChanged"></InputFile>
+    </div>
+
     <div class="col-8">
         <input type="text" @bind-value="_profileViewModel.FirstName" class="form-control" placeholder="first name">
         <br/>
@@ -28,6 +33,19 @@
 
     [CascadingParameter]
     public Task<AuthenticationState> authenticationState { get; set; }
+    public string ProfilePicDataUrl { get; set; }
+    private async Task OnInputFileChanged(InputFileChangeEventArgs inputFileChangeEvent)
+    {
+        //get the file
+        var file = inputFileChangeEvent.File;
+
+        //read that file in a byte array
+        var buffer = new byte[file.Size];
+        await file.OpenReadStream().ReadAsync(buffer);
+
+        //convert byte array to base 64 string
+        ProfilePicDataUrl = $"data:image/png;base64,{Convert.ToBase64String(buffer)}";
+    }
 
     protected override async Task OnInitializedAsync() 
     {
