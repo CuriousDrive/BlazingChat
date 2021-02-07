@@ -13,6 +13,7 @@ namespace BlazingChat.ViewModels
         public string EmailAddress { get; set; }
         public string Message { get; set; }
         public string AboutMe { get; set; }
+        public string ProfilePicDataUrl { get; set; }
         private HttpClient _httpClient;
 
         public ProfileViewModel()
@@ -44,6 +45,7 @@ namespace BlazingChat.ViewModels
             this.LastName = profileViewModel.LastName;
             this.EmailAddress = profileViewModel.EmailAddress;
             this.AboutMe = profileViewModel.AboutMe;
+            this.ProfilePicDataUrl = profileViewModel.ProfilePicDataUrl;
             //add more fields
         }
 
@@ -55,7 +57,8 @@ namespace BlazingChat.ViewModels
                 LastName = user.LastName,
                 EmailAddress = user.EmailAddress,
                 UserId = user.UserId,
-                AboutMe = user.AboutMe
+                AboutMe = user.AboutMe,
+                ProfilePicDataUrl = user.ProfilePicDataUrl
             };
         }
 
@@ -67,7 +70,8 @@ namespace BlazingChat.ViewModels
                 LastName = profileViewModel.LastName,
                 EmailAddress = profileViewModel.EmailAddress,
                 UserId = profileViewModel.UserId,
-                AboutMe = profileViewModel.AboutMe
+                AboutMe = profileViewModel.AboutMe,
+                ProfilePicDataUrl = profileViewModel.ProfilePicDataUrl
             };
         }
     }

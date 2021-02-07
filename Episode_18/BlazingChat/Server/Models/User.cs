@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace BlazingChat.Server.Models
 {
     public partial class User
@@ -23,6 +25,7 @@ namespace BlazingChat.Server.Models
         public long? Notifications { get; set; }
         public long? DarkTheme { get; set; }
         public byte[] CreatedDate { get; set; }
+        public string ProfilePicDataUrl { get; set; }
 
         public virtual ICollection<ChatHistory> ChatHistoryFromUsers { get; set; }
         public virtual ICollection<ChatHistory> ChatHistoryToUsers { get; set; }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace BlazingChat.Server.Models
 {
     public partial class ChatHistory
