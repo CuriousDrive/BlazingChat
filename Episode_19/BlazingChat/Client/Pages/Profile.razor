@@ -1,0 +1,65 @@
+﻿@page "/profile"
+@using BlazingChat.ViewModels
+@using BlazingChat.Shared.Models
+@using System.Security.Claims
+@inject IProfileViewModel _profileViewModel
+@inject NavigationManager _navigationManager
+
+<h2><b>Profile</b></h2> 
+<hr />
+
+<div class="row col-12">
+
+    <div class="col-4">
+        <img src="@_profileViewModel.ProfilePicDataUrl" style="width: 250px; height: 250px;"> <br/> <br/>
+        <InputFile OnChange="@OnInputFileChanged"></InputFile>
+    </div>
+
+    <div class="col-8">
+        <input type="text" @bind-value="_profileViewModel.FirstName" class="form-control" placeholder="first name">
+        <br/>
+        <input type="text" @bind-value="_profileViewModel.LastName" class="form-control" placeholder="last name">
+        <br/>
+        <input type="text" @bind-value="_profileViewModel.EmailAddress" class="form-control" placeholder="email address">
+        <br/>
+        <textarea class="form-control" @bind="_profileViewModel.AboutMe" placeholder="about me"></textarea>
+        <br/>
+        <button class="btn btn-primary" @onclick="_profileViewModel.UpdateProfile">Update Profile</button>
+        <span>&nbsp;&nbsp;</span>@_profileViewModel.Message
+    </div>
+</div>
+
+@code {
+
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+    private async Task OnInputFileChanged(InputFileChangeEventArgs inputFileChangeEvent)
+    {
+        //get the file
+        var file = inputFileChangeEvent.File;
+
+        //read that file in a byte array
+        var buffer = new byte[file.Size];
+        await file.OpenReadStream(1512000).ReadAsync(buffer);
+
+        //convert byte array to base 64 string
+        _profileViewModel.ProfilePicDataUrl = $"data:image/png;base64,{Convert.ToBase64String(buffer)}";
+    }
+
+    protected override async Task OnInitializedAsync() 
+    {
+        var authState = await authenticationState;//_authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if(user.Identity.IsAuthenticated)
+        {
+            var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
+            _profileViewModel.UserId = Convert.ToInt64(claim?.Value) ;
+            await _profileViewModel.GetProfile();
+        }
+        else
+        {
+            _navigationManager.NavigateTo("/");
+        }
+    }
+}
