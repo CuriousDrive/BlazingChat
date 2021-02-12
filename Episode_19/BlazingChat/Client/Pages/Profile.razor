@@ -4,6 +4,8 @@
 @using System.Security.Claims
 @inject IProfileViewModel _profileViewModel
 @inject NavigationManager _navigationManager
+@inject IJSRuntime jsRuntime
+@inject HttpClient _httpClient
 
 <h2><b>Profile</b></h2> 
 <hr />
@@ -25,7 +27,8 @@
         <textarea class="form-control" @bind="_profileViewModel.AboutMe" placeholder="about me"></textarea>
         <br/>
         <button class="btn btn-primary" @onclick="_profileViewModel.UpdateProfile">Update Profile</button>
-        <span>&nbsp;&nbsp;</span>@_profileViewModel.Message
+        <button class="btn btn-primary" @onclick="DownloadProfilePicture">Download Profile Picture</button>
+        <button class="btn btn-primary" @onclick="DownloadServerFile">Download a Document</button>
     </div>
 </div>
 
@@ -33,6 +36,7 @@
 
     [CascadingParameter]
     public Task<AuthenticationState> authenticationState { get; set; }
+    public string Base64String { get; set; }
     private async Task OnInputFileChanged(InputFileChangeEventArgs inputFileChangeEvent)
     {
         //get the file
@@ -44,6 +48,16 @@
 
         //convert byte array to base 64 string
         _profileViewModel.ProfilePicDataUrl = $"data:image/png;base64,{Convert.ToBase64String(buffer)}";
+    }
+
+    private void DownloadProfilePicture()
+    {
+
+    }
+
+    private void DownloadServerFile()
+    {
+        
     }
 
     protected override async Task OnInitializedAsync() 

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Twitter;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
+using System.IO;
 
 namespace BlazingChat.Server.Controllers
 {
@@ -158,4 +159,5 @@ namespace BlazingChat.Server.Controllers
                 new AuthenticationProperties { RedirectUri = "/profile" });
         }
     }
+    
 }
