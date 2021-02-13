@@ -1,0 +1,9 @@
+@page "/chat/{ContactId:int}"
+
+<h1> this is chat page of @ContactId</h1>
+
+@code{
+
+    [Parameter]
+    public int ContactId { get; set; }
+}
