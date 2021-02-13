@@ -158,6 +158,21 @@ namespace BlazingChat.Server.Controllers
             await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, 
                 new AuthenticationProperties { RedirectUri = "/profile" });
         }
+
+        [HttpGet("DownloadServerFile")]
+        public async Task<string> DownloadServerFile()
+        {
+            var filePath = @"C:\Data\CuriousDrive\GitHub Repos\BlazingChat\Documents\Word\ServerFile.docx";
+
+            using(var fileInput = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                MemoryStream memoryStream = new MemoryStream();
+                await fileInput.CopyToAsync(memoryStream);
+
+                var buffer = memoryStream.ToArray();
+                return Convert.ToBase64String(buffer);
+            }
+        }
     }
     
 }
