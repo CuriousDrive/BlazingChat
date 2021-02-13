@@ -5,6 +5,7 @@
 @inject IProfileViewModel _profileViewModel
 @inject NavigationManager _navigationManager
 @inject IJSRuntime jsRuntime
+@inject HttpClient _httpClient
 
 <h2><b>Profile</b></h2> 
 <hr />
@@ -55,9 +56,11 @@
         await jsRuntime.InvokeVoidAsync("downloadFile","image/png",base64String[1],"profile.png");
     }
 
-    private void DownloadServerFile()
+    private async Task DownloadServerFile()
     {
-        
+        var httpResponseMessage = await _httpClient.GetAsync("user/DownloadServerFile");
+        Base64String = httpResponseMessage.Content.ReadAsStringAsync().Result;
+        await jsRuntime.InvokeVoidAsync("downloadFile","application/vnd.openxmlformats-officedocument.wordprocessingml.document",Base64String, "document.docx");
     }
 
     protected override async Task OnInitializedAsync() 
