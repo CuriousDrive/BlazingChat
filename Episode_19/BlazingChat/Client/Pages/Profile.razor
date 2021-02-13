@@ -36,7 +36,6 @@
 
     [CascadingParameter]
     public Task<AuthenticationState> authenticationState { get; set; }
-    public string Base64String { get; set; }
     private async Task OnInputFileChanged(InputFileChangeEventArgs inputFileChangeEvent)
     {
         //get the file
@@ -58,9 +57,12 @@
 
     private async Task DownloadServerFile()
     {
+        //get base64 string from web api call
         var httpResponseMessage = await _httpClient.GetAsync("user/DownloadServerFile");
-        Base64String = httpResponseMessage.Content.ReadAsStringAsync().Result;
-        await jsRuntime.InvokeVoidAsync("downloadFile","application/vnd.openxmlformats-officedocument.wordprocessingml.document",Base64String, "document.docx");
+        var base64String = httpResponseMessage.Content.ReadAsStringAsync().Result;
+
+        //call javascript function to download the file
+        await jsRuntime.InvokeVoidAsync("downloadFile","application/vnd.openxmlformats-officedocument.wordprocessingml.document",base64String, "document.docx");
     }
 
     protected override async Task OnInitializedAsync() 
