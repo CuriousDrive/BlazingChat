@@ -28,7 +28,7 @@
         <br/>
         <button class="btn btn-primary" @onclick="_profileViewModel.UpdateProfile">Update Profile</button>
         <button class="btn btn-primary" @onclick="DownloadProfilePicture">Download Profile Picture</button>
-        <button class="btn btn-primary" @onclick="DownloadServerFile">Download a Document</button>
+        @* <button class="btn btn-primary" @onclick="DownloadServerFile">Download a Document</button> *@
     </div>
 </div>
 
@@ -36,6 +36,23 @@
 
     [CascadingParameter]
     public Task<AuthenticationState> authenticationState { get; set; }
+
+    protected override async Task OnInitializedAsync() 
+    {
+        var authState = await authenticationState;//_authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if(user.Identity.IsAuthenticated)
+        {
+            var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
+            _profileViewModel.UserId = Convert.ToInt64(claim?.Value) ;
+            await _profileViewModel.GetProfile();
+        }
+        else
+        {
+            _navigationManager.NavigateTo("/");
+        }
+    }
     private async Task OnInputFileChanged(InputFileChangeEventArgs inputFileChangeEvent)
     {
         //get the file
@@ -63,22 +80,5 @@
 
         //call javascript function to download the file
         await jsRuntime.InvokeVoidAsync("downloadFile","application/vnd.openxmlformats-officedocument.wordprocessingml.document",base64String, "document.docx");
-    }
-
-    protected override async Task OnInitializedAsync() 
-    {
-        var authState = await authenticationState;//_authenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if(user.Identity.IsAuthenticated)
-        {
-            var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
-            _profileViewModel.UserId = Convert.ToInt64(claim?.Value) ;
-            await _profileViewModel.GetProfile();
-        }
-        else
-        {
-            _navigationManager.NavigateTo("/");
-        }
     }
 }
