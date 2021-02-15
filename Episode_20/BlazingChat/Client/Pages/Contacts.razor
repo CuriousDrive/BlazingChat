@@ -12,7 +12,6 @@
         <span>&nbsp;</span><button class="btn btn-primary">Search</button>
     </div>
     <br />
-    
     @if(_contactsViewModel.Contacts != null && _contactsViewModel.Contacts.Count() > 0)
     {
         @foreach (var contact in _contactsViewModel.Contacts)
@@ -22,6 +21,13 @@
                 @contact.FirstName <span> </span> @contact.LastName
             </a>
         }
+
+        @* <Virtualize Items="_contactsViewModel.Contacts" Context="contact">
+            <a href="/chat/@contact.ContactId" 
+                class="list-group-item list-group-item-action flex-column align-items-start bold-text">
+                @contact.FirstName <span> </span> @contact.LastName
+            </a>
+        </Virtualize> *@
     }
 </div>
 
@@ -34,7 +40,10 @@
         var authState = await authenticationState;//_authenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
-        if(user.Identity.IsAuthenticated) await _contactsViewModel.GetContacts();
+        if(user.Identity.IsAuthenticated)
+        {
+            await _contactsViewModel.GetContacts();
+        }
         else _navigationManager.NavigateTo("/");
     }
     private void NavigateToChat()

@@ -37,7 +37,8 @@ namespace BlazingChat.Server.Controllers
         [HttpGet("getcontacts")]
         public List<User> GetContacts()
         {
-            return _context.Users.ToList();
+            //var users = _context.Users.ToList();
+            return UserData.GetLotOfData();
         }
 
         //Authentication Methods
