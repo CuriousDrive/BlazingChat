@@ -28,6 +28,21 @@ namespace BlazingChat.ViewModels
             LoadCurrentObject(users);
         }
 
+        public async Task<List<Contact>> GetAllContacts()
+        {
+            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>("user/getallcontacts");
+            LoadCurrentObject(users);
+            return Contacts;
+        }
+
+        public async Task<List<Contact>> GetSomeContacts(int startIndex, int numberOfUsers)
+        {
+            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>($"user/getsomecontacts?startIndex={startIndex}&numberOfUsers={numberOfUsers}");
+            
+            LoadCurrentObject(users);
+            return Contacts;
+        }
+
         private void LoadCurrentObject(List<User> users)
         {
             this.Contacts = new List<Contact>();

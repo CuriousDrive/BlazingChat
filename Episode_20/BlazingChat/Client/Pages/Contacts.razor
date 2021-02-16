@@ -12,17 +12,16 @@
         <span>&nbsp;</span><button class="btn btn-primary">Search</button>
     </div>
     <br />
-    @if(_contactsViewModel.Contacts != null && _contactsViewModel.Contacts.Count() > 0)
+    @if(ListOfContacts != null)
     {
-        @foreach (var contact in _contactsViewModel.Contacts)
+        @foreach (var contact in ListOfContacts)
         {
             <a href="/chat/@contact.ContactId" 
                 class="list-group-item list-group-item-action flex-column align-items-start bold-text">
                 @contact.FirstName <span> </span> @contact.LastName
             </a>
         }
-
-        @* <Virtualize Items="_contactsViewModel.Contacts" Context="contact">
+        @* <Virtualize Context="contact" ItemsProvider="LoadNextContacts">
             <a href="/chat/@contact.ContactId" 
                 class="list-group-item list-group-item-action flex-column align-items-start bold-text">
                 @contact.FirstName <span> </span> @contact.LastName
@@ -34,7 +33,21 @@
 @code {
     [CascadingParameter]
     public Task<AuthenticationState> authenticationState { get; set; }
-    
+    public List<Contact> ListOfContacts { get; set; } = new List<Contact>();
+
+    private async ValueTask<ItemsProviderResult<Contact>> LoadNextContacts(ItemsProviderRequest request)
+    {
+        int totalUsers = 20000;
+        
+        Console.WriteLine("Start Index : " + request.StartIndex);
+        Console.WriteLine("Count : " + request.Count);
+        
+        var result = await _contactsViewModel.GetSomeContacts(request.StartIndex, request.Count);
+
+        return new ItemsProviderResult<Contact>(result, totalUsers);
+    }
+
+
     protected override async Task OnInitializedAsync() 
     {
         var authState = await authenticationState;//_authenticationStateProvider.GetAuthenticationStateAsync();
@@ -42,10 +55,12 @@
 
         if(user.Identity.IsAuthenticated)
         {
-            await _contactsViewModel.GetContacts();
+            ListOfContacts = await _contactsViewModel.GetAllContacts();
         }
         else _navigationManager.NavigateTo("/");
     }
+
+    
     private void NavigateToChat()
     {
         _navigationManager.NavigateTo("/chat");
