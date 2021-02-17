@@ -43,13 +43,20 @@ namespace BlazingChat.Server.Controllers
         [HttpGet("getallcontacts")]
         public List<User> GetAllContacts()
         {
-            return new UserData().GetAllUsers();
+            List<User> users = new();
+            users.AddRange(Enumerable.Range(0, 20001).Select(x => new User { UserId = x, FirstName = $"First{x}", LastName = $"Last{x}"}));
+        
+            return users;
+           
         }
 
         [HttpGet("getsomecontacts")]
         public List<User> GetSomeContacts(int startIndex, int numberOfUsers)
         {
-            return new UserData().GetSomeUsers(startIndex,numberOfUsers);
+            List<User> users = new();
+            users.AddRange(Enumerable.Range(startIndex, numberOfUsers).Select(x => new User { UserId = x, FirstName = $"First{x}", LastName = $"Last{x}"}));
+
+            return users;   
         }
 
         //Authentication Methods

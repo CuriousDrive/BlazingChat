@@ -14,19 +14,32 @@
     <br />
     @if(ListOfContacts != null)
     {
-        @foreach (var contact in ListOfContacts)
+        
+        @* @foreach (var contact in ListOfContacts)
         {
             <a href="/chat/@contact.ContactId" 
                 class="list-group-item list-group-item-action flex-column align-items-start bold-text">
                 @contact.FirstName <span> </span> @contact.LastName
             </a>
-        }
-        @* <Virtualize Context="contact" ItemsProvider="LoadNextContacts">
-            <a href="/chat/@contact.ContactId" 
-                class="list-group-item list-group-item-action flex-column align-items-start bold-text">
-                @contact.FirstName <span> </span> @contact.LastName
-            </a>
-        </Virtualize> *@
+        } *@
+
+        <Virtualize Context="contact" ItemsProvider="LoadNextContacts">
+            <ItemContent>
+                <div style="height: 50px;">
+                    <a href="/chat/@contact.ContactId" 
+                        class="list-group-item list-group-item-action flex-column align-items-start bold-text">
+                        @contact.FirstName <span> </span> @contact.LastName
+                    </a>
+                </div>
+            </ItemContent>
+            <Placeholder>
+                <div style="height: 50px;">
+                    <p>
+                        Loading&hellip;
+                    </p>
+                </div>
+            </Placeholder>
+        </Virtualize>
     }
 </div>
 
@@ -39,23 +52,20 @@
     {
         int totalUsers = 20000;
         
-        Console.WriteLine("Start Index : " + request.StartIndex);
-        Console.WriteLine("Count : " + request.Count);
-        
+        await Task.Delay(500);
         var result = await _contactsViewModel.GetSomeContacts(request.StartIndex, request.Count);
 
         return new ItemsProviderResult<Contact>(result, totalUsers);
     }
 
-
     protected override async Task OnInitializedAsync() 
     {
-        var authState = await authenticationState;//_authenticationStateProvider.GetAuthenticationStateAsync();
+        var authState = await authenticationState;
         var user = authState.User;
 
         if(user.Identity.IsAuthenticated)
         {
-            ListOfContacts = await _contactsViewModel.GetAllContacts();
+            //ListOfContacts = await _contactsViewModel.GetAllContacts();
         }
         else _navigationManager.NavigateTo("/");
     }
