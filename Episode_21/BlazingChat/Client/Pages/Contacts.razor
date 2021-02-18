@@ -1,0 +1,78 @@
+@page "/contacts"
+@using BlazingChat.ViewModels
+@inject IContactsViewModel _contactsViewModel
+@inject NavigationManager _navigationManager
+
+<h2><b>Contacts</b></h2>
+<hr />
+
+<div class="col-12">
+    <div class="col-12 row">
+        <input type="text" class="col-9 form-control" placeholder="search"/>
+        <span>&nbsp;</span><button class="btn btn-primary">Search</button>
+    </div>
+    <br />
+    @if(ListOfContacts != null)
+    {
+        
+        @* @foreach (var contact in ListOfContacts)
+        {
+            <a href="/chat/@contact.ContactId" 
+                class="list-group-item list-group-item-action flex-column align-items-start bold-text">
+                @contact.FirstName <span> </span> @contact.LastName
+            </a>
+        } *@
+
+        <Virtualize Context="contact" ItemsProvider="LoadVisibleContacts">
+            <ItemContent>
+                <div style="height: 50px;">
+                    <a href="/chat/@contact.ContactId" 
+                        class="list-group-item list-group-item-action flex-column align-items-start bold-text">
+                        @contact.FirstName <span> </span> @contact.LastName
+                    </a>
+                </div>
+            </ItemContent>
+            <Placeholder>
+                <div style="height: 50px;">
+                    <p>
+                        Loading&hellip;
+                    </p>
+                </div>
+            </Placeholder>
+        </Virtualize>
+    }
+</div>
+
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+    public List<Contact> ListOfContacts { get; set; } = new List<Contact>();
+
+    private async ValueTask<ItemsProviderResult<Contact>> LoadVisibleContacts(ItemsProviderRequest request)
+    {
+        int totalUsers = 20000;
+        
+        await Task.Delay(500);
+        var result = await _contactsViewModel.GetSomeContacts(request.StartIndex, request.Count);
+
+        return new ItemsProviderResult<Contact>(result, totalUsers);
+    }
+
+    protected override async Task OnInitializedAsync() 
+    {
+        var authState = await authenticationState;
+        var user = authState.User;
+
+        if(user.Identity.IsAuthenticated)
+        {
+            //ListOfContacts = await _contactsViewModel.GetAllContacts();
+        }
+        else _navigationManager.NavigateTo("/");
+    }
+
+    
+    private void NavigateToChat()
+    {
+        _navigationManager.NavigateTo("/chat");
+    }
+}
