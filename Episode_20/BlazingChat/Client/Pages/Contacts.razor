@@ -23,7 +23,7 @@
             </a>
         } *@
 
-        <Virtualize Context="contact" ItemsProvider="LoadNextContacts">
+        <Virtualize Context="contact" ItemsProvider="LoadVisibleContacts">
             <ItemContent>
                 <div style="height: 50px;">
                     <a href="/chat/@contact.ContactId" 
@@ -48,7 +48,7 @@
     public Task<AuthenticationState> authenticationState { get; set; }
     public List<Contact> ListOfContacts { get; set; } = new List<Contact>();
 
-    private async ValueTask<ItemsProviderResult<Contact>> LoadNextContacts(ItemsProviderRequest request)
+    private async ValueTask<ItemsProviderResult<Contact>> LoadVisibleContacts(ItemsProviderRequest request)
     {
         int totalUsers = 20000;
         
