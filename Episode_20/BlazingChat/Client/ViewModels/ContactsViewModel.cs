@@ -28,6 +28,15 @@ namespace BlazingChat.ViewModels
             LoadCurrentObject(users);
         }
 
+        private void LoadCurrentObject(List<User> users)
+        {
+            this.Contacts = new List<Contact>();
+            foreach (User user in users)
+            {
+                this.Contacts.Add(user);
+            }
+        }
+
         public async Task<List<Contact>> GetAllContacts()
         {
             List<User> users = await _httpClient.GetFromJsonAsync<List<User>>("user/getallcontacts");
@@ -41,15 +50,6 @@ namespace BlazingChat.ViewModels
             
             LoadCurrentObject(users);
             return Contacts;
-        }
-
-        private void LoadCurrentObject(List<User> users)
-        {
-            this.Contacts = new List<Contact>();
-            foreach (User user in users)
-            {
-                this.Contacts.Add(user);
-            }
         }
 
 
