@@ -15,13 +15,20 @@
     @if(ListOfContacts != null)
     {
         
-        @foreach (var contact in ListOfContacts)
+        @* @foreach (var contact in ListOfContacts)
         {
             <a href="/chat/@contact.ContactId" 
                 class="list-group-item list-group-item-action flex-column align-items-start bold-text">
                 @contact.FirstName <span> </span> @contact.LastName
             </a>
-        }
+        } *@
+
+        <Virtualize Items="ListOfContacts" Context="contact">
+            <a href="/chat/@contact.ContactId" 
+                class="list-group-item list-group-item-action flex-column align-items-start bold-text">
+                @contact.FirstName <span> </span> @contact.LastName
+            </a>
+        </Virtualize>
     }
 </div>
 
