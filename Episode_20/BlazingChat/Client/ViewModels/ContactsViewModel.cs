@@ -44,9 +44,9 @@ namespace BlazingChat.ViewModels
             return Contacts;
         }
 
-        public async Task<List<Contact>> GetSomeContacts(int startIndex, int numberOfUsers)
+        public async Task<List<Contact>> GetOnlyVisibleContacts(int startIndex, int count)
         {
-            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>($"user/getsomecontacts?startIndex={startIndex}&numberOfUsers={numberOfUsers}");
+            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>($"user/getonlyvisiblecontacts?startIndex={startIndex}&count={count}");
             
             LoadCurrentObject(users);
             return Contacts;

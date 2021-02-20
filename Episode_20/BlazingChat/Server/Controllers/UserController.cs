@@ -186,11 +186,11 @@ namespace BlazingChat.Server.Controllers
            
         }
 
-        [HttpGet("getsomecontacts")]
-        public List<User> GetSomeContacts(int startIndex, int numberOfUsers)
+        [HttpGet("getonlyvisiblecontacts")]
+        public List<User> GetOnlyVisibleContacts(int startIndex, int count)
         {
             List<User> users = new();
-            users.AddRange(Enumerable.Range(startIndex, numberOfUsers).Select(x => new User { UserId = x, FirstName = $"First{x}", LastName = $"Last{x}"}));
+            users.AddRange(Enumerable.Range(startIndex, count).Select(x => new User { UserId = x, FirstName = $"First{x}", LastName = $"Last{x}"}));
 
             return users;   
         }
