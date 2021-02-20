@@ -23,11 +23,21 @@
             </a>
         } *@
 
-        <Virtualize Items="ListOfContacts" Context="contact">
-            <a href="/chat/@contact.ContactId" 
-                class="list-group-item list-group-item-action flex-column align-items-start bold-text">
-                @contact.FirstName <span> </span> @contact.LastName
-            </a>
+        <Virtualize ItemsProvider="LoadOnlyVisibleContacts" Context="contact">
+            <ItemContent>
+                <div style="height: 50px;">
+                     <a href="/chat/@contact.ContactId" 
+                        class="list-group-item list-group-item-action flex-column align-items-start bold-text">
+                        @contact.FirstName <span> </span> @contact.LastName
+                    </a>
+                </div>
+            </ItemContent>
+            <Placeholder>
+                <div style="height: 50px;">
+                    <p>Loading...</p>
+                </div>
+            </Placeholder>
+            
         </Virtualize>
     }
 </div>
@@ -37,6 +47,17 @@
     public Task<AuthenticationState> authenticationState { get; set; }
     public List<Contact> ListOfContacts { get; set; } = new List<Contact>();
 
+    private async ValueTask<ItemsProviderResult<Contact>> LoadOnlyVisibleContacts(ItemsProviderRequest itemsProviderRequest)
+    {
+        Console.WriteLine($"Start Index : {itemsProviderRequest.StartIndex}");
+        Console.WriteLine($"Count : {itemsProviderRequest.Count}");
+
+        await Task.Delay(500);
+        var results = await _contactsViewModel.GetOnlyVisibleContacts(itemsProviderRequest.StartIndex,itemsProviderRequest.Count);
+
+        return new ItemsProviderResult<Contact>(results,20000);
+    }
+
     protected override async Task OnInitializedAsync() 
     {
         var authState = await authenticationState;
@@ -44,7 +65,7 @@
 
         if(user.Identity.IsAuthenticated)
         {
-            ListOfContacts = await _contactsViewModel.GetAllContacts();
+            //ListOfContacts = await _contactsViewModel.GetAllContacts();
         }
         else _navigationManager.NavigateTo("/");
     }
