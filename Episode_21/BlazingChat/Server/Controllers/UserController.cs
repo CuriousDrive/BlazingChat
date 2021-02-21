@@ -40,8 +40,6 @@ namespace BlazingChat.Server.Controllers
             return _context.Users.ToList();
         }
 
-        
-
         //Authentication Methods
         [HttpPost("loginuser")]
         public async Task<ActionResult<User>> LoginUser(User user)
@@ -85,7 +83,6 @@ namespace BlazingChat.Server.Controllers
                     await _context.SaveChangesAsync();
                 }
             }
-
             return await Task.FromResult(currentUser);
         }
 
@@ -193,6 +190,18 @@ namespace BlazingChat.Server.Controllers
             users.AddRange(Enumerable.Range(startIndex, count).Select(x => new User { UserId = x, FirstName = $"First{x}", LastName = $"Last{x}"}));
 
             return users;   
+        }
+
+        [HttpGet("getcontactscount")]
+        public async Task<int> GetContactsCount()
+        {
+            return await _context.Users.CountAsync();
+        }
+
+        [HttpGet("getvisiblecontacts")]
+        public async Task<List<User>> GetVisibleContacts(int startIndex, int count)
+        {
+            return await _context.Users.Skip(startIndex).Take(count).ToListAsync();
         }
     }
     
