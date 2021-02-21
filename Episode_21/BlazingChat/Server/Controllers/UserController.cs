@@ -40,24 +40,7 @@ namespace BlazingChat.Server.Controllers
             return _context.Users.ToList();
         }
 
-        [HttpGet("getallcontacts")]
-        public List<User> GetAllContacts()
-        {
-            List<User> users = new();
-            users.AddRange(Enumerable.Range(0, 20001).Select(x => new User { UserId = x, FirstName = $"First{x}", LastName = $"Last{x}"}));
         
-            return users;
-           
-        }
-
-        [HttpGet("getsomecontacts")]
-        public List<User> GetSomeContacts(int startIndex, int numberOfUsers)
-        {
-            List<User> users = new();
-            users.AddRange(Enumerable.Range(startIndex, numberOfUsers).Select(x => new User { UserId = x, FirstName = $"First{x}", LastName = $"Last{x}"}));
-
-            return users;   
-        }
 
         //Authentication Methods
         [HttpPost("loginuser")]
@@ -191,6 +174,25 @@ namespace BlazingChat.Server.Controllers
                 var buffer = memoryStream.ToArray();
                 return Convert.ToBase64String(buffer);
             }
+        }
+        
+        [HttpGet("getallcontacts")]
+        public List<User> GetAllContacts()
+        {
+            List<User> users = new();
+            users.AddRange(Enumerable.Range(0, 20001).Select(x => new User { UserId = x, FirstName = $"First{x}", LastName = $"Last{x}"}));
+        
+            return users;
+           
+        }
+
+        [HttpGet("getonlyvisiblecontacts")]
+        public List<User> GetOnlyVisibleContacts(int startIndex, int count)
+        {
+            List<User> users = new();
+            users.AddRange(Enumerable.Range(startIndex, count).Select(x => new User { UserId = x, FirstName = $"First{x}", LastName = $"Last{x}"}));
+
+            return users;   
         }
     }
     
