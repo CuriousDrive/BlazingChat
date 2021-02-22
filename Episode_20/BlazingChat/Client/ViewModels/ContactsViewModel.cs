@@ -22,10 +22,12 @@ namespace BlazingChat.ViewModels
         {
             _httpClient = httpClient;
         }
-        public async Task GetContacts()
+        public async Task<List<Contact>> GetContacts()
         {
             List<User> users = await _httpClient.GetFromJsonAsync<List<User>>("user/getcontacts");
             LoadCurrentObject(users);
+
+            return this.Contacts;
         }
 
         private void LoadCurrentObject(List<User> users)
@@ -47,6 +49,19 @@ namespace BlazingChat.ViewModels
         public async Task<List<Contact>> GetOnlyVisibleContacts(int startIndex, int count)
         {
             List<User> users = await _httpClient.GetFromJsonAsync<List<User>>($"user/getonlyvisiblecontacts?startIndex={startIndex}&count={count}");
+            
+            LoadCurrentObject(users);
+            return Contacts;
+        }
+
+        public async Task<int> GetContactsCount()
+        {
+            return await _httpClient.GetFromJsonAsync<int>($"user/getcontactscount");
+        }
+
+        public async Task<List<Contact>> GetVisibleContacts(int startIndex, int count)
+        {
+            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>($"user/getvisiblecontacts?startIndex={startIndex}&count={count}");
             
             LoadCurrentObject(users);
             return Contacts;

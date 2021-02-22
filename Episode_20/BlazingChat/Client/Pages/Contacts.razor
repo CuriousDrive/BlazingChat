@@ -12,21 +12,12 @@
         <span>&nbsp;</span><button class="btn btn-primary">Search</button>
     </div>
     <br />
-    @if(ListOfContacts != null)
+    @if(ContactsCount > 0)
     {
-        
-        @* @foreach (var contact in ListOfContacts)
-        {
-            <a href="/chat/@contact.ContactId" 
-                class="list-group-item list-group-item-action flex-column align-items-start bold-text">
-                @contact.FirstName <span> </span> @contact.LastName
-            </a>
-        } *@
-
         <Virtualize ItemsProvider="LoadOnlyVisibleContacts" Context="contact">
             <ItemContent>
                 <div style="height: 50px;">
-                     <a href="/chat/@contact.ContactId" 
+                    <a href="/chat/@contact.ContactId"
                         class="list-group-item list-group-item-action flex-column align-items-start bold-text">
                         @contact.FirstName <span> </span> @contact.LastName
                     </a>
@@ -37,7 +28,6 @@
                     <p>Loading...</p>
                 </div>
             </Placeholder>
-            
         </Virtualize>
     }
 </div>
@@ -45,17 +35,16 @@
 @code {
     [CascadingParameter]
     public Task<AuthenticationState> authenticationState { get; set; }
-    public List<Contact> ListOfContacts { get; set; } = new List<Contact>();
-
+    public int ContactsCount { get; set; }
+ 
     private async ValueTask<ItemsProviderResult<Contact>> LoadOnlyVisibleContacts(ItemsProviderRequest itemsProviderRequest)
     {
         Console.WriteLine($"Start Index : {itemsProviderRequest.StartIndex}");
         Console.WriteLine($"Count : {itemsProviderRequest.Count}");
+        
+        var results = await _contactsViewModel.GetVisibleContacts(itemsProviderRequest.StartIndex,itemsProviderRequest.Count);
 
-        await Task.Delay(500);
-        var results = await _contactsViewModel.GetOnlyVisibleContacts(itemsProviderRequest.StartIndex,itemsProviderRequest.Count);
-
-        return new ItemsProviderResult<Contact>(results,20000);
+        return new ItemsProviderResult<Contact>(results, ContactsCount);
     }
 
     protected override async Task OnInitializedAsync() 
@@ -65,7 +54,7 @@
 
         if(user.Identity.IsAuthenticated)
         {
-            //ListOfContacts = await _contactsViewModel.GetAllContacts();
+            ContactsCount = await _contactsViewModel.GetContactsCount();
         }
         else _navigationManager.NavigateTo("/");
     }
