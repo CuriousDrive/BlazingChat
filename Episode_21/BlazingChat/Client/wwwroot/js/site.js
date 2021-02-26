@@ -1,4 +1,4 @@
-export function downloadFile(mimeType, base64String, fileName) {
+function downloadFile(mimeType, base64String, fileName) {
 
     var fileDataUrl = "data:" + mimeType + ";base64," + base64String;
     fetch(fileDataUrl)
@@ -16,8 +16,4 @@ export function downloadFile(mimeType, base64String, fileName) {
             document.body.removeChild(link);
         });
     
-}
-
-export function addTwoNumbers(x,y){
-    return x + y;
 }

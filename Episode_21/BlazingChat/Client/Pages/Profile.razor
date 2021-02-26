@@ -29,7 +29,6 @@
         <button class="btn btn-primary" @onclick="_profileViewModel.UpdateProfile">Update Profile</button>
         <button class="btn btn-primary" @onclick="DownloadProfilePicture">Download Profile Picture</button>
         @* <button class="btn btn-primary" @onclick="DownloadServerFile">Download a Document</button> *@
-        <p>Addition of two numbers : @Addition </p>
     </div>
 </div>
 
@@ -72,10 +71,8 @@
     private async Task DownloadProfilePicture()
     {
         string[] base64String = _profileViewModel.ProfilePicDataUrl.Split(',');
-        var module = await jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
         
-        //await module.InvokeVoidAsync("downloadFile","image/png",base64String[1],"profile.png");
-        Addition = await module.InvokeAsync<int>("addTwoNumbers",2,2);
+        await jsRuntime.InvokeVoidAsync("downloadFile","image/png",base64String[1],"profile.png");
     }
 
     private async Task DownloadServerFile()
