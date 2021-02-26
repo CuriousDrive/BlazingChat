@@ -1,4 +1,4 @@
-function downloadFile(mimeType, base64String, fileName) {
+export function downloadFile(mimeType, base64String, fileName) {
 
     var fileDataUrl = "data:" + mimeType + ";base64," + base64String;
     fetch(fileDataUrl)
