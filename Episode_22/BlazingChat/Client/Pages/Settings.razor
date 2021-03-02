@@ -8,19 +8,16 @@
 <hr />
 
 <div class="col-12">
-    <div class="row">
-        <RadzenSwitch @bind-Value=@_settingsViewModel.Notifications Style="margin-bottom: 20px" />
-        <span>&nbsp;</span>
-        <label> Notification </label>  
-    </div>
-    <div class="row">
-        <RadzenSwitch @bind-Value=@_settingsViewModel.DarkTheme Style="margin-bottom: 20px" />
-        <span>&nbsp;</span>
-        <label> Dark Theme </label>    
-    </div>
-    <div class="row">
-        <button class="btn btn-primary" @onclick="_settingsViewModel.Save">Save</button>
-    </div>
+    <input type="checkbox" @bind="@_settingsViewModel.Notifications" id="chkNotification">
+    <label> Notification </label>    
+    <br>   
+
+    <input type="checkbox" @bind="@_settingsViewModel.DarkTheme" id="chkDarkTheme">
+    <label> Dark Theme </label>    
+    <br>
+</div>
+<div class="col-12">
+    <button class="btn btn-primary" @onclick="_settingsViewModel.Save">Save</button>
 </div>
 
 @code {

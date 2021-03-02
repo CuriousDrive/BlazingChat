@@ -26,8 +26,9 @@
         <br/>
         <textarea class="form-control" @bind="_profileViewModel.AboutMe" placeholder="about me"></textarea>
         <br/>
-        <button class="btn btn-primary" @onclick="UpdateProfile">Update Profile</button>
+        <button class="btn btn-primary" @onclick="_profileViewModel.UpdateProfile">Update Profile</button>
         <button class="btn btn-primary" @onclick="DownloadProfilePicture">Download Profile Picture</button>
+        @* <button class="btn btn-primary" @onclick="DownloadServerFile">Download a Document</button> *@
     </div>
 </div>
 
@@ -37,11 +38,6 @@
     public Task<AuthenticationState> authenticationState { get; set; }
     
     public int Addition {get; set;}
-
-    private async Task UpdateProfile()
-    {
-        await _profileViewModel.UpdateProfile();
-    }
 
     protected override async Task OnInitializedAsync() 
     {

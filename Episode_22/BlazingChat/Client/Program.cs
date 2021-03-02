@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Http;
 using BlazingChat.ViewModels;
 using Microsoft.AspNetCore.Components.Authorization;
-using Radzen;
 
 namespace BlazingChat.Client
 {
@@ -24,7 +23,6 @@ namespace BlazingChat.Client
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
 
-            builder.Services.AddScoped<NotificationService>();
             builder.Services.AddScoped(sp => 
                 new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
