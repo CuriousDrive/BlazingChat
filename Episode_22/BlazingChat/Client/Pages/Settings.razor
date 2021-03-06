@@ -9,14 +9,12 @@
 
 <div class="col-12">
     <div class="row">
-        <input type="checkbox" @bind="@_settingsViewModel.Notifications" id="chkNotification">
-        @* <RadzenSwitch @bind-Value="@_settingsViewModel.Notifications" Style="margin-bottom: 20px" /> *@
+        <RadzenSwitch @bind-Value="@_settingsViewModel.Notifications" Style="margin-bottom: 20px" />
         <span>&nbsp;</span>
         <label> Notification </label>  
     </div>
     <div class="row">
-        <input type="checkbox" @bind="@_settingsViewModel.DarkTheme" id="chkDarkTheme">
-        @* <RadzenSwitch @bind-Value="@_settingsViewModel.DarkTheme" Style="margin-bottom: 20px" /> *@
+        <RadzenSwitch @bind-Value="@_settingsViewModel.DarkTheme" Style="margin-bottom: 20px" />
         <span>&nbsp;</span>
         <label> Dark Theme </label>    
     </div>
