@@ -10,8 +10,7 @@
 <h2><b>Profile</b></h2> 
 <hr />
 
-<div class="row col-12">
-
+<div class="row">
     <div class="col-lg-4 col-sm-12">
         <img src="@_profileViewModel.ProfilePicDataUrl" alt="User Profile Picture" class="img-thumbnail"> <br/> <br/>
         <InputFile OnChange="@OnInputFileChanged" style="margin-bottom: 1rem;"></InputFile>
@@ -25,8 +24,8 @@
         <br/>
         <textarea class="form-control" @bind="_profileViewModel.AboutMe" placeholder="about me"></textarea>
         <br/>
-        <button class="btn btn-primary" @onclick="_profileViewModel.UpdateProfile">Update Profile</button>
-        <button class="btn btn-primary" @onclick="DownloadProfilePicture">Download Profile Picture</button>
+        <button class="btn btn-primary" @onclick="_profileViewModel.UpdateProfile">Save</button>
+        <button class="btn btn-primary" @onclick="DownloadProfilePicture">Download Picture</button>
         @* <button class="btn btn-primary" @onclick="DownloadServerFile">Download a Document</button> *@
     </div>
 </div>

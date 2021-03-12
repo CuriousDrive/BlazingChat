@@ -91,7 +91,7 @@ namespace BlazingChat.Server.Controllers
         {
             await HttpContext.SignOutAsync();
             return "Success";
-        }       
+        }
 
         [HttpPut("updateprofile/{userId}")]
         public async Task<User> UpdateProfile(int userId, [FromBody] User user)
@@ -140,21 +140,21 @@ namespace BlazingChat.Server.Controllers
         [HttpGet("TwitterSignIn")]
         public async Task TwitterSignIn()
         {
-            await HttpContext.ChallengeAsync(TwitterDefaults.AuthenticationScheme, 
+            await HttpContext.ChallengeAsync(TwitterDefaults.AuthenticationScheme,
                 new AuthenticationProperties { RedirectUri = "/profile" });
         }
 
         [HttpGet("FacebookSignIn")]
         public async Task FacebookSignIn()
         {
-            await HttpContext.ChallengeAsync(FacebookDefaults.AuthenticationScheme, 
+            await HttpContext.ChallengeAsync(FacebookDefaults.AuthenticationScheme,
                 new AuthenticationProperties { RedirectUri = "/profile" });
         }
 
         [HttpGet("GoogleSignIn")]
         public async Task GoogleSignIn()
         {
-            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, 
+            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
                 new AuthenticationProperties { RedirectUri = "/profile" });
         }
 
@@ -163,7 +163,7 @@ namespace BlazingChat.Server.Controllers
         {
             var filePath = @"C:\Data\CuriousDrive\GitHub Repos\BlazingChat\Documents\Word\ServerFile.docx";
 
-            using(var fileInput = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            using (var fileInput = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
                 MemoryStream memoryStream = new MemoryStream();
                 await fileInput.CopyToAsync(memoryStream);
@@ -172,24 +172,24 @@ namespace BlazingChat.Server.Controllers
                 return Convert.ToBase64String(buffer);
             }
         }
-        
+
         [HttpGet("getallcontacts")]
         public List<User> GetAllContacts()
         {
             List<User> users = new();
-            users.AddRange(Enumerable.Range(0, 20001).Select(x => new User { UserId = x, FirstName = $"First{x}", LastName = $"Last{x}"}));
-        
+            users.AddRange(Enumerable.Range(0, 20001).Select(x => new User { UserId = x, FirstName = $"First{x}", LastName = $"Last{x}" }));
+
             return users;
-           
+
         }
 
         [HttpGet("getonlyvisiblecontacts")]
         public List<User> GetOnlyVisibleContacts(int startIndex, int count)
         {
             List<User> users = new();
-            users.AddRange(Enumerable.Range(startIndex, count).Select(x => new User { UserId = x, FirstName = $"First{x}", LastName = $"Last{x}"}));
+            users.AddRange(Enumerable.Range(startIndex, count).Select(x => new User { UserId = x, FirstName = $"First{x}", LastName = $"Last{x}" }));
 
-            return users;   
+            return users;
         }
 
         [HttpGet("getcontactscount")]
@@ -204,5 +204,5 @@ namespace BlazingChat.Server.Controllers
             return await _context.Users.Skip(startIndex).Take(count).ToListAsync();
         }
     }
-    
+
 }

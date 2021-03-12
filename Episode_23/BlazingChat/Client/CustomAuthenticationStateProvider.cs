@@ -24,8 +24,8 @@ namespace BlazingChat.Client
             User currentUser = await _httpClient.GetFromJsonAsync<User>("user/getcurrentuser");
 
             if (currentUser != null && currentUser.EmailAddress != null)
-            { 
-                 //create a claims
+            {
+                //create a claims
                 var claimEmailAddress = new Claim(ClaimTypes.Name, currentUser.EmailAddress);
                 var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, Convert.ToString(currentUser.UserId));
                 //create claimsIdentity
@@ -39,4 +39,4 @@ namespace BlazingChat.Client
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
     }
-} 
+}

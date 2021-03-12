@@ -23,7 +23,7 @@ namespace BlazingChat.Client
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
 
-            builder.Services.AddScoped(sp => 
+            builder.Services.AddScoped(sp =>
                 new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             builder.Services.AddHttpClient<IProfileViewModel, ProfileViewModel>

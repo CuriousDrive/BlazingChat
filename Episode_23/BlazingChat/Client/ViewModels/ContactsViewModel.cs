@@ -49,7 +49,7 @@ namespace BlazingChat.ViewModels
         public async Task<List<Contact>> GetOnlyVisibleContacts(int startIndex, int count)
         {
             List<User> users = await _httpClient.GetFromJsonAsync<List<User>>($"user/getonlyvisiblecontacts?startIndex={startIndex}&count={count}");
-            
+
             LoadCurrentObject(users);
             return Contacts;
         }
@@ -62,7 +62,7 @@ namespace BlazingChat.ViewModels
         public async Task<List<Contact>> GetVisibleContacts(int startIndex, int count)
         {
             List<User> users = await _httpClient.GetFromJsonAsync<List<User>>($"user/getvisiblecontacts?startIndex={startIndex}&count={count}");
-            
+
             LoadCurrentObject(users);
             return Contacts;
         }
