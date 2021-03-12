@@ -1,4 +1,7 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@inject HttpClient _httpClient
+@inject NavigationManager _navigationManager
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">BlazingChat</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -21,6 +24,11 @@
             <NavLink class="nav-link" href="settings">
                 <span class="oi oi-plus" aria-hidden="true"></span> Settings
             </NavLink>
+        </li>   
+        <li class="nav-item px-3">
+            <a class="nav-link" href="" @onclick="Logout">
+                <span class="oi oi-lock-locked" aria-hidden="true"></span> Logout
+            </a>
         </li>        
     </ul>
 </div>
@@ -33,5 +41,11 @@
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    private async Task Logout()
+    {
+        await _httpClient.GetAsync("user/logoutuser");
+        _navigationManager.NavigateTo("/", true);
     }
 }
