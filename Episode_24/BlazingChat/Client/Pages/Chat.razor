@@ -1,9 +1,107 @@
-@page "/chat/{ContactId:int}"
+@page "/chat"
+@page "/chat/{ToUserId}"
+@using BlazingChat.Shared.Models
+@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager NavigationManager
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+@inject HttpClient _httpClient
 
-<h1> this is chat page of @ContactId</h1>
+<div class="col-12">
+    <p></p>
+</div>
 
-@code{
+<div style="border:0px;height:90vh;">    
+    <div class="panel panel-primary" style="height: 100%;">
+        <div class="panel-heading top-bar">
+            <div class="col-md-8 col-xs-8">
+                <h3 class="panel-title">
+                    @if(ToUser != null)
+                    {
+                        @if(ToUser.FirstName != null || ToUser.LastName != null)
+                        {                    
+                            <b>@ToUser.FirstName<span>&nbsp;</span>@ToUser.LastName</b>
+                        }
+                        else
+                        {
+                            <b>@ToUser.EmailAddress</b>
+                        }
+                    }
+                   
+                </h3>
+            </div>
+        </div>
+        <div id="divMessageContainerBase" class="panel-body msg_container_base">
+            @if(Messages != null && Messages.Count() > 0 )
+            {
+                @foreach (var message in Messages)
+                {            
+                    @if(message.FromUserId == FromUserId)
+                    {
+                        <div class="row msg_container base_sent">
+                            <div class="col-md-10 col-xs-10">
+                                <div class="messages msg_sent">
+                                    <p>@message.MessageText</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row msg_container base_receive">
+                            <div class="col-md-10 col-xs-10">
+                                <div class="messages msg_receive">
+                                    <p>@message.MessageText</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+        <!--CHAT USER BOX-->
+        <div class="panel-footer">
+            <div class="input-group" id="myForm">
+                <input id="txtMessageInput" type="text" class="form-control input-sm chat_input" 
+                placeholder="Write your message here...">
+                <button class="btn btn-primary">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+@code {
     [Parameter]
-    public int ContactId { get; set; }
+    public string ToUserId { get; set; }
+    public User ToUser { get; set; } = new User();
+    public string FromUserId { get; set; }
+    public User FromUser { get; set; } = new User();
+    public List<Message> Messages {get; set;}
+
+    public bool IsConnected;
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var claimsPrincipal = (await authenticationStateTask).User;
+
+        if (!claimsPrincipal.Identity.IsAuthenticated)
+            NavigationManager.NavigateTo("/");
+
+        FromUser = await _httpClient.GetFromJsonAsync<User>("user/getcurrentuser");
+
+        if (Convert.ToInt32(ToUserId) > 0)
+            ToUser = await _httpClient.GetFromJsonAsync<User>("user/getprofile/" + ToUserId);
+    }
+
+    private void Receive()
+    {
+
+    }
+    public void Send()
+    {
+
+    }
+
 }
