@@ -7,9 +7,6 @@
 @inject IJSRuntime JSRuntime
 @inject HttpClient _httpClient
 
-<div class="col-12">
-    <p></p>
-</div>
 
 <div style="border:0px;height:90vh;">    
     <div class="panel panel-primary" style="height: 100%;">
@@ -78,7 +75,6 @@
     public User FromUser { get; set; } = new User();
     public List<Message> Messages {get; set;}
 
-    public bool IsConnected;
     [CascadingParameter]
     public Task<AuthenticationState> authenticationStateTask { get; set; }
 
