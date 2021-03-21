@@ -2,11 +2,11 @@
 @page "/chat/{ToUserId}"
 @using BlazingChat.Shared.Models
 @using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.SignalR.Client
 @inject NavigationManager NavigationManager
 @inject HttpClient Http
 @inject IJSRuntime JSRuntime
 @inject HttpClient _httpClient
-
 
 <div style="border:0px;height:90vh;">    
     <div class="panel panel-primary" style="height: 100%;">
@@ -24,7 +24,6 @@
                             <b>@ToUser.EmailAddress</b>
                         }
                     }
-                   
                 </h3>
             </div>
         </div>
@@ -59,9 +58,9 @@
         <!--CHAT USER BOX-->
         <div class="panel-footer">
             <div class="input-group" id="myForm">
-                <input id="txtMessageInput" type="text" class="form-control input-sm chat_input" 
+                <input id="txtMessageInput" @bind="MessageText" type="text" class="form-control input-sm chat_input" 
                 placeholder="Write your message here...">
-                <button class="btn btn-primary">Send</button>
+                <button class="btn btn-primary" @onclick="Send">Send</button>
             </div>
         </div>
     </div>
@@ -72,8 +71,8 @@
     public string ToUserId { get; set; }
     public User ToUser { get; set; } = new User();
     public string FromUserId { get; set; }
-    public User FromUser { get; set; } = new User();
-    public List<Message> Messages {get; set;}
+    public string MessageText { get; set; }
+    public List<Message> Messages {get; set;} = new List<Message>();
 
     [CascadingParameter]
     public Task<AuthenticationState> authenticationStateTask { get; set; }
@@ -85,19 +84,15 @@
         if (!claimsPrincipal.Identity.IsAuthenticated)
             NavigationManager.NavigateTo("/");
 
-        FromUser = await _httpClient.GetFromJsonAsync<User>("user/getcurrentuser");
-
+        FromUserId = (await _httpClient.GetFromJsonAsync<User>("user/getcurrentuser")).UserId.ToString();
+        
         if (Convert.ToInt32(ToUserId) > 0)
             ToUser = await _httpClient.GetFromJsonAsync<User>("user/getprofile/" + ToUserId);
     }
 
-    private void Receive()
+    public async Task Send()
     {
-
-    }
-    public void Send()
-    {
-
+        
     }
 
 }
