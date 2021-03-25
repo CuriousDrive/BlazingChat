@@ -1,0 +1,61 @@
+@page "/"
+@using BlazingChat.ViewModels
+@using BlazingChat.Shared.Models
+@inject ILoginViewModel _loginViewModel
+@inject NavigationManager _navigationManager
+
+<h2><b>Login</b></h2>
+<hr>
+
+<div class="col-xl-6 col-12">
+    <input type="text" @bind="_loginViewModel.EmailAddress" class="form-control" placeholder="email address">
+</div>
+<br />
+<div class="col-xl-6 col-12">
+    <input type="password" @bind="_loginViewModel.Password" class="form-control" placeholder="password">
+</div>
+<br />
+<div class="col-xl-6 col-12">
+    <button class="btn btn-primary" @onclick="LoginUser">Login</button>
+</div>
+<br />
+<div class="col-xl-6 col-12">
+    <a class="btn btn-block btn-social btn-twitter" @onclick="TwitterSignIn">
+        <span class="fa fa-twitter"></span> <b>Sign in with Twitter</b>
+    </a>
+</div>
+<br />
+<div class="col-xl-6 col-12">
+    <a class="btn btn-block btn-social btn-facebook" @onclick="FacebookSignIn">
+        <span class="fa fa-facebook"></span> <b>Sign in with Facebook</b>
+    </a>
+</div>
+<br />
+<div class="col-xl-6 col-12">
+    <a class="btn btn-block btn-social btn-google" @onclick="GoogleSignIn">
+        <span class="fa fa-google"></span> <b>Sign in with Google</b>
+    </a>
+</div>
+
+@code {
+    public async Task LoginUser()
+    {
+        await _loginViewModel.LoginUser();
+        _navigationManager.NavigateTo("/profile",true);
+    }
+
+    private void TwitterSignIn()
+    {
+        _navigationManager.NavigateTo("user/TwitterSignIn", true);
+    }
+
+    private void FacebookSignIn()
+    {
+        _navigationManager.NavigateTo("user/FacebookSignIn", true);
+    }
+
+    private void GoogleSignIn()
+    {
+        _navigationManager.NavigateTo("user/GoogleSignIn", true);
+    }
+}

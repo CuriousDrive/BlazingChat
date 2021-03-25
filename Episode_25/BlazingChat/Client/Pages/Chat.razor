@@ -1,0 +1,117 @@
+@page "/chat"
+@page "/chat/{ToUserId}"
+@using BlazingChat.Shared.Models
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager NavigationManager
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+@inject HttpClient _httpClient
+
+<div style="border:0px;height:90vh;">    
+    <div class="panel panel-primary" style="height: 100%;">
+        <div class="panel-heading top-bar">
+            <div class="col-md-8 col-xs-8">
+                <h3 class="panel-title">
+                    @if(ToUser != null)
+                    {
+                        @if(ToUser.FirstName != null || ToUser.LastName != null)
+                        {                    
+                            <b>@ToUser.FirstName<span>&nbsp;</span>@ToUser.LastName</b>
+                        }
+                        else
+                        {
+                            <b>@ToUser.EmailAddress</b>
+                        }
+                    }
+                </h3>
+            </div>
+        </div>
+        <div id="divMessageContainerBase" class="panel-body msg_container_base">
+            @if(Messages != null && Messages.Count() > 0 )
+            {
+                @foreach (var message in Messages)
+                {            
+                    @if(message.FromUserId == FromUserId)
+                    {
+                        <div class="row msg_container base_sent">
+                            <div class="col-md-10 col-xs-10">
+                                <div class="messages msg_sent">
+                                    <p>@message.MessageText</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row msg_container base_receive">
+                            <div class="col-md-10 col-xs-10">
+                                <div class="messages msg_receive">
+                                    <p>@message.MessageText</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+        <!--CHAT USER BOX-->
+        <div class="panel-footer">
+            <div class="input-group" id="myForm">
+                <input id="txtMessageInput" @bind="MessageText" type="text" class="form-control input-sm chat_input" 
+                placeholder="Write your message here...">
+                <button class="btn btn-primary" @onclick="Send">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string ToUserId { get; set; }
+    public User ToUser { get; set; } = new User();
+    public string FromUserId { get; set; }
+    public string MessageText { get; set; }
+    public List<Message> Messages {get; set;} = new List<Message>();
+
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationStateTask { get; set; }
+    private HubConnection hubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var claimsPrincipal = (await authenticationStateTask).User;
+
+        if (!claimsPrincipal.Identity.IsAuthenticated)
+            NavigationManager.NavigateTo("/");
+
+        FromUserId = (await _httpClient.GetFromJsonAsync<User>("user/getcurrentuser")).UserId.ToString();
+        
+        if (Convert.ToInt32(ToUserId) > 0)
+            ToUser = await _httpClient.GetFromJsonAsync<User>("user/getprofile/" + ToUserId);
+        
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/chathub"))
+            .Build();
+        
+        hubConnection.On<Message>("ReceiveMessage", (message) =>
+        {
+            Messages.Add(message);
+            StateHasChanged();
+        });
+
+        await hubConnection.StartAsync();
+
+    }
+
+    public async Task Send()
+    {
+        Message message = new Message();
+        message.ToUserId = ToUserId;
+        message.FromUserId = FromUserId;
+        message.MessageText = MessageText;
+
+        await hubConnection.SendAsync("SendMessage",message);
+    }
+
+}
