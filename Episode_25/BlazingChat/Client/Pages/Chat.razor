@@ -96,12 +96,8 @@
         
         hubConnection.On<Message>("ReceiveMessage", (message) =>
         {
-            if(message.FromUserId == FromUserId || 
-            (message.ToUserId == FromUserId && message.FromUserId == ToUserId))
-            {
-                Messages.Add(message);
-                StateHasChanged();
-            }
+            Messages.Add(message);
+            StateHasChanged();
         });
 
         await hubConnection.StartAsync();
