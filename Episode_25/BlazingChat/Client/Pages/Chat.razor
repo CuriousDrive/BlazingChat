@@ -112,7 +112,6 @@
         message.MessageText = MessageText;
 
         await hubConnection.SendAsync("SendMessage",message);
-        MessageText = "";
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
