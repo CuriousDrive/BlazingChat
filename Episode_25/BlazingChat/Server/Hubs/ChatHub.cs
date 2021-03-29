@@ -11,7 +11,8 @@ namespace BlazingChat.Server.Hubs
     {
         public async Task SendMessage(Message message)
         {
-            await Clients.All.SendAsync("ReceiveMessage", message);
+            var users = new string[] { message.ToUserId, message.FromUserId };
+            await Clients.Users(users).SendAsync("ReceiveMessage", message);
         }
     }
 }

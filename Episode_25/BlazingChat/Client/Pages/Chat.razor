@@ -96,8 +96,12 @@
         
         hubConnection.On<Message>("ReceiveMessage", (message) =>
         {
-            Messages.Add(message);
-            StateHasChanged();
+            if(message.FromUserId == FromUserId || 
+            (message.ToUserId == FromUserId && message.FromUserId == ToUserId))
+            {
+                Messages.Add(message);
+                StateHasChanged();
+            }
         });
 
         await hubConnection.StartAsync();
@@ -112,6 +116,7 @@
         message.MessageText = MessageText;
 
         await hubConnection.SendAsync("SendMessage",message);
+        MessageText = "";
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
