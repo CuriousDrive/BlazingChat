@@ -51,9 +51,9 @@ namespace BlazingChat.Server.Controllers
             {
                 //create a claim
                 var claimEmail = new Claim(ClaimTypes.Email, loggedInUser.EmailAddress);
-                var claimNameIndetifier = new Claim(ClaimTypes.NameIdentifier, loggedInUser.UserId.ToString());
+                var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, loggedInUser.UserId.ToString());
                 //create claimsIdentity
-                var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIndetifier }, "serverAuth");
+                var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier }, "serverAuth");
                 //create claimsPrincipal
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 //Sign In User
