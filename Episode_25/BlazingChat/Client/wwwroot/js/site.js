@@ -21,5 +21,8 @@ export function downloadFile(mimeType, base64String, fileName) {
 export function setScroll() {
     //let's fix scroll here
     var divMessageContainerBase = document.getElementById('divMessageContainerBase');
-    divMessageContainerBase.scrollTop = divMessageContainerBase.scrollHeight;
+    if (divMessageContainerBase != null)
+    {
+        divMessageContainerBase.scrollTop = divMessageContainerBase.scrollHeight;
+    }
 }
