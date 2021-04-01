@@ -1,0 +1,65 @@
+@page "/contacts"
+@using BlazingChat.ViewModels
+@inject IContactsViewModel _contactsViewModel
+@inject NavigationManager _navigationManager
+
+<h2><b>Contacts</b></h2>
+<hr />
+
+    <div class="col-12 row">
+        <input type="text" class="col-12 form-control" placeholder="search"/>
+    </div>
+    <br />
+        @if(ContactsCount > 0)
+        {
+            <Virtualize ItemsProvider="LoadOnlyVisibleContacts" Context="contact">
+                <ItemContent>
+                    <div style="height: 50px;">
+                        <a href="/chat/@contact.ContactId"
+                            class="list-group-item list-group-item-action flex-column align-items-start bold-text">
+                            @contact.FirstName <span> </span> @contact.LastName
+                        </a>
+                    </div>
+                </ItemContent>
+                <Placeholder>
+                    <div style="height: 50px;">
+                        <p>Loading...</p>
+                    </div>
+                </Placeholder>
+            </Virtualize>
+        }
+<br />
+
+
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+    public int ContactsCount { get; set; }
+ 
+    private async ValueTask<ItemsProviderResult<Contact>> LoadOnlyVisibleContacts(ItemsProviderRequest itemsProviderRequest)
+    {
+        Console.WriteLine($"Start Index : {itemsProviderRequest.StartIndex}");
+        Console.WriteLine($"Count : {itemsProviderRequest.Count}");
+        
+        var results = await _contactsViewModel.GetVisibleContacts(itemsProviderRequest.StartIndex,itemsProviderRequest.Count);
+
+        return new ItemsProviderResult<Contact>(results, ContactsCount);
+    }
+
+    protected override async Task OnInitializedAsync() 
+    {
+        var authState = await authenticationState;
+        var user = authState.User;
+
+        if(user.Identity.IsAuthenticated)
+        {
+            ContactsCount = await _contactsViewModel.GetContactsCount();
+        }
+        else _navigationManager.NavigateTo("/");
+    }
+    
+    private void NavigateToChat()
+    {
+        _navigationManager.NavigateTo("/chat");
+    }
+}
