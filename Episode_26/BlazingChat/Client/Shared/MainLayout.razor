@@ -5,11 +5,14 @@
 <div class="page">
 
     <div class="sidebar">
-        <NavMenu />
+        <AuthorizeView>
+            <Authorized>
+                <NavMenu />
+            </Authorized>
+        </AuthorizeView>
     </div>
 
     <div class="main">
-        
         <AuthorizeView>
             <Authorized>
                 <div class="top-row px-4">
@@ -23,15 +26,11 @@
                 </div>
             </NotAuthorized>
         </AuthorizeView>  
-        
-
         <div class="content px-4">
             @Body
         </div>
     </div>
-
 </div>
-
 
 @code{
 

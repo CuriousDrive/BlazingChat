@@ -36,8 +36,6 @@
     [CascadingParameter]
     public Task<AuthenticationState> authenticationState { get; set; }
     
-    public int Addition {get; set;}
-
     protected override async Task OnInitializedAsync() 
     {
         var authState = await authenticationState;//_authenticationStateProvider.GetAuthenticationStateAsync();

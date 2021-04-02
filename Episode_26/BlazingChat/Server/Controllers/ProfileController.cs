@@ -14,6 +14,8 @@ namespace BlazingChat.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
+
     public class ProfileController : ControllerBase
     {
         private readonly ILogger<UserController> logger;
@@ -42,7 +44,6 @@ namespace BlazingChat.Server.Controllers
         }
 
         [HttpGet("getprofile/{userId}")]
-        [Authorize]
         public async Task<User> GetProfile(int userId)
         {
             return await _context.Users.Where(u => u.UserId == userId).FirstOrDefaultAsync();

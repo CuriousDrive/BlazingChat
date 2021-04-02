@@ -53,7 +53,13 @@ namespace BlazingChat.Server.Controllers
                 //create claimsPrincipal
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 //Sign In User
-                await HttpContext.SignInAsync(claimsPrincipal);
+                var authProperties = new AuthenticationProperties()
+                {
+                    IsPersistent = true,
+                    ExpiresUtc = DateTime.UtcNow.AddSeconds(3),
+                    RedirectUri = "/profile"
+                };
+                await HttpContext.SignInAsync(claimsPrincipal, authProperties);
             }
             return await Task.FromResult(loggedInUser);
         }
