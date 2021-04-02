@@ -29,13 +29,13 @@ namespace BlazingChat.ViewModels
         public async Task UpdateProfile()
         {
             User user = this;
-            await _httpClient.PutAsJsonAsync("user/updateprofile/" + this.UserId, user);
+            await _httpClient.PutAsJsonAsync("profile/updateprofile/" + this.UserId, user);
             this.Message = "Profile updated successfully";
         }
 
         public async Task GetProfile()
         {
-            User user = await _httpClient.GetFromJsonAsync<User>("user/getprofile/" + this.UserId);
+            User user = await _httpClient.GetFromJsonAsync<User>("profile/getprofile/" + this.UserId);
             LoadCurrentObject(user);
             this.Message = "Profile loaded successfully";
         }

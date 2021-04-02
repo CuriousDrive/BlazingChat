@@ -88,7 +88,7 @@
         FromUserId = (await _httpClient.GetFromJsonAsync<User>("user/getcurrentuser")).UserId.ToString();
         
         if (Convert.ToInt32(ToUserId) > 0)
-            ToUser = await _httpClient.GetFromJsonAsync<User>("user/getprofile/" + ToUserId);
+            ToUser = await _httpClient.GetFromJsonAsync<User>("profile/getprofile/" + ToUserId);
         
         hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("/chathub"))
@@ -110,13 +110,16 @@
 
     public async Task Send()
     {
-        Message message = new Message();
-        message.ToUserId = ToUserId;
-        message.FromUserId = FromUserId;
-        message.MessageText = MessageText;
+        if(MessageText.Length > 0)
+        {
+            Message message = new Message();
+            message.ToUserId = ToUserId;
+            message.FromUserId = FromUserId;
+            message.MessageText = MessageText;
 
-        await hubConnection.SendAsync("SendMessage",message);
-        MessageText = "";
+            await hubConnection.SendAsync("SendMessage",message);
+            MessageText = "";
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.Twitter;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlazingChat.Server.Controllers
 {
@@ -20,11 +21,6 @@ namespace BlazingChat.Server.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<UserController> logger;
         private readonly BlazingChatContext _context;
 
@@ -94,50 +90,6 @@ namespace BlazingChat.Server.Controllers
             return "Success";
         }
 
-        [HttpPut("updateprofile/{userId}")]
-        public async Task<User> UpdateProfile(int userId, [FromBody] User user)
-        {
-            User userToUpdate = await _context.Users.Where(u => u.UserId == userId).FirstOrDefaultAsync();
-
-            userToUpdate.FirstName = user.FirstName;
-            userToUpdate.LastName = user.LastName;
-            userToUpdate.EmailAddress = user.EmailAddress;
-            userToUpdate.AboutMe = user.AboutMe;
-            userToUpdate.ProfilePicDataUrl = user.ProfilePicDataUrl;
-
-            await _context.SaveChangesAsync();
-
-            return await Task.FromResult(user);
-        }
-
-        [HttpGet("getprofile/{userId}")]
-        public async Task<User> GetProfile(int userId)
-        {
-            return await _context.Users.Where(u => u.UserId == userId).FirstOrDefaultAsync();
-        }
-
-        [HttpGet("updatetheme")]
-        public async Task<User> UpdateTheme(string userId, string value)
-        {
-            User user = _context.Users.Where(u => u.UserId == Convert.ToInt32(userId)).FirstOrDefault();
-            user.DarkTheme = value == "True" ? 1 : 0;
-
-            await _context.SaveChangesAsync();
-
-            return await Task.FromResult(user);
-        }
-
-        [HttpGet("updatenotifications")]
-        public async Task<User> UpdateNotifications(string userId, string value)
-        {
-            User user = _context.Users.Where(u => u.UserId == Convert.ToInt32(userId)).FirstOrDefault();
-            user.Notifications = value == "True" ? 1 : 0;
-
-            await _context.SaveChangesAsync();
-
-            return await Task.FromResult(user);
-        }
-
         [HttpGet("TwitterSignIn")]
         public async Task TwitterSignIn()
         {
@@ -173,37 +125,5 @@ namespace BlazingChat.Server.Controllers
                 return Convert.ToBase64String(buffer);
             }
         }
-
-        [HttpGet("getallcontacts")]
-        public List<User> GetAllContacts()
-        {
-            List<User> users = new();
-            users.AddRange(Enumerable.Range(0, 20001).Select(x => new User { UserId = x, FirstName = $"First{x}", LastName = $"Last{x}" }));
-
-            return users;
-
-        }
-
-        [HttpGet("getonlyvisiblecontacts")]
-        public List<User> GetOnlyVisibleContacts(int startIndex, int count)
-        {
-            List<User> users = new();
-            users.AddRange(Enumerable.Range(startIndex, count).Select(x => new User { UserId = x, FirstName = $"First{x}", LastName = $"Last{x}" }));
-
-            return users;
-        }
-
-        [HttpGet("getcontactscount")]
-        public async Task<int> GetContactsCount()
-        {
-            return await _context.Users.CountAsync();
-        }
-
-        [HttpGet("getvisiblecontacts")]
-        public async Task<List<User>> GetVisibleContacts(int startIndex, int count)
-        {
-            return await _context.Users.Skip(startIndex).Take(count).ToListAsync();
-        }
     }
-
 }

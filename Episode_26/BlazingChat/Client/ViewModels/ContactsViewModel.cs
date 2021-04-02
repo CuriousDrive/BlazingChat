@@ -24,7 +24,7 @@ namespace BlazingChat.ViewModels
         }
         public async Task<List<Contact>> GetContacts()
         {
-            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>("user/getcontacts");
+            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>("contacts/getcontacts");
             LoadCurrentObject(users);
 
             return this.Contacts;
@@ -41,14 +41,14 @@ namespace BlazingChat.ViewModels
 
         public async Task<List<Contact>> GetAllContacts()
         {
-            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>("user/getallcontacts");
+            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>("contacts/getallcontacts");
             LoadCurrentObject(users);
             return Contacts;
         }
 
         public async Task<List<Contact>> GetOnlyVisibleContacts(int startIndex, int count)
         {
-            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>($"user/getonlyvisiblecontacts?startIndex={startIndex}&count={count}");
+            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>($"contacts/getonlyvisiblecontacts?startIndex={startIndex}&count={count}");
 
             LoadCurrentObject(users);
             return Contacts;
@@ -56,17 +56,15 @@ namespace BlazingChat.ViewModels
 
         public async Task<int> GetContactsCount()
         {
-            return await _httpClient.GetFromJsonAsync<int>($"user/getcontactscount");
+            return await _httpClient.GetFromJsonAsync<int>($"contacts/getcontactscount");
         }
 
         public async Task<List<Contact>> GetVisibleContacts(int startIndex, int count)
         {
-            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>($"user/getvisiblecontacts?startIndex={startIndex}&count={count}");
+            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>($"contacts/getvisiblecontacts?startIndex={startIndex}&count={count}");
 
             LoadCurrentObject(users);
             return Contacts;
         }
-
-
     }
 }

@@ -26,14 +26,15 @@ namespace BlazingChat.ViewModels
         }
         public async Task GetProfile()
         {
-            User user = await _httpClient.GetFromJsonAsync<User>($"user/getprofile/{this.UserId}");
+            User user = await _httpClient.GetFromJsonAsync<User>($"profile/getprofile/{this.UserId}");
             LoadCurrentObject(user);
         }
         public async Task Save()
         {
-            await _httpClient.GetFromJsonAsync<User>($"user/updatetheme?userId={this.UserId}&value={this.DarkTheme.ToString()}");
+            User user = this;
+            await _httpClient.PutAsJsonAsync($"settings/updatetheme/{this.UserId}", user);
 
-            await _httpClient.GetFromJsonAsync<User>($"user/updatenotifications?userId={this.UserId}&value={this.Notifications.ToString()}");
+            await _httpClient.PutAsJsonAsync($"settings/updatenotifications/{this.UserId}", user);
         }
         private void LoadCurrentObject(SettingsViewModel settingsViewModel)
         {
