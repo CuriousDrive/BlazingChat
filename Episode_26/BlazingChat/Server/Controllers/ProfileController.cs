@@ -15,7 +15,6 @@ namespace BlazingChat.Server.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize]
-
     public class ProfileController : ControllerBase
     {
         private readonly ILogger<UserController> logger;

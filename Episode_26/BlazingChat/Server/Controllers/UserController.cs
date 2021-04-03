@@ -55,9 +55,8 @@ namespace BlazingChat.Server.Controllers
                 //Sign In User
                 var authProperties = new AuthenticationProperties()
                 {
-                    IsPersistent = true,
-                    ExpiresUtc = DateTime.UtcNow.AddSeconds(3),
-                    RedirectUri = "/profile"
+                   IsPersistent = true,
+                   ExpiresUtc = DateTime.UtcNow.AddSeconds(5)
                 };
                 await HttpContext.SignInAsync(claimsPrincipal, authProperties);
             }
