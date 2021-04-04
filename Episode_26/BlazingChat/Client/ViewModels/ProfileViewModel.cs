@@ -37,7 +37,7 @@ namespace BlazingChat.ViewModels
         {
             User user = await _httpClient.GetFromJsonAsync<User>("profile/getprofile/" + this.UserId);
             LoadCurrentObject(user);
-            this.Message = "Profile loaded successfully";
+            this.Message = "Profile loaded successfully";    
         }
         private void LoadCurrentObject(ProfileViewModel profileViewModel)
         {

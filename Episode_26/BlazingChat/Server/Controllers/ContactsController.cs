@@ -7,13 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BlazingChat.Server.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
 
 namespace BlazingChat.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]    
     public class ContactsController : ControllerBase
     {
         private readonly ILogger<UserController> logger;

@@ -45,7 +45,18 @@
         {
             var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
             _profileViewModel.UserId = Convert.ToInt64(claim?.Value) ;
-            await _profileViewModel.GetProfile();
+            try
+            {
+                await _profileViewModel.GetProfile();
+            }
+            catch (System.Net.Http.HttpRequestException ex)
+            {
+                if(ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    await _httpClient.GetAsync("user/logoutuser");
+                    _navigationManager.NavigateTo("/", true);
+                }
+            }
         }
         else
         {
