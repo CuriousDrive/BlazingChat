@@ -5,7 +5,11 @@
 <div class="page">
 
     <div class="sidebar">
-        <NavMenu />
+        <AuthorizeView>
+            <Authorized>
+                <NavMenu />
+            </Authorized>
+        </AuthorizeView>
     </div>
 
     <div class="main">
@@ -16,11 +20,6 @@
                     <button class="btn btn-danger" @onclick="LogoutUser">Logout</button>
                 </div>
             </Authorized>
-            <NotAuthorized>
-                <div class="top-row px-4">
-                    <button class="btn btn-primary" @onclick="LoginUser">Login</button>
-                </div>
-            </NotAuthorized>
         </AuthorizeView>  
         <div class="content px-4">
             @Body

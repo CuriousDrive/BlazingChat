@@ -41,7 +41,7 @@ namespace BlazingChat.Server
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             }
-            ).AddCookie()
+            ).AddCookie(options => { options.LoginPath = "/user/notauthorized"; })
             .AddTwitter(twitterOptions =>
             {
                 twitterOptions.ConsumerKey = Configuration["Authentication:Twitter:ConsumerKey"];
@@ -83,6 +83,7 @@ namespace BlazingChat.Server
             app.UseRouting();
 
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

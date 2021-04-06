@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BlazingChat.Server.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlazingChat.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
+
     public class SettingsController : ControllerBase
     {
         private readonly ILogger<UserController> logger;

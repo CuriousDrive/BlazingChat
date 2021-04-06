@@ -53,7 +53,7 @@ namespace BlazingChat.Server.Controllers
                 //create claimsPrincipal
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 //Sign In User
-                await HttpContext.SignInAsync(claimsPrincipal);
+                await HttpContext.SignInAsync(claimsPrincipal, GetAuthenticationProperties());
             }
             return await Task.FromResult(loggedInUser);
         }
@@ -94,21 +94,37 @@ namespace BlazingChat.Server.Controllers
         public async Task TwitterSignIn()
         {
             await HttpContext.ChallengeAsync(TwitterDefaults.AuthenticationScheme,
-                new AuthenticationProperties { RedirectUri = "/profile" });
+                GetAuthenticationProperties());
         }
 
         [HttpGet("FacebookSignIn")]
         public async Task FacebookSignIn()
         {
             await HttpContext.ChallengeAsync(FacebookDefaults.AuthenticationScheme,
-                new AuthenticationProperties { RedirectUri = "/profile" });
+                GetAuthenticationProperties());
         }
 
         [HttpGet("GoogleSignIn")]
         public async Task GoogleSignIn()
         {
             await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
-                new AuthenticationProperties { RedirectUri = "/profile" });
+                GetAuthenticationProperties());
         }
+
+        public AuthenticationProperties GetAuthenticationProperties()
+        {
+            return new AuthenticationProperties()
+                {
+                    IsPersistent = true,
+                    ExpiresUtc = DateTime.Now.AddMinutes(10),
+                    RedirectUri = "/profile"
+                };
+        }
+        [HttpGet("notauthorized")]
+        public IActionResult NotAuthorized()
+        {
+            return Unauthorized();
+        }
+
     }
 }

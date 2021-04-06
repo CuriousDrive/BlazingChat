@@ -8,11 +8,13 @@ using Microsoft.Extensions.Logging;
 using BlazingChat.Server.Models;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlazingChat.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class ProfileController : ControllerBase
     {
         private readonly ILogger<UserController> logger;
