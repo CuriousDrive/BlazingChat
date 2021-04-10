@@ -11,11 +11,11 @@
 <hr />
 
 <div class="row">
-    <div class="col-lg-4 col-sm-12">
+    <div class="col-lg-4 col-md-6 col-sm-8">
         <img src="@_profileViewModel.ProfilePicDataUrl" alt="User Profile Picture" class="img-thumbnail"> <br/> <br/>
         <InputFile OnChange="@OnInputFileChanged" style="margin-bottom: 1rem;"></InputFile>
     </div>
-    <div class="col-lg-8 col-sm-12">
+    <div class="col-lg-8 col-md-6 col-sm-12">
         <input type="text" @bind-value="_profileViewModel.FirstName" class="form-control" placeholder="first name">
         <br/>
         <input type="text" @bind-value="_profileViewModel.LastName" class="form-control" placeholder="last name">

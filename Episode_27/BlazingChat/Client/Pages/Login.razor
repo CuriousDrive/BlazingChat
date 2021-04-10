@@ -7,32 +7,32 @@
 <h2><b>Login</b></h2>
 <hr>
 
-<div class="col-xl-6 col-12">
+<div class="col-xl-6 col-md-8 col-12">
     <input type="text" @bind="_loginViewModel.EmailAddress" class="form-control" placeholder="email address">
 </div>
 <br />
-<div class="col-xl-6 col-12">
+<div class="col-xl-6 col-md-8 col-12">
     <input type="password" @bind="_loginViewModel.Password" class="form-control" placeholder="password">
 </div>
 <br />
-<div class="col-xl-6 col-12">
+<div class="col-xl-6 col-md-8 col-12">
     <button class="btn btn-primary" @onclick="LoginUser">Login</button>
 </div>
 <br />
-<div class="col-xl-6 col-12">
-    <a class="btn btn-block btn-social btn-twitter" @onclick="TwitterSignIn">
+<div class="col-xl-6 col-md-8 col-12">
+    <a class="btn btn-block btn-social btn-twitter" @onclick="TwitterSignIn" href="">
         <span class="fa fa-twitter"></span> <b>Sign in with Twitter</b>
     </a>
 </div>
 <br />
-<div class="col-xl-6 col-12">
-    <a class="btn btn-block btn-social btn-facebook" @onclick="FacebookSignIn">
+<div class="col-xl-6 col-md-8 col-12">
+    <a class="btn btn-block btn-social btn-facebook" @onclick="FacebookSignIn" href="">
         <span class="fa fa-facebook"></span> <b>Sign in with Facebook</b>
     </a>
 </div>
 <br />
-<div class="col-xl-6 col-12">
-    <a class="btn btn-block btn-social btn-google" @onclick="GoogleSignIn">
+<div class="col-xl-6 col-md-8 col-12">
+    <a class="btn btn-block btn-social btn-google" @onclick="GoogleSignIn" href="">
         <span class="fa fa-google"></span> <b>Sign in with Google</b>
     </a>
 </div>
