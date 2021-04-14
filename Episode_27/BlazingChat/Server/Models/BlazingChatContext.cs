@@ -18,13 +18,14 @@ namespace BlazingChat.Server.Models
         }
 
         public virtual DbSet<ChatHistory> ChatHistories { get; set; }
+        public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlite("Name=ConnectionStrings:Blazingchat");
+                optionsBuilder.UseSqlite("Name=BlazingChat");
             }
         }
 
@@ -64,10 +65,25 @@ namespace BlazingChat.Server.Models
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
+            modelBuilder.Entity<Log>(entity =>
+            {
+                entity.Property(e => e.LogId).HasColumnName("log_id");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("DATE")
+                    .HasColumnName("created_date");
+
+                entity.Property(e => e.EventName).HasColumnName("event_name");
+
+                entity.Property(e => e.LogLevel).HasColumnName("log_level");
+
+                entity.Property(e => e.LogMessage).HasColumnName("log_message");
+
+                entity.Property(e => e.StackTrace).HasColumnName("stack_trace");
+            });
+
             modelBuilder.Entity<User>(entity =>
             {
-                entity.ToTable("User");
-
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
                 entity.Property(e => e.AboutMe).HasColumnName("about_me");
