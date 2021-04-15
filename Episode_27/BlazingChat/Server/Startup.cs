@@ -9,6 +9,8 @@ using System.Linq;
 using BlazingChat.Server.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using BlazingChat.Server.Hubs;
+using Microsoft.Extensions.Logging;
+using Blazing.Server.Logging;
 
 namespace BlazingChat.Server
 {
@@ -57,6 +59,13 @@ namespace BlazingChat.Server
             {
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+            });
+            
+            services.AddLogging(logging =>
+            {
+                var appDbContext = services.BuildServiceProvider().GetRequiredService<BlazingChatContext>();
+                var appLoggerProvider = new ApplicationLoggerProvider(appDbContext);
+                logging.AddProvider(appLoggerProvider);
             });
         }
 
