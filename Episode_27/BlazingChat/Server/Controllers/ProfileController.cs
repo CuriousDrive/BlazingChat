@@ -45,6 +45,7 @@ namespace BlazingChat.Server.Controllers
         [HttpGet("getprofile/{userId}")]
         public async Task<User> GetProfile(int userId)
         {
+            logger.LogInformation("Here we are getting user profile");
             return await _context.Users.Where(u => u.UserId == userId).FirstOrDefaultAsync();
         }
 

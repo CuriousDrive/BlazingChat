@@ -1,18 +1,22 @@
 using System;
-using BlazingChat.Server.Models;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
+using BlazingChat.Shared.Models;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 
-namespace Blazing.Server.Logging
+namespace BlazingChat.Client.Logging
 {
     public class DatabaseLogger : ILogger
     {
-        private readonly BlazingChatContext _context;
+        private readonly HttpClient _httpClient;
 
-        public DatabaseLogger(BlazingChatContext context)
+        public DatabaseLogger(HttpClient httpClient)
         {
-            _context = context;
+            _httpClient = httpClient;
         }
-
+        
         public IDisposable BeginScope<TState>(TState state)
         {
             return null;
@@ -32,8 +36,7 @@ namespace Blazing.Server.Logging
             log.StackTrace = exception?.StackTrace;
             log.CreatedDate = DateTime.Now.ToString();
 
-            _context.Logs.Add(log);
-            _context.SaveChanges();
+            _httpClient.PostAsJsonAsync<Log>("logs", log);
         }
     }
 }

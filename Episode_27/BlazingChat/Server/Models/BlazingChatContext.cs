@@ -69,9 +69,7 @@ namespace BlazingChat.Server.Models
             {
                 entity.Property(e => e.LogId).HasColumnName("log_id");
 
-                entity.Property(e => e.CreatedDate)
-                    .HasColumnType("DATE")
-                    .HasColumnName("created_date");
+                entity.Property(e => e.CreatedDate).HasColumnName("created_date");
 
                 entity.Property(e => e.EventName).HasColumnName("event_name");
 

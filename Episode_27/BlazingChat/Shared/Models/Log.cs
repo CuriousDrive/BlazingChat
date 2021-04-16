@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace BlazingChat.Server.Models
+namespace BlazingChat.Shared.Models
 {
     public partial class Log
     {

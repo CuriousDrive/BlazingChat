@@ -9,8 +9,8 @@ using BlazingChat.Server.Models;
 
 namespace BlazingChat.Server.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class LogsController : ControllerBase
     {
         private readonly BlazingChatContext _context;

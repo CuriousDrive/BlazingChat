@@ -19,7 +19,7 @@ namespace Blazing.Server.Logging
 
         public void Dispose()
         {
-            //throw new System.NotImplementedException();
+            
         }
     }
 }
