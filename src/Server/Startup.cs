@@ -63,6 +63,7 @@ namespace BlazingChat.Server
             
             services.AddLogging(logging =>
             {
+                logging.ClearProviders();
                 var appDbContext = services.BuildServiceProvider().GetRequiredService<BlazingChatContext>();
                 var appLoggerProvider = new ApplicationLoggerProvider(appDbContext);
                 logging.AddProvider(appLoggerProvider);

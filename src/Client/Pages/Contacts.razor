@@ -41,6 +41,7 @@
         Console.WriteLine($"Start Index : {itemsProviderRequest.StartIndex}");
         Console.WriteLine($"Count : {itemsProviderRequest.Count}");
         
+        throw new NullReferenceException();
         var results = await _contactsViewModel.GetVisibleContacts(itemsProviderRequest.StartIndex,itemsProviderRequest.Count);
 
         return new ItemsProviderResult<Contact>(results, ContactsCount);

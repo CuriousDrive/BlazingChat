@@ -27,6 +27,8 @@ namespace BlazingChat.Client
 
             builder.Services.AddLogging(logging =>
             {
+                logging.SetMinimumLevel(LogLevel.Error);
+                logging.ClearProviders();
                 var httpClient = builder.Services.BuildServiceProvider().GetRequiredService<HttpClient>();
                 logging.AddProvider(new ApplicationLoggerProvider(httpClient));
             });
