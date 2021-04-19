@@ -27,10 +27,10 @@ namespace BlazingChat.Client
 
             builder.Services.AddLogging(logging =>
             {
-                logging.SetMinimumLevel(LogLevel.Information);
+                logging.SetMinimumLevel(LogLevel.Error);
                 logging.ClearProviders();
                 var httpClient = builder.Services.BuildServiceProvider().GetRequiredService<HttpClient>();
-                //logging.AddProvider(new ApplicationLoggerProvider(httpClient));
+                logging.AddProvider(new ApplicationLoggerProvider(httpClient));
             });
 
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
