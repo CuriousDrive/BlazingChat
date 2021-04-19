@@ -45,7 +45,6 @@ namespace BlazingChat.Server.Controllers
         [HttpGet("getprofile/{userId}")]
         public async Task<User> GetProfile(int userId)
         {
-            throw new IndexOutOfRangeException();
             return await _context.Users.Where(u => u.UserId == userId).FirstOrDefaultAsync();
         }
 

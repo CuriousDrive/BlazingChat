@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using BlazingChat.Server.Hubs;
 using Microsoft.Extensions.Logging;
 using Blazing.Server.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlazingChat.Server
 {
@@ -32,7 +33,7 @@ namespace BlazingChat.Server
             services.AddRazorPages();
             services.AddSignalR();
 
-            services.AddEntityFrameworkSqlite().AddDbContext<BlazingChatContext>();
+            services.AddDbContext<BlazingChatContext>();
             services.AddResponseCompression(opts =>
             {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
@@ -60,19 +61,18 @@ namespace BlazingChat.Server
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
-            
-            services.AddLogging(logging =>
-            {
-                logging.ClearProviders();
-                var appDbContext = services.BuildServiceProvider().GetRequiredService<BlazingChatContext>();
-                var appLoggerProvider = new ApplicationLoggerProvider(appDbContext);
-                logging.AddProvider(appLoggerProvider);
+            services.AddLogging(logging => {
+                //logging.ClearProviders();
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+            var serviceScope = app.ApplicationServices.CreateScope();
+            var context = serviceScope.ServiceProvider.GetRequiredService<BlazingChatContext>();
+            loggerFactory.AddProvider(new ApplicationLoggerProvider(context));
+
             app.UseResponseCompression();
             if (env.IsDevelopment())
             {

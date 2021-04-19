@@ -12,6 +12,7 @@ namespace Blazing.Server.Logging
         {
             _context = context;
         }
+
         public ILogger CreateLogger(string categoryName)
         {
             return new DatabaseLogger(_context);
