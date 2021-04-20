@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using BlazingChat.ViewModels;
 using Microsoft.AspNetCore.Components.Authorization;
-using BlazingChat.Client.Logging;
 
 namespace BlazingChat.Client
 {
@@ -24,15 +23,6 @@ namespace BlazingChat.Client
                 new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             LoadHttpClients(builder);
-
-            builder.Services.AddLogging(logging =>
-            {
-                logging.SetMinimumLevel(LogLevel.Error);
-                logging.ClearProviders();
-                var httpClient = builder.Services.BuildServiceProvider().GetRequiredService<HttpClient>();
-                logging.AddProvider(new ApplicationLoggerProvider(httpClient));
-            });
-
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
             await builder.Build().RunAsync();

@@ -9,9 +9,6 @@ using System.Linq;
 using BlazingChat.Server.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using BlazingChat.Server.Hubs;
-using Microsoft.Extensions.Logging;
-using Blazing.Server.Logging;
-using Microsoft.EntityFrameworkCore;
 
 namespace BlazingChat.Server
 {
@@ -61,18 +58,11 @@ namespace BlazingChat.Server
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
-            services.AddLogging(logging => {
-                //logging.ClearProviders();
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var serviceScope = app.ApplicationServices.CreateScope();
-            var context = serviceScope.ServiceProvider.GetRequiredService<BlazingChatContext>();
-            loggerFactory.AddProvider(new ApplicationLoggerProvider(context));
-
             app.UseResponseCompression();
             if (env.IsDevelopment())
             {
