@@ -73,9 +73,11 @@ namespace BlazingChat.Server.Models
 
                 entity.Property(e => e.EventName).HasColumnName("event_name");
 
+                entity.Property(e => e.ExceptionMessage).HasColumnName("exception_message");
+
                 entity.Property(e => e.LogLevel).HasColumnName("log_level");
 
-                entity.Property(e => e.LogMessage).HasColumnName("log_message");
+                entity.Property(e => e.Source).HasColumnName("source");
 
                 entity.Property(e => e.StackTrace).HasColumnName("stack_trace");
             });
