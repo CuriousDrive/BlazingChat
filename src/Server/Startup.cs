@@ -9,6 +9,8 @@ using System.Linq;
 using BlazingChat.Server.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using BlazingChat.Server.Hubs;
+using Microsoft.Extensions.Logging;
+using BlazingChat.Server.Logging;
 
 namespace BlazingChat.Server
 {
@@ -61,8 +63,12 @@ namespace BlazingChat.Server
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+            var serviceProvider = app.ApplicationServices.CreateScope().ServiceProvider;
+            var appDBContext = serviceProvider.GetRequiredService<BlazingChatContext>();
+            loggerFactory.AddProvider(new ApplicationLoggerProvider(appDBContext));
+
             app.UseResponseCompression();
             if (env.IsDevelopment())
             {
