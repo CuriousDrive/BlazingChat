@@ -28,6 +28,9 @@
 
     [CascadingParameter]
     public Task<AuthenticationState> authenticationState { get; set; }
+
+    [CascadingParameter]
+    public Error Error {get; set;}
     protected override async Task OnInitializedAsync() 
     {
         var authState = await authenticationState;//_authenticationStateProvider.GetAuthenticationStateAsync();
@@ -41,9 +44,9 @@
             {
                 throw new NullReferenceException();
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-
+                Error.ProcessError(ex);
             }
             await _settingsViewModel.GetProfile();
         }
