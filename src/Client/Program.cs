@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using BlazingChat.ViewModels;
 using Microsoft.AspNetCore.Components.Authorization;
 using BlazingChat.Client.Logging;
+using Blazored.Toast;
 
 namespace BlazingChat.Client
 {
@@ -29,9 +30,10 @@ namespace BlazingChat.Client
                 logging.AddProvider(new ApplicationLoggerProvider(httpClient));
             });
 
-
             LoadHttpClients(builder);
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+            
+            builder.Services.AddBlazoredToast();
 
             await builder.Build().RunAsync();
         }

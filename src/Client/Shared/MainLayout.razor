@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using Blazored.Toast.Configuration
+@inherits LayoutComponentBase
 @inject NavigationManager _navigationManager
 @inject HttpClient _httpClient
 
@@ -11,6 +12,13 @@
             </Authorized>
         </AuthorizeView>
     </div>
+
+    <BlazoredToasts Position="ToastPosition.BottomRight"
+                Timeout="3"
+                IconType="IconType.FontAwesome"
+                SuccessClass="success-toast-override"
+                SuccessIcon="fa fa-thumbs-up"
+                ErrorIcon="fa fa-bug" />
 
     <div class="main">
         <AuthorizeView>
