@@ -1,5 +1,8 @@
 @using Microsoft.Extensions.Logging
-@inject ILogger<Error> Logger
+@inject ILogger<Error> _logger
+@inject IToastService _toastService
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@inject IWebAssemblyHostEnvironment _hostEnvironment
 
 <CascadingValue Value=this>
     @ChildContent
@@ -11,6 +14,11 @@
 
     public void ProcessError(Exception ex)
     {
-        Logger.LogError(ex, "Unhandled Exception has occured");
+        if(_hostEnvironment.Environment == "Development")
+            _toastService.ShowError("Oops, something went wrong. Please check the logs.","Error");
+        else
+            _toastService.ShowError("Oops, something went wrong. Please contact system admin.","Error");
+        
+        _logger.LogError(ex,"Unhandled Exception");
     }
 }

@@ -3,9 +3,8 @@
 @using BlazingChat.Shared.Models
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.SignalR.Client
-@inject NavigationManager NavigationManager
-@inject HttpClient Http
-@inject IJSRuntime jsRuntime
+@inject NavigationManager _navigationManager
+@inject IJSRuntime _jsRuntime
 @inject HttpClient _httpClient
 
 <div style="border:0px;height:90vh;">    
@@ -83,7 +82,7 @@
         var claimsPrincipal = (await authenticationStateTask).User;
 
         if (!claimsPrincipal.Identity.IsAuthenticated)
-            NavigationManager.NavigateTo("/");
+            _navigationManager.NavigateTo("/");
 
         FromUserId = (await _httpClient.GetFromJsonAsync<User>("user/getcurrentuser")).UserId.ToString();
         
@@ -91,7 +90,7 @@
             ToUser = await _httpClient.GetFromJsonAsync<User>("profile/getprofile/" + ToUserId);
         
         hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/chathub"))
+            .WithUrl(_navigationManager.ToAbsoluteUri("/chathub"))
             .Build();
         
         hubConnection.On<Message>("ReceiveMessage", (message) =>
@@ -124,7 +123,7 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var module = await jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
+        var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
         await module.InvokeVoidAsync("setScroll");
     }
 

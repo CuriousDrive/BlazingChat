@@ -26,7 +26,6 @@ namespace BlazingChat.Server.Logging
         {
             Log log = new();
             log.LogLevel = logLevel.ToString();
-            log.EventName = eventId.Name;
             log.ExceptionMessage = exception?.Message;
             log.StackTrace = exception?.StackTrace;
             log.Source = "Server";

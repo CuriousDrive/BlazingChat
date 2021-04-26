@@ -4,7 +4,7 @@
 @using System.Security.Claims
 @inject IProfileViewModel _profileViewModel
 @inject NavigationManager _navigationManager
-@inject IJSRuntime jsRuntime
+@inject IJSRuntime _jsRuntime
 @inject HttpClient _httpClient
 
 <h2><b>Profile</b></h2> 
@@ -81,7 +81,7 @@
     {
         string[] base64String = _profileViewModel.ProfilePicDataUrl.Split(',');
         
-        var module = await jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
+        var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
         await module.InvokeVoidAsync("downloadFile","image/png",base64String[1],"profile.png");
     }
 
@@ -92,6 +92,6 @@
         var base64String = httpResponseMessage.Content.ReadAsStringAsync().Result;
 
         //call javascript function to download the file
-        await jsRuntime.InvokeVoidAsync("downloadFile","application/vnd.openxmlformats-officedocument.wordprocessingml.document",base64String, "document.docx");
+        await _jsRuntime.InvokeVoidAsync("downloadFile","application/vnd.openxmlformats-officedocument.wordprocessingml.document",base64String, "document.docx");
     }
 }
