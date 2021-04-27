@@ -53,8 +53,16 @@ namespace BlazingChat.Server.Controllers
         [HttpGet("getcontactscount")]
         public async Task<int> GetContactsCount()
         {
-            throw new IndexOutOfRangeException();
-            return await _context.Users.CountAsync();
+            try
+            {
+                throw new IndexOutOfRangeException();
+                return await _context.Users.CountAsync();    
+            }
+            catch (System.Exception ex)
+            {
+                logger.LogError(ex, "Unhandled Exception");
+                throw ex;
+            }
         }
 
         [HttpGet("getvisiblecontacts")]
