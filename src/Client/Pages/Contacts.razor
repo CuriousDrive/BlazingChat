@@ -34,8 +34,6 @@
 @code {
     [CascadingParameter]
     public Task<AuthenticationState> authenticationState { get; set; }
-    [CascadingParameter]
-    public Error Error { get; set; }
     public int ContactsCount { get; set; }
  
     private async ValueTask<ItemsProviderResult<Contact>> LoadOnlyVisibleContacts(ItemsProviderRequest itemsProviderRequest)
@@ -50,21 +48,14 @@
 
     protected override async Task OnInitializedAsync() 
     {
-        try
-        {
-            var authState = await authenticationState;
-            var user = authState.User;
+        var authState = await authenticationState;
+        var user = authState.User;
 
-            if(user.Identity.IsAuthenticated)
-            {
-                ContactsCount = await _contactsViewModel.GetContactsCount();
-            }
-            else _navigationManager.NavigateTo("/");
-        }
-        catch (System.Exception ex)
+        if (user.Identity.IsAuthenticated)
         {
-            Error.ProcessError(ex);
+            ContactsCount = await _contactsViewModel.GetContactsCount();
         }
+        else _navigationManager.NavigateTo("/");
     }
     
     private void NavigateToChat()

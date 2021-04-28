@@ -29,8 +29,6 @@
     [CascadingParameter]
     public Task<AuthenticationState> authenticationState { get; set; }
 
-    [CascadingParameter]
-    public Error Error {get; set;}
     protected override async Task OnInitializedAsync() 
     {
         var authState = await authenticationState;//_authenticationStateProvider.GetAuthenticationStateAsync();
@@ -40,14 +38,7 @@
         {
             var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
             _settingsViewModel.UserId = Convert.ToInt64(claim?.Value);
-            try
-            {
-                throw new NullReferenceException();
-            }
-            catch (System.Exception ex)
-            {
-                Error.ProcessError(ex);
-            }
+            throw new NullReferenceException();
             await _settingsViewModel.GetProfile();
         }
         else
