@@ -55,7 +55,7 @@ namespace BlazingChat.Server.Controllers
         {
             try
             {
-                throw new IndexOutOfRangeException();
+                //throw new IndexOutOfRangeException();
                 return await _context.Users.CountAsync();    
             }
             catch (System.Exception ex)
