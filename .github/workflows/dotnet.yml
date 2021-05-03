@@ -18,8 +18,8 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: dotnet restore .\src\Server
+      run: dotnet restore \src\Server
     - name: Build
-      run: dotnet build .\src\Server --no-restore
+      run: dotnet build \src\Server --no-restore
     - name: Test
-      run: dotnet test .\src\Server --no-build --verbosity normal
+      run: dotnet test \src\Server --no-build --verbosity normal
