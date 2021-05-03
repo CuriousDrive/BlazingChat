@@ -60,6 +60,10 @@ namespace BlazingChat.Server
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
+            services.AddLogging(logging =>
+            {
+                logging.ClearProviders();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

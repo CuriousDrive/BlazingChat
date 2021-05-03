@@ -61,7 +61,7 @@ namespace BlazingChat.Server.Controllers
             catch (System.Exception ex)
             {
                 logger.LogError(ex, "Unhandled Exception");
-                throw ex;
+                return 0;
             }
         }
 
