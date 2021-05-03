@@ -13,7 +13,7 @@ Blazing Chat is a demo app made as a part of YouTube tutorial. The front-end is 
 ### Setup
 
 - Clone this repo to your local machine using `https://github.com/CuriousDrive/BlazingChat.git`
-- Open Project `BlazingChat/src/BlazingChat.sln`
+- Open Project `/src/BlazingChat.sln`
 - Run Project through Visual Studio/Terminal
 - Go to `https://localhost:5001/` or `https://localhost:44387/`
 - Click on login. You should get logged in with username `john.smith@gmail.com` & password `john.smith`
