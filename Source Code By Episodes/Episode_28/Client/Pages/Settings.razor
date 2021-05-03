@@ -1,0 +1,59 @@
+﻿@page "/settings"
+@using BlazingChat.ViewModels
+@using System.Security.Claims
+@inject ISettingsViewModel _settingsViewModel
+@inject NavigationManager _navigationManager
+
+<h2><b>Settings</b></h2> 
+<hr />
+
+<div class="col-12">
+    <div class="row">
+        <RadzenSwitch @bind-Value="@_settingsViewModel.Notifications" Style="margin-bottom: 20px" />
+        <span>&nbsp;</span>
+        <label> Notification </label>  
+    </div>
+    <div class="row">
+        <RadzenSwitch @bind-Value="@_settingsViewModel.DarkTheme" Style="margin-bottom: 20px" />
+        <span>&nbsp;</span>
+        <label> Dark Theme </label>    
+    </div>
+    <div class="row">
+        <button class="btn btn-primary" @onclick="_settingsViewModel.Save">Save</button>
+    </div>
+</div>
+<br />
+
+@code {
+
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+    
+    [CascadingParameter]
+    public Error Error { get; set; }
+
+    protected override async Task OnInitializedAsync() 
+    {
+        try
+        {
+            var authState = await authenticationState;//_authenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if(user.Identity.IsAuthenticated)
+            {
+                var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
+                _settingsViewModel.UserId = Convert.ToInt64(claim?.Value);
+                throw new NullReferenceException();
+                await _settingsViewModel.GetProfile();
+            }
+            else
+            {
+                _navigationManager.NavigateTo("/");
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Error.ProcessError(ex);
+        }
+    } 
+}

@@ -1,0 +1,20 @@
+# Ignore bin folder on Blazor Client
+**/Client/obj/
+**/Client/bin/
+
+# Ignore bin folder on Blazor Server
+**/Server/obj/
+**/Server/bin/
+
+
+# Ignore bin folder on Blazor Shared
+**/Shared/obj/
+**/Shared/bin/
+
+# Ignore bin folder on YouTubeLib
+**/ThirdPartyChatLib/obj/
+**/ThirdPartyChatLib/bin/
+
+# Ignore .vscode and .vs
+**/.vs/
+**/Notes.txt
