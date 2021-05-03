@@ -2,7 +2,7 @@
 
 Blazing Chat is a demo app made as a part of YouTube tutorial. The front-end is made using Blazor WebAssembly and the back-end is made using ASP.NET Core Web API + Entity Framework Core. SQLite is used to store the data. You can run this app on Windows, Mac or Linux operating systems. The repo is maintained episode by episode so that you can go back to particular episode and the code related it.
 
-![Demo_App](https://github.com/CuriousDrive/BlazingChat/blob/master/Documents/Gifs/Intro.gif)
+![Demo_App](https://github.com/CuriousDrive/BlazingChat/blob/main/Documents/Gifs/Intro.gif)
 
 ## Installation
 
@@ -13,10 +13,10 @@ Blazing Chat is a demo app made as a part of YouTube tutorial. The front-end is 
 ### Setup
 
 - Clone this repo to your local machine using `https://github.com/CuriousDrive/BlazingChat.git`
-- Open Project `BlazingChat/Episode_01/BlazingChat/BlazingChat.sln`
+- Open Project `BlazingChat/src/BlazingChat.sln`
 - Run Project through Visual Studio/Terminal
 - Go to `https://localhost:5001/` or `https://localhost:44387/`
-- Click on login. You should get logged in as `john.smith@gmail.com`
+- Click on login. You should get logged in with username `john.smith@gmail.com` & password `john.smith`
 - Or you can login with your Twitter, Facebook or Google accounts.
 
 ## Videos
