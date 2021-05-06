@@ -34,6 +34,6 @@
         else
             _toastService.ShowError("Oops, something has gone wrong. Please check the logs");
 
-        _logger.LogError(ex, UserId.ToString());
+        _logger.LogError(ex, "UserId:{0}", UserId);
     }
 }

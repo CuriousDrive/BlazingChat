@@ -26,7 +26,8 @@ namespace BlazingChat.Client.Logging
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            var UserId = formatter.Invoke(state, exception);
+            var parameters = formatter.Invoke(state, exception);
+            long UserId = Convert.ToInt64(parameters.Split(':')[1]);
 
             Log log = new();
             log.LogLevel = logLevel.ToString();
