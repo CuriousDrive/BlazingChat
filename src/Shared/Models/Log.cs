@@ -13,5 +13,6 @@ namespace BlazingChat.Shared.Models
         public string ExceptionMessage { get; set; }
         public string StackTrace { get; set; }
         public string CreatedDate { get; set; }
+        public long? UserId { get; set; }
     }
 }

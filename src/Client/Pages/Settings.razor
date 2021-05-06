@@ -43,7 +43,7 @@
             {
                 var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
                 _settingsViewModel.UserId = Convert.ToInt64(claim?.Value);
-                //throw new NullReferenceException();
+                throw new NullReferenceException();
                 await _settingsViewModel.GetProfile();
             }
             else
@@ -53,7 +53,7 @@
         }
         catch (System.Exception ex)
         {
-            Error.ProcessError(ex);
+            await Error.ProcessError(ex);
         }
     } 
 }

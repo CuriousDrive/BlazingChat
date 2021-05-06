@@ -1,7 +1,7 @@
 @inject Microsoft.AspNetCore.Components.WebAssembly.Services.LazyAssemblyLoader AssemblyLoader
 
-<Error>
-    <CascadingAuthenticationState>
+<CascadingAuthenticationState>
+    <Error>
         <Router AppAssembly="@typeof(Program).Assembly"
                 AdditionalAssemblies="lazyLoadedAssemblies"
                 OnNavigateAsync="OnNavigation">
@@ -14,8 +14,8 @@
                 </LayoutView>
             </NotFound> 
         </Router>  
-    </CascadingAuthenticationState>
-</Error>
+    </Error>
+</CascadingAuthenticationState>
 
 @code {
 

@@ -78,6 +78,8 @@ namespace BlazingChat.Server.Models
                 entity.Property(e => e.Source).HasColumnName("source");
 
                 entity.Property(e => e.StackTrace).HasColumnName("stack_trace");
+
+                entity.Property(e => e.UserId).HasColumnName("user_id");
             });
 
             modelBuilder.Entity<User>(entity =>
