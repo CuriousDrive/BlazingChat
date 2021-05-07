@@ -1,7 +1,10 @@
 using System;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using BlazingChat.Shared.Models;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
 
 namespace BlazingChat.Client.Logging
@@ -10,9 +13,12 @@ namespace BlazingChat.Client.Logging
     {
         private readonly HttpClient _httpClient;
 
-        public DatabaseLogger(HttpClient httpClient)
+        public AuthenticationStateProvider _authStateProvider { get; }
+
+        public DatabaseLogger(HttpClient httpClient, AuthenticationStateProvider authStateProvider)
         {
             _httpClient = httpClient;
+            _authStateProvider = authStateProvider;
         }
         public IDisposable BeginScope<TState>(TState state)
         {
@@ -26,18 +32,25 @@ namespace BlazingChat.Client.Logging
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            var parameters = formatter.Invoke(state, exception);
-            long UserId = Convert.ToInt64(parameters.Split(':')[1]);
+            Task.Run(async () => { 
 
-            Log log = new();
-            log.LogLevel = logLevel.ToString();
-            log.UserId = Convert.ToInt64(UserId);
-            log.ExceptionMessage = exception?.Message;
-            log.StackTrace = exception?.StackTrace;
-            log.Source = "Client";
-            log.CreatedDate = DateTime.Now.ToString();
+                var authState = await _authStateProvider.GetAuthenticationStateAsync();
+                var user = authState.User;
+                long userId = 0;
+                if (user.Identity.IsAuthenticated)
+                    userId = Convert.ToInt64(user.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            _httpClient.PostAsJsonAsync<Log>("/logs", log);
+                Log log = new();
+                log.LogLevel = logLevel.ToString();
+                log.UserId = userId;
+                log.ExceptionMessage = exception?.Message;
+                log.StackTrace = exception?.StackTrace;
+                log.Source = "Client";
+                log.CreatedDate = DateTime.Now.ToString();
+
+                await _httpClient.PostAsJsonAsync<Log>("/logs", log);
+
+            });
         }
     }
 }

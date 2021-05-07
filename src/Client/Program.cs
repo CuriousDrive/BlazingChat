@@ -24,16 +24,18 @@ namespace BlazingChat.Client
             builder.Services.AddScoped(sp =>
                 new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-            builder.Services.AddLogging(logging => {
-                var httpClient = builder.Services.BuildServiceProvider().GetRequiredService<HttpClient>();
-                logging.SetMinimumLevel(LogLevel.Error);
-                logging.ClearProviders();
-                logging.AddProvider(new ApplicationLoggerProvider(httpClient));
-            });
 
             LoadHttpClients(builder);
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             
+            builder.Services.AddLogging(logging => {
+                var httpClient = builder.Services.BuildServiceProvider().GetRequiredService<HttpClient>();
+                var authStateProvider = builder.Services.BuildServiceProvider().GetRequiredService<AuthenticationStateProvider>();
+                logging.SetMinimumLevel(LogLevel.Error);
+                logging.ClearProviders();
+                logging.AddProvider(new ApplicationLoggerProvider(httpClient,authStateProvider));
+            });
+
             builder.Services.AddBlazoredToast();
 
             await builder.Build().RunAsync();
