@@ -13,12 +13,9 @@ namespace BlazingChat.Client.Logging
     {
         private readonly HttpClient _httpClient;
 
-        public AuthenticationStateProvider _authStateProvider { get; }
-
-        public DatabaseLogger(HttpClient httpClient, AuthenticationStateProvider authStateProvider)
+        public DatabaseLogger(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _authStateProvider = authStateProvider;
         }
         public IDisposable BeginScope<TState>(TState state)
         {
@@ -32,25 +29,14 @@ namespace BlazingChat.Client.Logging
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            Task.Run(async () => { 
+            Log log = new();
+            log.LogLevel = logLevel.ToString();
+            log.ExceptionMessage = exception?.Message;
+            log.StackTrace = exception?.StackTrace;
+            log.Source = "Client";
+            log.CreatedDate = DateTime.Now.ToString();
 
-                var authState = await _authStateProvider.GetAuthenticationStateAsync();
-                var user = authState.User;
-                long userId = 0;
-                if (user.Identity.IsAuthenticated)
-                    userId = Convert.ToInt64(user.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-                Log log = new();
-                log.LogLevel = logLevel.ToString();
-                log.UserId = userId;
-                log.ExceptionMessage = exception?.Message;
-                log.StackTrace = exception?.StackTrace;
-                log.Source = "Client";
-                log.CreatedDate = DateTime.Now.ToString();
-
-                await _httpClient.PostAsJsonAsync<Log>("/logs", log);
-
-            });
+            _httpClient.PostAsJsonAsync<Log>("/logs", log);
         }
     }
 }
