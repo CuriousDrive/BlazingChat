@@ -1,2 +1,3 @@
 # Ignore publish folder
 **/Publish/
+/src/Server/Properties
