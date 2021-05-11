@@ -30,9 +30,10 @@ namespace BlazingChat.Client
             
             builder.Services.AddLogging(logging => {
                 var httpClient = builder.Services.BuildServiceProvider().GetRequiredService<HttpClient>();
+                var authenticationStateProvider = builder.Services.BuildServiceProvider().GetRequiredService<AuthenticationStateProvider>();
                 logging.SetMinimumLevel(LogLevel.Error);
                 logging.ClearProviders();
-                logging.AddProvider(new ApplicationLoggerProvider(httpClient));
+                logging.AddProvider(new ApplicationLoggerProvider(httpClient, authenticationStateProvider));
             });
 
             builder.Services.AddBlazoredToast();

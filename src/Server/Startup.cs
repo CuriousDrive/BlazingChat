@@ -65,6 +65,7 @@ namespace BlazingChat.Server
             {
                 logging.ClearProviders();
             });
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,8 +73,9 @@ namespace BlazingChat.Server
         {
             var serviceProvider = app.ApplicationServices.CreateScope().ServiceProvider;
             var appDBContext = serviceProvider.GetRequiredService<BlazingChatContext>();
+            var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
             
-            loggerFactory.AddProvider(new ApplicationLoggerProvider(appDBContext));
+            loggerFactory.AddProvider(new ApplicationLoggerProvider(appDBContext, httpContextAccessor));
 
             app.UseResponseCompression();
             if (env.IsDevelopment())

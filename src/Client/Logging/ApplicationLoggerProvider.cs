@@ -8,14 +8,16 @@ namespace BlazingChat.Client.Logging
     {
         private readonly HttpClient _httpClient;
 
-        public ApplicationLoggerProvider(HttpClient httpClient)
+        public AuthenticationStateProvider _authenticationStateProvider { get; }
+
+        public ApplicationLoggerProvider(HttpClient httpClient, AuthenticationStateProvider authenticationStateProvider)
         {
             _httpClient = httpClient;
-
+            _authenticationStateProvider = authenticationStateProvider;
         }
         public ILogger CreateLogger(string categoryName)
         {
-            return new DatabaseLogger(_httpClient);
+            return new DatabaseLogger(_httpClient, _authenticationStateProvider);
         }
 
         public void Dispose()

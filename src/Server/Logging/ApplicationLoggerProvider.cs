@@ -8,13 +8,16 @@ namespace BlazingChat.Server.Logging
     {
         private readonly BlazingChatContext _context;
 
-        public ApplicationLoggerProvider(BlazingChatContext context)
+        public IHttpContextAccessor _httpContextAccessor { get; }
+
+        public ApplicationLoggerProvider(BlazingChatContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
         public ILogger CreateLogger(string categoryName)
         {
-            return new DatabaseLogger(_context);
+            return new DatabaseLogger(_context,_httpContextAccessor);
         }
 
         public void Dispose()
