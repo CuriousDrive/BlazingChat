@@ -40,6 +40,24 @@
 </div>
 
 @code {
+
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authenticationState;
+        var user = authState.User;
+
+        if(user.Identity.IsAuthenticated)
+        {
+            _navigationManager.NavigateTo("/profile",true);
+        }
+        
+        _loginViewModel.EmailAddress = "john.smith@gmail.com";
+        _loginViewModel.Password = "john.smith";
+    }
+    
     public async Task LoginUser()
     {
         await _loginViewModel.LoginUser();
