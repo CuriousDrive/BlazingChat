@@ -28,7 +28,6 @@ namespace BlazingChat.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddSignalR();
@@ -61,10 +60,10 @@ namespace BlazingChat.Server
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
-            services.AddLogging(logging =>
-            {
-                logging.ClearProviders();
-            });
+            // services.AddLogging(logging =>
+            // {
+            //     logging.ClearProviders();
+            // });
             services.AddHttpContextAccessor();
         }
 

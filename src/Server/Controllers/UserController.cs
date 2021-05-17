@@ -58,6 +58,22 @@ namespace BlazingChat.Server.Controllers
             return await Task.FromResult(loggedInUser);
         }
 
+
+        [HttpPost("registeruser")]
+        public async Task<ActionResult> RegisterUser(User user)
+        {
+            //in this method you should only create a user record and not authenticate the user
+            var emailAddressExists = _context.Users.Where(u => u.EmailAddress == user.EmailAddress).FirstOrDefault();
+            if(emailAddressExists == null)
+            {
+                user.Password = Utility.Encrypt(user.Password);
+                user.Source = "APPL";
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+            }
+           
+            return Ok();
+        }
         [HttpGet("getcurrentuser")]
         public async Task<ActionResult<User>> GetCurrentUser()
         {
