@@ -27,6 +27,8 @@ namespace BlazingChat.ViewModels
 
         public async Task RegisterUser()
         {
+            Console.WriteLine(this.EmailAddress);
+            Console.WriteLine(this.Password);
             await _httpClient.PostAsJsonAsync<User>("user/registeruser", this);
         }
 

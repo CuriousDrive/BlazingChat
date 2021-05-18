@@ -29,7 +29,10 @@ namespace BlazingChat.Server.Logging
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            var userId = _httpContextAccessor?.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = _httpContextAccessor?.HttpContext?.User;
+            long userId = 0;
+            if(user.Identity.IsAuthenticated)
+                userId = Convert.ToInt64(user.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             Log log = new();
             log.LogLevel = logLevel.ToString();

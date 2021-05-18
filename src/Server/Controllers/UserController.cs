@@ -63,6 +63,7 @@ namespace BlazingChat.Server.Controllers
         public async Task<ActionResult> RegisterUser(User user)
         {
             //in this method you should only create a user record and not authenticate the user
+            System.Console.WriteLine("The debugger is at the API call");
             var emailAddressExists = _context.Users.Where(u => u.EmailAddress == user.EmailAddress).FirstOrDefault();
             if(emailAddressExists == null)
             {

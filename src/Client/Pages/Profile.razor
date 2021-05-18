@@ -1,11 +1,11 @@
 ﻿@page "/profile"
 @using BlazingChat.ViewModels
-@using BlazingChat.Shared.Models
 @using System.Security.Claims
 @inject IProfileViewModel _profileViewModel
 @inject NavigationManager _navigationManager
 @inject IJSRuntime _jsRuntime
 @inject HttpClient _httpClient
+@inject IToastService _toastService
 
 <h2><b>Profile</b></h2> 
 <hr />
@@ -54,7 +54,7 @@
             {
                 if(ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                     await _httpClient.GetAsync("user/logoutuser");
+                    await _httpClient.GetAsync("user/logoutuser");
                     _navigationManager.NavigateTo("/", true);
                 }
             }
