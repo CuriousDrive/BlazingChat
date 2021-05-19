@@ -38,7 +38,7 @@ namespace BlazingChat.Server.Controllers
 
         //Authentication Methods
         [HttpPost("loginuser")]
-        public async Task<ActionResult<User>> LoginUser(User user)
+        public async Task<ActionResult<User>> LoginUser(User user, bool isPersistent)
         {
             user.Password = Utility.Encrypt(user.Password);
             User loggedInUser = await _context.Users.Where(u => u.EmailAddress == user.EmailAddress && u.Password == user.Password).FirstOrDefaultAsync();
@@ -53,7 +53,7 @@ namespace BlazingChat.Server.Controllers
                 //create claimsPrincipal
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 //Sign In User
-                await HttpContext.SignInAsync(claimsPrincipal, GetAuthenticationProperties());
+                await HttpContext.SignInAsync(claimsPrincipal, GetAuthenticationProperties(isPersistent));
             }
             return await Task.FromResult(loggedInUser);
         }
@@ -63,7 +63,6 @@ namespace BlazingChat.Server.Controllers
         public async Task<ActionResult> RegisterUser(User user)
         {
             //in this method you should only create a user record and not authenticate the user
-            System.Console.WriteLine("The debugger is at the API call");
             var emailAddressExists = _context.Users.Where(u => u.EmailAddress == user.EmailAddress).FirstOrDefault();
             if(emailAddressExists == null)
             {
@@ -108,32 +107,31 @@ namespace BlazingChat.Server.Controllers
         }
 
         [HttpGet("TwitterSignIn")]
-        public async Task TwitterSignIn()
+        public async Task TwitterSignIn(bool isPersistent)
         {
             await HttpContext.ChallengeAsync(TwitterDefaults.AuthenticationScheme,
-                GetAuthenticationProperties());
+                GetAuthenticationProperties(isPersistent));
         }
 
         [HttpGet("FacebookSignIn")]
-        public async Task FacebookSignIn()
+        public async Task FacebookSignIn(bool isPersistent)
         {
             await HttpContext.ChallengeAsync(FacebookDefaults.AuthenticationScheme,
-                GetAuthenticationProperties());
+                GetAuthenticationProperties(isPersistent));
         }
 
         [HttpGet("GoogleSignIn")]
-        public async Task GoogleSignIn()
+        public async Task GoogleSignIn(bool isPersistent)
         {
             await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
-                GetAuthenticationProperties());
+                GetAuthenticationProperties(isPersistent));
         }
 
-        public AuthenticationProperties GetAuthenticationProperties()
+        public AuthenticationProperties GetAuthenticationProperties(bool isPersistent)
         {
             return new AuthenticationProperties()
                 {
-                    IsPersistent = true,
-                    ExpiresUtc = DateTime.Now.AddMinutes(10),
+                    IsPersistent = isPersistent,
                     RedirectUri = "/profile"
                 };
         }

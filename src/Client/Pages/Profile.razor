@@ -48,7 +48,11 @@
             try
             {
                 await _profileViewModel.GetProfile();
-                
+                if(_profileViewModel.ProfilePicDataUrl == null)
+                {
+                    _profileViewModel.ProfilePicDataUrl = "/img/profile_pic.jpg";
+                    Console.WriteLine(_profileViewModel.ProfilePicDataUrl);
+                }
             }
             catch (System.Net.Http.HttpRequestException ex)
             {
