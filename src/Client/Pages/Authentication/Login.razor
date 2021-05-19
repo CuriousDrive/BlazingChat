@@ -78,16 +78,16 @@
 
     private void TwitterSignIn()
     {
-        _navigationManager.NavigateTo($"user/TwitterSignIn?isPersistent={_loginViewModel.RememberMe}", true);
+        _navigationManager.NavigateTo($"user/TwitterSignIn", true);
     }
 
     private void FacebookSignIn()
     {
-        _navigationManager.NavigateTo($"user/FacebookSignIn?isPersistent={_loginViewModel.RememberMe}", true);
+        _navigationManager.NavigateTo($"user/FacebookSignIn", true);
     }
 
     private void GoogleSignIn()
     {
-        _navigationManager.NavigateTo($"user/GoogleSignIn?isPersistent={_loginViewModel.RememberMe}", true);
+        _navigationManager.NavigateTo($"user/GoogleSignIn", true);
     }
 }

@@ -27,7 +27,7 @@ namespace BlazingChat.ViewModels
 
         public async Task LoginUser()
         {
-            await _httpClient.PostAsJsonAsync<User>($"user/loginuser?isPersistent={this.RememberMe}", this);
+            await _httpClient.PostAsJsonAsync<User>($"user/loginuser", this);
         }
 
         public static implicit operator LoginViewModel(User user)

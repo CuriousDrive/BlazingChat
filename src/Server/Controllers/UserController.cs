@@ -38,7 +38,7 @@ namespace BlazingChat.Server.Controllers
 
         //Authentication Methods
         [HttpPost("loginuser")]
-        public async Task<ActionResult<User>> LoginUser(User user, bool isPersistent)
+        public async Task<ActionResult<User>> LoginUser(User user)
         {
             user.Password = Utility.Encrypt(user.Password);
             User loggedInUser = await _context.Users.Where(u => u.EmailAddress == user.EmailAddress && u.Password == user.Password).FirstOrDefaultAsync();
@@ -53,7 +53,7 @@ namespace BlazingChat.Server.Controllers
                 //create claimsPrincipal
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 //Sign In User
-                await HttpContext.SignInAsync(claimsPrincipal, GetAuthenticationProperties(isPersistent));
+                await HttpContext.SignInAsync(claimsPrincipal, GetAuthenticationProperties());
             }
             return await Task.FromResult(loggedInUser);
         }
@@ -107,33 +107,34 @@ namespace BlazingChat.Server.Controllers
         }
 
         [HttpGet("TwitterSignIn")]
-        public async Task TwitterSignIn(bool isPersistent)
+        public async Task TwitterSignIn()
         {
             await HttpContext.ChallengeAsync(TwitterDefaults.AuthenticationScheme,
-                GetAuthenticationProperties(isPersistent));
+                GetAuthenticationProperties());
         }
 
         [HttpGet("FacebookSignIn")]
-        public async Task FacebookSignIn(bool isPersistent)
+        public async Task FacebookSignIn()
         {
             await HttpContext.ChallengeAsync(FacebookDefaults.AuthenticationScheme,
-                GetAuthenticationProperties(isPersistent));
+                GetAuthenticationProperties());
         }
 
         [HttpGet("GoogleSignIn")]
-        public async Task GoogleSignIn(bool isPersistent)
+        public async Task GoogleSignIn()
         {
             await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
-                GetAuthenticationProperties(isPersistent));
+                GetAuthenticationProperties());
         }
 
-        public AuthenticationProperties GetAuthenticationProperties(bool isPersistent)
+        public AuthenticationProperties GetAuthenticationProperties()
         {
             return new AuthenticationProperties()
-                {
-                    IsPersistent = isPersistent,
-                    RedirectUri = "/profile"
-                };
+            {
+                IsPersistent = false,
+                ExpiresUtc = DateTime.UtcNow.AddMinutes(10),
+                RedirectUri = "/profile"
+            };
         }
         [HttpGet("notauthorized")]
         public IActionResult NotAuthorized()
