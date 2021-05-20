@@ -38,7 +38,7 @@ namespace BlazingChat.Server.Controllers
 
         //Authentication Methods
         [HttpPost("loginuser")]
-        public async Task<ActionResult<User>> LoginUser(User user)
+        public async Task<ActionResult<User>> LoginUser(User user, bool isPersistent)
         {
             user.Password = Utility.Encrypt(user.Password);
             User loggedInUser = await _context.Users.Where(u => u.EmailAddress == user.EmailAddress && u.Password == user.Password).FirstOrDefaultAsync();
@@ -53,7 +53,7 @@ namespace BlazingChat.Server.Controllers
                 //create claimsPrincipal
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 //Sign In User
-                await HttpContext.SignInAsync(claimsPrincipal, GetAuthenticationProperties());
+                await HttpContext.SignInAsync(claimsPrincipal, GetAuthenticationProperties(isPersistent));
             }
             return await Task.FromResult(loggedInUser);
         }
@@ -107,10 +107,10 @@ namespace BlazingChat.Server.Controllers
         }
 
         [HttpGet("TwitterSignIn")]
-        public async Task TwitterSignIn()
+        public async Task TwitterSignIn(bool isPersistent)
         {
             await HttpContext.ChallengeAsync(TwitterDefaults.AuthenticationScheme,
-                GetAuthenticationProperties());
+                GetAuthenticationProperties(isPersistent));
         }
 
         [HttpGet("FacebookSignIn")]
@@ -127,12 +127,12 @@ namespace BlazingChat.Server.Controllers
                 GetAuthenticationProperties());
         }
 
-        public AuthenticationProperties GetAuthenticationProperties()
+        public AuthenticationProperties GetAuthenticationProperties(bool isPersistent = false)
         {
             return new AuthenticationProperties()
             {
-                IsPersistent = false,
-                ExpiresUtc = DateTime.UtcNow.AddMinutes(10),
+                IsPersistent = isPersistent,
+                //ExpiresUtc = DateTime.UtcNow.AddMinutes(10),
                 RedirectUri = "/profile"
             };
         }

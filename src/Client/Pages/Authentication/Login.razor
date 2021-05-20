@@ -78,7 +78,7 @@
 
     private void TwitterSignIn()
     {
-        _navigationManager.NavigateTo($"user/TwitterSignIn", true);
+        _navigationManager.NavigateTo($"user/TwitterSignIn?isPersistent={_loginViewModel.RememberMe}", true);
     }
 
     private void FacebookSignIn()
