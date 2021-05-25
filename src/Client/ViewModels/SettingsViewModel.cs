@@ -39,6 +39,20 @@ namespace BlazingChat.ViewModels
             await _httpClient.PutAsJsonAsync($"settings/updatenotifications/{this.UserId}", user);
             _toastService.ShowSuccess("Settings have been saved successfully");
         }
+
+        public async Task UpdateTheme()
+        {
+            User user = this;
+            await _httpClient.PutAsJsonAsync($"settings/updatetheme/{this.UserId}", user);
+            _toastService.ShowSuccess("Settings have been saved successfully");
+        }
+
+        public async Task UpdateNotifications()
+        {
+            User user = this;
+            await _httpClient.PutAsJsonAsync($"settings/updatenotifications/{this.UserId}", user);
+            _toastService.ShowSuccess("Settings have been saved successfully");
+        }
         private void LoadCurrentObject(SettingsViewModel settingsViewModel)
         {
             this.DarkTheme = settingsViewModel.DarkTheme;

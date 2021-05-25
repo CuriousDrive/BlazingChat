@@ -12,6 +12,7 @@ namespace BlazingChat.ViewModels
         public string Message { get; set; }
         public string AboutMe { get; set; }
         public string ProfilePicDataUrl { get; set; }
+        public bool DarkTheme { get; set; }
 
         public Task UpdateProfile();
         public Task GetProfile();

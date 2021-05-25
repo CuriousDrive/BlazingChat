@@ -13,7 +13,7 @@
 <div class="row">
     <div class="col-lg-4 col-md-6 col-sm-8">
         <img src="@_profileViewModel.ProfilePicDataUrl" alt="User Profile Picture" class="img-thumbnail"> <br/> <br/>
-        <InputFile OnChange="@OnInputFileChanged" style="margin-bottom: 1rem;"></InputFile>
+        <InputFile OnChange="@OnInputFileChanged" style="margin-bottom: 1rem;" class="white-text"></InputFile>
     </div>
     <div class="col-lg-8 col-md-6 col-sm-12">
         <input type="text" @bind-value="_profileViewModel.FirstName" class="form-control dark-theme-textbox" placeholder="first name">
@@ -35,7 +35,6 @@
 
     [CascadingParameter]
     public Task<AuthenticationState> authenticationState { get; set; }
-    
     protected override async Task OnInitializedAsync() 
     {
         var authState = await authenticationState;
@@ -48,6 +47,11 @@
             try
             {
                 await _profileViewModel.GetProfile();
+                var themeName = _profileViewModel.DarkTheme ? "dark" : "light";
+        
+                var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
+                await module.InvokeVoidAsync("setTheme", themeName);
+
                 if(_profileViewModel.ProfilePicDataUrl == null)
                 {
                     _profileViewModel.ProfilePicDataUrl = "/img/profile_pic.jpg";

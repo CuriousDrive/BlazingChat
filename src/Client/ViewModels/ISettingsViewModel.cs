@@ -13,6 +13,8 @@ namespace BlazingChat.ViewModels
         public bool DarkTheme { get; set; }
 
         public Task Save();
+        public Task UpdateTheme();
+        public Task UpdateNotifications();
         public Task GetProfile();
     }
 }
