@@ -4,19 +4,19 @@
 @inject ISettingsViewModel _settingsViewModel
 @inject NavigationManager _navigationManager
 
-<h2><b>Settings</b></h2> 
-<hr />
+<h2 class="white-text"><b>Settings</b></h2> 
+<hr class="white-horizontal-line"/>
 
 <div class="col-12">
     <div class="row">
         <RadzenSwitch @bind-Value="@_settingsViewModel.Notifications" Style="margin-bottom: 20px" />
-        <span>&nbsp;</span>
-        <label> Notification </label>  
+        <span>&nbsp; &nbsp;</span>
+        <label class="white-text"> Notification </label>  
     </div>
     <div class="row">
         <RadzenSwitch @bind-Value="@_settingsViewModel.DarkTheme" Style="margin-bottom: 20px" />
-        <span>&nbsp;</span>
-        <label> Dark Theme </label>    
+        <span>&nbsp; &nbsp;</span>
+        <label class="white-text"> Dark Theme </label>    
     </div>
     <div class="row">
         <button class="btn btn-primary" @onclick="_settingsViewModel.Save">Save</button>

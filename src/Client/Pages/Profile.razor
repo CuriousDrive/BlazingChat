@@ -7,8 +7,8 @@
 @inject HttpClient _httpClient
 @inject IToastService _toastService
 
-<h2><b>Profile</b></h2> 
-<hr />
+<h2 class="white-text"><b>Profile</b></h2> 
+<hr class="white-horizontal-line"/>
 
 <div class="row">
     <div class="col-lg-4 col-md-6 col-sm-8">
@@ -16,13 +16,13 @@
         <InputFile OnChange="@OnInputFileChanged" style="margin-bottom: 1rem;"></InputFile>
     </div>
     <div class="col-lg-8 col-md-6 col-sm-12">
-        <input type="text" @bind-value="_profileViewModel.FirstName" class="form-control" placeholder="first name">
+        <input type="text" @bind-value="_profileViewModel.FirstName" class="form-control dark-theme-textbox" placeholder="first name">
         <br/>
-        <input type="text" @bind-value="_profileViewModel.LastName" class="form-control" placeholder="last name">
+        <input type="text" @bind-value="_profileViewModel.LastName" class="form-control dark-theme-textbox" placeholder="last name">
         <br/>
-        <input type="text" @bind-value="_profileViewModel.EmailAddress" class="form-control" placeholder="email address">
+        <input type="text" @bind-value="_profileViewModel.EmailAddress" class="form-control dark-theme-textbox" placeholder="email address">
         <br/>
-        <textarea class="form-control" @bind="_profileViewModel.AboutMe" placeholder="about me"></textarea>
+        <textarea @bind="_profileViewModel.AboutMe" class="form-control dark-theme-textbox" placeholder="about me"></textarea>
         <br/>
         <button class="btn btn-primary" @onclick="_profileViewModel.UpdateProfile">Save</button>
         <button class="btn btn-primary" @onclick="DownloadProfilePicture">Download Picture</button>
