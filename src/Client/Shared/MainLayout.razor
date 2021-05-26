@@ -1,7 +1,9 @@
-﻿@using Blazored.Toast.Configuration
+﻿@using BlazingChat.Shared.Models
+@using Blazored.Toast.Configuration
 @inherits LayoutComponentBase
 @inject NavigationManager _navigationManager
 @inject HttpClient _httpClient
+@inject IJSRuntime _jsRuntime
 
 <div class="page">
 
@@ -36,6 +38,19 @@
 </div>
 
 @code{
+
+    protected override async Task OnInitializedAsync()
+    {
+        User currentUser = await _httpClient.GetFromJsonAsync<User>("user/getcurrentuser");
+        if(currentUser != null)
+        {
+            var themeName = currentUser.DarkTheme == 1 ? "dark" : "light";
+            
+            var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
+            await module.InvokeVoidAsync("setTheme", themeName);
+        }
+        await base.OnInitializedAsync();
+    }
 
     private async Task LogoutUser()
     {

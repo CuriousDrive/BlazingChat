@@ -47,10 +47,6 @@
             try
             {
                 await _profileViewModel.GetProfile();
-                var themeName = _profileViewModel.DarkTheme ? "dark" : "light";
-        
-                var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
-                await module.InvokeVoidAsync("setTheme", themeName);
 
                 if(_profileViewModel.ProfilePicDataUrl == null)
                 {

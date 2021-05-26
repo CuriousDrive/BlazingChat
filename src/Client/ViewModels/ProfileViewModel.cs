@@ -15,7 +15,6 @@ namespace BlazingChat.ViewModels
         public string Message { get; set; }
         public string AboutMe { get; set; }
         public string ProfilePicDataUrl { get; set; }
-        public bool DarkTheme { get; set; }
         private HttpClient _httpClient;
 
         public IToastService _toastService { get; }
@@ -51,7 +50,6 @@ namespace BlazingChat.ViewModels
             this.EmailAddress = profileViewModel.EmailAddress;
             this.AboutMe = profileViewModel.AboutMe;
             this.ProfilePicDataUrl = profileViewModel.ProfilePicDataUrl;
-            this.DarkTheme = profileViewModel.DarkTheme;
             //add more fields
         }
 
@@ -64,8 +62,7 @@ namespace BlazingChat.ViewModels
                 EmailAddress = user.EmailAddress,
                 UserId = user.UserId,
                 AboutMe = user.AboutMe,
-                ProfilePicDataUrl = user.ProfilePicDataUrl,
-                DarkTheme = user.DarkTheme == 1 ? true : false
+                ProfilePicDataUrl = user.ProfilePicDataUrl
             };
         }
 
@@ -78,8 +75,7 @@ namespace BlazingChat.ViewModels
                 EmailAddress = profileViewModel.EmailAddress,
                 UserId = profileViewModel.UserId,
                 AboutMe = profileViewModel.AboutMe,
-                ProfilePicDataUrl = profileViewModel.ProfilePicDataUrl,
-                DarkTheme = profileViewModel.DarkTheme ? 1 : 0
+                ProfilePicDataUrl = profileViewModel.ProfilePicDataUrl
             };
         }
     }
