@@ -57,11 +57,6 @@
 
     private async Task UpdateTheme()
     {
-        var themeName = _settingsViewModel.DarkTheme ? "dark" : "light";
-        
-        var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
-        await module.InvokeVoidAsync("setTheme", themeName);
-
         await _settingsViewModel.UpdateTheme();
     }
     private async Task UpdateNotifications()
