@@ -41,6 +41,16 @@
 
     protected override async Task OnInitializedAsync()
     {
+        User currentUser = await _httpClient.GetFromJsonAsync<User>("user/getcurrentuser");
+        
+        if(currentUser != null)
+        {
+            var themeName = currentUser.DarkTheme == 1 ? "dark" : "light";
+            
+            var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
+            await module.InvokeVoidAsync("setTheme", themeName);
+        }
+        
         await base.OnInitializedAsync();
     }
 
