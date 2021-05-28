@@ -41,7 +41,20 @@ namespace BlazingChat.Server.Controllers
         public async Task<ActionResult<User>> LoginUser(User user, bool isPersistent)
         {
             user.Password = Utility.Encrypt(user.Password);
-            User loggedInUser = await _context.Users.Where(u => u.EmailAddress == user.EmailAddress && u.Password == user.Password).FirstOrDefaultAsync();
+            User loggedInUser = await _context.Users
+                                    .Where(u => u.EmailAddress == user.EmailAddress && u.Password == user.Password)
+                                    .Select(u => 
+                                        new User 
+                                            { 
+                                                UserId = u.UserId,
+                                                EmailAddress = u.EmailAddress,
+                                                FirstName = u.FirstName,
+                                                LastName = u.LastName,
+                                                Source = u.Source,
+                                                DarkTheme = u.DarkTheme,
+                                                Notifications = u.Notifications
+                                            })
+                                    .FirstOrDefaultAsync();
 
             if (loggedInUser != null)
             {
