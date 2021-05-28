@@ -1,0 +1,69 @@
+@page "/createaccount"
+@using BlazingChat.ViewModels
+@inject IRegisterViewModel _registerViewModel
+@inject NavigationManager _navigationManager
+@inject IToastService _toastService
+
+<h2 class="white-text"><b>Create an account</b></h2>
+<hr class="white-horizontal-line">
+
+<div class="col-xl-6 col-md-8 col-12">
+    <input type="text" @bind="_registerViewModel.EmailAddress" placeholder="email address" class="form-control dark-theme-textbox" autocomplete="new-emailaddress">
+</div>
+<br />
+<div class="col-xl-6 col-md-8 col-12">
+    <input type="password" @bind="_registerViewModel.Password" placeholder="password" class="form-control dark-theme-textbox" autocomplete="new-password">
+</div>
+<br />
+<div class="col-xl-6 col-md-8 col-12">
+    <input type="password" @bind="_registerViewModel.ReenterPassword" class="form-control dark-theme-textbox" placeholder="reenter password">
+</div>
+<br />
+<div class="col-xl-6 col-md-8 col-12">
+    <button class="btn btn-danger" @onclick="RegisterUser">Register</button>
+    &nbsp;
+    <a style="font-weight: bold;" href="">Already have an account?</a>
+</div>
+<hr class="white-horizontal-line"/>
+<div class="col-xl-6 col-md-8 col-12">
+    <a class="btn btn-block btn-social btn-twitter" @onclick="TwitterSignIn" href="">
+        <span class="fa fa-twitter"></span> <b>Sign in with Twitter</b>
+    </a>
+</div>
+<br />
+<div class="col-xl-6 col-md-8 col-12">
+    <a class="btn btn-block btn-social btn-facebook" @onclick="FacebookSignIn" href="">
+        <span class="fa fa-facebook"></span> <b>Sign in with Facebook</b>
+    </a>
+</div>
+<br />
+<div class="col-xl-6 col-md-8 col-12">
+    <a class="btn btn-block btn-social btn-google" @onclick="GoogleSignIn" href="">
+        <span class="fa fa-google"></span> <b>Sign in with Google</b>
+    </a>
+</div>
+<hr class="white-horizontal-line"/>
+
+@code {
+    public async Task RegisterUser()
+    {
+        await _registerViewModel.RegisterUser();
+        _toastService.ShowInfo("Your user has been created in the system. Please login with your credentials");
+        _navigationManager.NavigateTo("/");
+    }
+
+    private void TwitterSignIn()
+    {
+        _navigationManager.NavigateTo("user/TwitterSignIn", true);
+    }
+
+    private void FacebookSignIn()
+    {
+        _navigationManager.NavigateTo("user/FacebookSignIn", true);
+    }
+
+    private void GoogleSignIn()
+    {
+        _navigationManager.NavigateTo("user/GoogleSignIn", true);
+    }
+}

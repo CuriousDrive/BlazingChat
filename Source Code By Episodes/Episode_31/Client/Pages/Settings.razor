@@ -1,0 +1,71 @@
+﻿@page "/settings"
+@using BlazingChat.ViewModels
+@using System.Security.Claims
+@inject ISettingsViewModel _settingsViewModel
+@inject NavigationManager _navigationManager
+@inject IJSRuntime _jsRuntime
+
+<h2 class="white-text"><b>Settings</b></h2> 
+<hr class="white-horizontal-line"/>
+
+<div class="col-12">
+    <div class="row">
+        <RadzenSwitch @bind-Value="@_settingsViewModel.Notifications" Style="margin-bottom: 20px" Change="UpdateNotifications" />
+        <span>&nbsp; &nbsp;</span>
+        <label class="white-text"> Notifications </label>  
+    </div>
+    <div class="row">
+        <RadzenSwitch @bind-Value="@_settingsViewModel.DarkTheme" Style="margin-bottom: 20px" Change="UpdateTheme" />
+        <span>&nbsp; &nbsp;</span>
+        <label class="white-text"> Dark Theme </label>    
+    </div>
+</div>
+<br />
+
+@code {
+
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+    
+    [CascadingParameter]
+    public Error Error { get; set; }
+
+    protected override async Task OnInitializedAsync() 
+    {
+        try
+        {
+            var authState = await authenticationState;//_authenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if(user.Identity.IsAuthenticated)
+            {
+                var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
+                _settingsViewModel.UserId = Convert.ToInt64(claim?.Value);
+                //throw new NullReferenceException();
+                await _settingsViewModel.GetProfile();
+            }
+            else
+            {
+                _navigationManager.NavigateTo("/");
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Error.ProcessError(ex);
+        }
+    } 
+
+    private async Task UpdateTheme()
+    {
+        var themeName = _settingsViewModel.DarkTheme ? "dark" : "light";
+
+        var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
+        await module.InvokeVoidAsync("setTheme", themeName);
+        
+        await _settingsViewModel.UpdateTheme();
+    }
+    private async Task UpdateNotifications()
+    {
+        await _settingsViewModel.UpdateNotifications();
+    }
+}

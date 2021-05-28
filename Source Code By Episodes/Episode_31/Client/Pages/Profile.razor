@@ -1,0 +1,101 @@
+﻿@page "/profile"
+@using BlazingChat.ViewModels
+@using System.Security.Claims
+@inject IProfileViewModel _profileViewModel
+@inject NavigationManager _navigationManager
+@inject IJSRuntime _jsRuntime
+@inject HttpClient _httpClient
+@inject IToastService _toastService
+
+<h2 class="white-text"><b>Profile</b></h2> 
+<hr class="white-horizontal-line"/>
+
+<div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-8">
+        <img src="@_profileViewModel.ProfilePicDataUrl" alt="User Profile Picture" class="img-thumbnail"> <br/> <br/>
+        <InputFile OnChange="@OnInputFileChanged" style="margin-bottom: 1rem;" class="white-text"></InputFile>
+    </div>
+    <div class="col-lg-8 col-md-6 col-sm-12">
+        <input type="text" @bind-value="_profileViewModel.FirstName" class="form-control dark-theme-textbox" placeholder="first name">
+        <br/>
+        <input type="text" @bind-value="_profileViewModel.LastName" class="form-control dark-theme-textbox" placeholder="last name">
+        <br/>
+        <input type="text" @bind-value="_profileViewModel.EmailAddress" class="form-control dark-theme-textbox" placeholder="email address">
+        <br/>
+        <textarea @bind="_profileViewModel.AboutMe" class="form-control dark-theme-textbox" placeholder="about me"></textarea>
+        <br/>
+        <button class="btn btn-primary" @onclick="_profileViewModel.UpdateProfile">Save</button>
+        <button class="btn btn-primary" @onclick="DownloadProfilePicture">Download Picture</button>
+        @* <button class="btn btn-primary" @onclick="DownloadServerFile">Download a Document</button> *@
+    </div>
+</div>
+<br />
+
+@code {
+
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+    protected override async Task OnInitializedAsync() 
+    {
+        var authState = await authenticationState;
+        var user = authState.User;
+
+        if(user.Identity.IsAuthenticated)
+        {
+            var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
+            _profileViewModel.UserId = Convert.ToInt64(claim?.Value) ;
+            try
+            {
+                await _profileViewModel.GetProfile();
+
+                if(_profileViewModel.ProfilePicDataUrl == null)
+                {
+                    _profileViewModel.ProfilePicDataUrl = "/img/profile_pic.jpg";
+                    Console.WriteLine(_profileViewModel.ProfilePicDataUrl);
+                }
+            }
+            catch (System.Net.Http.HttpRequestException ex)
+            {
+                if(ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    await _httpClient.GetAsync("user/logoutuser");
+                    _navigationManager.NavigateTo("/", true);
+                }
+            }
+        }
+        else
+        {
+            _navigationManager.NavigateTo("/");
+        }
+    }
+    private async Task OnInputFileChanged(InputFileChangeEventArgs inputFileChangeEvent)
+    {
+        //get the file
+        var file = inputFileChangeEvent.File;
+
+        //read that file in a byte array
+        var buffer = new byte[file.Size];
+        await file.OpenReadStream(1512000).ReadAsync(buffer);
+
+        //convert byte array to base 64 string
+        _profileViewModel.ProfilePicDataUrl = $"data:image/png;base64,{Convert.ToBase64String(buffer)}";
+    }
+
+    private async Task DownloadProfilePicture()
+    {
+        string[] base64String = _profileViewModel.ProfilePicDataUrl.Split(',');
+        
+        var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
+        await module.InvokeVoidAsync("downloadFile","image/png",base64String[1],"profile.png");
+    }
+
+    private async Task DownloadServerFile()
+    {
+        //get base64 string from web api call
+        var httpResponseMessage = await _httpClient.GetAsync("user/DownloadServerFile");
+        var base64String = httpResponseMessage.Content.ReadAsStringAsync().Result;
+
+        //call javascript function to download the file
+        await _jsRuntime.InvokeVoidAsync("downloadFile","application/vnd.openxmlformats-officedocument.wordprocessingml.document",base64String, "document.docx");
+    }
+}
