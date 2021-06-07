@@ -24,15 +24,10 @@ namespace BlazingChat.Server.Controllers
             this.logger = logger;
             this._context = context;
         }
-
-        [HttpGet("getcontacts")]
-        public List<User> GetContacts()
-        {
-            return _context.Users.ToList();
-        }
-
-        [HttpGet("getallcontacts")]
-        public List<User> GetAllContacts()
+        
+        //loading 20,000 contacts
+        [HttpGet("getallcontactsdemo")]
+        public List<User> GetAllContactsDemo()
         {
             List<User> users = new();
             users.AddRange(Enumerable.Range(0, 20001).Select(x => new User { UserId = x, FirstName = $"First{x}", LastName = $"Last{x}" }));
@@ -41,8 +36,8 @@ namespace BlazingChat.Server.Controllers
 
         }
 
-        [HttpGet("getonlyvisiblecontacts")]
-        public List<User> GetOnlyVisibleContacts(int startIndex, int count)
+        [HttpGet("getonlyvisiblecontactsdemo")]
+        public List<User> GetOnlyVisibleContactsDemo(int startIndex, int count)
         {
             List<User> users = new();
             users.AddRange(Enumerable.Range(startIndex, count).Select(x => new User { UserId = x, FirstName = $"First{x}", LastName = $"Last{x}" }));
@@ -50,17 +45,24 @@ namespace BlazingChat.Server.Controllers
             return users;
         }
 
-        [HttpGet("getcontactscount")]
-        public async Task<int> GetContactsCount()
+        //loading actual contacts
+        [HttpGet("getcontacts")]
+        public List<User> GetContacts()
         {
-            //throw new IndexOutOfRangeException();
-            return await _context.Users.CountAsync();    
+            return _context.Users.ToList();
         }
 
         [HttpGet("getvisiblecontacts")]
         public async Task<List<User>> GetVisibleContacts(int startIndex, int count)
         {
             return await _context.Users.Skip(startIndex).Take(count).ToListAsync();
+        }
+
+        [HttpGet("getcontactscount")]
+        public async Task<int> GetContactsCount()
+        {
+            //throw new IndexOutOfRangeException();
+            return await _context.Users.CountAsync();    
         }
     }
 }

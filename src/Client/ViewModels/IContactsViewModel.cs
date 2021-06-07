@@ -16,9 +16,10 @@ namespace BlazingChat.ViewModels
         //Next two methods are gonna load 20,000 contacts
         public Task LoadAllContactsDemo();
         public Task LoadOnlyVisibleContactsDemo(int startIndex, int numberOfUsers);
-        
+        public void LoadContactsCountDemo();
+
         //Next two methods are gonna load the actual contacts
-        public Task LoadContactsCount();
+        public Task LoadContactsCountDB();
         public Task LoadAllContactsDB();
         public Task LoadOnlyVisibleContactsDB(int startIndex, int numberOfUsers);
 
