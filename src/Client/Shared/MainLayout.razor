@@ -42,7 +42,7 @@
     protected override async Task OnInitializedAsync()
     {
         //getting the current authenticated user for the app
-        User currentUser = await _httpClient.GetFromJsonAsync<User>("user/getcurrentuser");
+        @* User currentUser = await _httpClient.GetFromJsonAsync<User>("user/getcurrentuser");
         if(currentUser != null)
         {
             //setting the themeName parameter for JS function
@@ -50,7 +50,7 @@
             //calling the JS function
             var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
             await module.InvokeVoidAsync("setTheme", themeName);
-        }
+        } *@
         await base.OnInitializedAsync();
     }
 

@@ -59,9 +59,11 @@
     {
         //setting the themeName parameter
         var themeName = _settingsViewModel.DarkTheme ? "dark" : "light";
+
         //calling JS function
         var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
         await module.InvokeVoidAsync("setTheme", themeName);
+
         //persisting the settings in DB
         await _settingsViewModel.UpdateTheme();
     }

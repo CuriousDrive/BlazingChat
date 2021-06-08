@@ -10,31 +10,44 @@
 <h2 class="white-text"><b>Profile</b></h2> 
 <hr class="white-horizontal-line"/>
 
-<div class="row">
-    <div class="col-lg-4 col-md-6 col-sm-8">
-        <img src="@_profileViewModel.ProfilePicDataUrl" alt="User Profile Picture" class="img-thumbnail"> <br/> <br/>
-        <InputFile OnChange="@OnInputFileChanged" style="margin-bottom: 1rem;" class="white-text"></InputFile>
-    </div>
-    <div class="col-lg-8 col-md-6 col-sm-12">
-        <input type="text" @bind-value="_profileViewModel.FirstName" class="form-control dark-theme-textbox" placeholder="first name">
-        <br/>
-        <input type="text" @bind-value="_profileViewModel.LastName" class="form-control dark-theme-textbox" placeholder="last name">
-        <br/>
-        <input type="text" @bind-value="_profileViewModel.EmailAddress" class="form-control dark-theme-textbox" placeholder="email address">
-        <br/>
-        <textarea @bind="_profileViewModel.AboutMe" class="form-control dark-theme-textbox" placeholder="about me"></textarea>
-        <br/>
-        <button class="btn btn-primary" @onclick="_profileViewModel.UpdateProfile">Save</button>
-        <button class="btn btn-primary" @onclick="DownloadProfilePicture">Download Picture</button>
-        @* <button class="btn btn-primary" @onclick="DownloadServerFile">Download a Document</button> *@
-    </div>
-</div>
+<SpinLoader IsLoading="IsLoading">
+    <LoadingTemplate>
+            <div class="col-12" style="background-color: lightgray; height:400px; vertical-align:middle">
+                <br /><br />
+                <Chase Center="true" Color="blue" Size="70px"></Chase>
+            </div>
+    </LoadingTemplate>
+    <ContentTemplate>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-8">
+                <img src="@_profileViewModel.ProfilePicDataUrl" alt="User Profile Picture" class="img-thumbnail"> <br/> <br/>
+                <InputFile OnChange="@OnInputFileChanged" style="margin-bottom: 1rem;" class="white-text"></InputFile>
+            </div>
+            <div class="col-lg-8 col-md-6 col-sm-12">
+                <input type="text" @bind-value="_profileViewModel.FirstName" class="form-control dark-theme-textbox" placeholder="first name">
+                <br/>
+                <input type="text" @bind-value="_profileViewModel.LastName" class="form-control dark-theme-textbox" placeholder="last name">
+                <br/>
+                <input type="text" @bind-value="_profileViewModel.EmailAddress" class="form-control dark-theme-textbox" placeholder="email address">
+                <br/>
+                <textarea @bind="_profileViewModel.AboutMe" class="form-control dark-theme-textbox" placeholder="about me"></textarea>
+                <br/>
+                <button class="btn btn-primary" @onclick="_profileViewModel.UpdateProfile">Save</button>
+                <button class="btn btn-primary" @onclick="DownloadProfilePicture">Download Picture</button>
+                @* <button class="btn btn-primary" @onclick="DownloadServerFile">Download a Document</button> *@
+            </div>
+        </div>
+    </ContentTemplate>
+</SpinLoader>
+
+
 <br />
 
 @code {
 
     [CascadingParameter]
     public Task<AuthenticationState> authenticationState { get; set; }
+    public bool IsLoading { get; set; } = true;
     protected override async Task OnInitializedAsync() 
     {
         var authState = await authenticationState;
@@ -46,6 +59,7 @@
             _profileViewModel.UserId = Convert.ToInt64(claim?.Value) ;
             try
             {
+                await Task.Delay(2000);
                 await _profileViewModel.GetProfile();
 
                 if(_profileViewModel.ProfilePicDataUrl == null)
@@ -53,6 +67,7 @@
                     _profileViewModel.ProfilePicDataUrl = "/img/profile_pic.jpg";
                     Console.WriteLine(_profileViewModel.ProfilePicDataUrl);
                 }
+                IsLoading = false;
             }
             catch (System.Net.Http.HttpRequestException ex)
             {
@@ -85,8 +100,10 @@
     {
         string[] base64String = _profileViewModel.ProfilePicDataUrl.Split(',');
         
-        var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
-        await module.InvokeVoidAsync("downloadFile","image/png",base64String[1],"profile.png");
+        await _jsRuntime.InvokeVoidAsync("downloadFile","image/png",base64String[1],"profile.png");
+
+        //var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
+        //await module.InvokeVoidAsync("downloadFile","image/png",base64String[1],"profile.png");
     }
 
     private async Task DownloadServerFile()
