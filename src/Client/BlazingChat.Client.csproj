@@ -23,9 +23,9 @@
     <ProjectReference Include="..\Shared\BlazingChat.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!-- <ItemGroup>
     <BlazorWebAssemblyLazyLoad Include="BlazorPro.Spinkit.dll" />
-  </ItemGroup>
+  </ItemGroup> -->
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />

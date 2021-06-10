@@ -3,8 +3,7 @@
 <Error>
     <CascadingAuthenticationState>
         <Router AppAssembly="@typeof(Program).Assembly"
-                AdditionalAssemblies="lazyLoadedAssemblies"
-                OnNavigateAsync="OnNavigation">
+                AdditionalAssemblies="lazyLoadedAssemblies">
             <Found Context="routeData">
                 <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
             </Found>
