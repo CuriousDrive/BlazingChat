@@ -100,10 +100,10 @@
     {
         string[] base64String = _profileViewModel.ProfilePicDataUrl.Split(',');
         
-        await _jsRuntime.InvokeVoidAsync("downloadFile","image/png",base64String[1],"profile.png");
+        //await _jsRuntime.InvokeVoidAsync("downloadFile","image/png",base64String[1],"profile.png");
 
-        //var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
-        //await module.InvokeVoidAsync("downloadFile","image/png",base64String[1],"profile.png");
+        var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
+        await module.InvokeVoidAsync("downloadFile","image/png",base64String[1],"profile.png");
     }
 
     private async Task DownloadServerFile()

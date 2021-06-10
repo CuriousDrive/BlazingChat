@@ -13,7 +13,7 @@
 
 @if (_contactsViewModel.ContactsCount > 0)
 {
-    foreach(var contact in _contactsViewModel.Contacts)
+    @* foreach(var contact in _contactsViewModel.Contacts)
     {
         <div style="height: 50px">
                 <a href="/chat/@contact.ContactId"
@@ -21,9 +21,9 @@
                     @contact.FirstName <span> </span> @contact.LastName
                 </a>
         </div>
-    }
+    } *@
 
-    @* <Virtualize ItemsProvider="LoadOnlyVisibleContacts" Context="contact">
+    <Virtualize ItemsProvider="LoadOnlyVisibleContacts" Context="contact">
         <ItemContent>
             <div style="height: 50px">
                 <a href="/chat/@contact.ContactId"
@@ -37,7 +37,7 @@
                 <p>Loading...</p>
             </div>
         </Placeholder>
-    </Virtualize> *@
+    </Virtualize>
 }
 <br />
 
@@ -48,7 +48,7 @@
     [CascadingParameter]
     public Error Error { get; set; }
  
-    @* private async ValueTask<ItemsProviderResult<Contact>> LoadOnlyVisibleContacts(ItemsProviderRequest itemsProviderRequest)
+    private async ValueTask<ItemsProviderResult<Contact>> LoadOnlyVisibleContacts(ItemsProviderRequest itemsProviderRequest)
     {
         Console.WriteLine($"Start Index : {itemsProviderRequest.StartIndex}");
         Console.WriteLine($"Count : {itemsProviderRequest.Count}");
@@ -57,7 +57,7 @@
         await _contactsViewModel.LoadOnlyVisibleContactsDemo(itemsProviderRequest.StartIndex,itemsProviderRequest.Count);
 
         return new ItemsProviderResult<Contact>(_contactsViewModel.Contacts, _contactsViewModel.ContactsCount);
-    } *@
+    }
 
     protected override async Task OnInitializedAsync() 
     {
@@ -68,9 +68,10 @@
 
             if (user.Identity.IsAuthenticated)
             {
-                await _contactsViewModel.LoadAllContactsDemo();
+                //await _contactsViewModel.LoadAllContactsDemo();
                 
-                //_contactsViewModel.LoadContactsCountDemo();
+                throw new IndexOutOfRangeException();
+                _contactsViewModel.LoadContactsCountDemo();
             }
             else _navigationManager.NavigateTo("/");
         }
