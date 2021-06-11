@@ -59,7 +59,6 @@
             _profileViewModel.UserId = Convert.ToInt64(claim?.Value) ;
             try
             {
-                await Task.Delay(2000);
                 await _profileViewModel.GetProfile();
 
                 if(_profileViewModel.ProfilePicDataUrl == null)

@@ -54,7 +54,7 @@
         Console.WriteLine($"Count : {itemsProviderRequest.Count}");
         
         //await Task.Delay(2000);
-        await _contactsViewModel.LoadOnlyVisibleContactsDemo(itemsProviderRequest.StartIndex,itemsProviderRequest.Count);
+        await _contactsViewModel.LoadOnlyVisibleContactsDB(itemsProviderRequest.StartIndex,itemsProviderRequest.Count);
 
         return new ItemsProviderResult<Contact>(_contactsViewModel.Contacts, _contactsViewModel.ContactsCount);
     }
@@ -70,8 +70,8 @@
             {
                 //await _contactsViewModel.LoadAllContactsDemo();
                 
-                throw new IndexOutOfRangeException();
-                _contactsViewModel.LoadContactsCountDemo();
+                //throw new IndexOutOfRangeException();
+                await _contactsViewModel.LoadContactsCountDB();
             }
             else _navigationManager.NavigateTo("/");
         }
