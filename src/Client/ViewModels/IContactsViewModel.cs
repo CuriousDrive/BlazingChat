@@ -11,11 +11,17 @@ namespace BlazingChat.ViewModels
     public interface IContactsViewModel
     {
         public List<Contact> Contacts { get; set; }
-        public Task<List<Contact>> GetContacts();
-        public Task<List<Contact>> GetAllContacts();
-        public Task<List<Contact>> GetOnlyVisibleContacts(int startIndex, int numberOfUsers);
-        public Task<int> GetContactsCount();
-        public Task<List<Contact>> GetVisibleContacts(int startIndex, int numberOfUsers);
+        public int ContactsCount { get; set; }
+        
+        //Next two methods are gonna load 20,000 contacts
+        public Task LoadAllContactsDemo();
+        public Task LoadOnlyVisibleContactsDemo(int startIndex, int numberOfUsers);
+        public void LoadContactsCountDemo();
+
+        //Next two methods are gonna load the actual contacts
+        public Task LoadContactsCountDB();
+        public Task LoadAllContactsDB();
+        public Task LoadOnlyVisibleContactsDB(int startIndex, int numberOfUsers);
 
     }
 }
