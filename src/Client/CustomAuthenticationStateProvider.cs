@@ -24,8 +24,8 @@ namespace BlazingChat.Client
 
         public async override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            //User currentUser = await _httpClient.GetFromJsonAsync<User>("user/getcurrentuser");
-            User currentUser = await GetUserByJWTAsync();
+            User currentUser = await _httpClient.GetFromJsonAsync<User>("user/getcurrentuser");
+            //User currentUser = await GetUserByJWTAsync();
 
             if (currentUser != null && currentUser.EmailAddress != null)
             {
