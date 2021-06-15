@@ -1,7 +1,9 @@
 @page "/"
 @using BlazingChat.ViewModels
+@using BlazingChat.Shared
 @inject ILoginViewModel _loginViewModel
 @inject NavigationManager _navigationManager
+@inject ILocalStorageService _localStorageService
 
 <h2 class="white-text"><b>Login</b></h2>
 <hr class="white-horizontal-line" />
@@ -23,7 +25,7 @@
 </div>
 <div class="col-xl-6 col-md-8 col-12 row">
     <div class="col-xl-2 col-lg-2 col-md-6 col-sm-3 col-3">
-        <button class="btn btn-danger" @onclick="LoginUser">Login</button>
+        <button class="btn btn-danger" @onclick="AuthenticateJWT">Login</button>
     </div>
     <div class="col-xl-5 col-lg-5 col-md-6 col-sm-9 col-9">
         <a style="font-weight: bold;" href="/createaccount">Create an account</a>
@@ -74,6 +76,15 @@
     {
         await _loginViewModel.LoginUser();
         _navigationManager.NavigateTo("/profile",true);
+    }
+
+    public async Task AuthenticateJWT()
+    {
+        AuthenticationResponse authenticationResponse = await _loginViewModel.AuthenticateJWT();
+        await _localStorageService.SetItemAsync("jwt_token",authenticationResponse.Token);
+
+        _navigationManager.NavigateTo("/profile",true);
+
     }
 
     private void TwitterSignIn()

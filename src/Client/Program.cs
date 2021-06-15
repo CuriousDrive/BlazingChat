@@ -8,6 +8,7 @@ using BlazingChat.ViewModels;
 using Microsoft.AspNetCore.Components.Authorization;
 using BlazingChat.Client.Logging;
 using Blazored.Toast;
+using Blazored.LocalStorage;
 
 namespace BlazingChat.Client
 {
@@ -25,7 +26,9 @@ namespace BlazingChat.Client
                 new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             LoadHttpClients(builder);
+            
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+            builder.Services.AddBlazoredLocalStorage();
             
             builder.Services.AddLogging(logging => {
                 var httpClient = builder.Services.BuildServiceProvider().GetRequiredService<HttpClient>();

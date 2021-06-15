@@ -12,8 +12,10 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Twitter;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
-using System.IO;
-using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
 
 namespace BlazingChat.Server.Controllers
 {
@@ -23,11 +25,13 @@ namespace BlazingChat.Server.Controllers
     {
         private readonly ILogger<UserController> logger;
         private readonly BlazingChatContext _context;
+        private readonly IConfiguration _configuration;
 
-        public UserController(ILogger<UserController> logger, BlazingChatContext context)
+        public UserController(ILogger<UserController> logger, BlazingChatContext context, IConfiguration configuration)
         {
             this.logger = logger;
             this._context = context;
+            this._configuration = configuration;
         }
 
         [HttpGet("getcontacts")]
@@ -43,17 +47,6 @@ namespace BlazingChat.Server.Controllers
             user.Password = Utility.Encrypt(user.Password);
             User loggedInUser = await _context.Users
                                     .Where(u => u.EmailAddress == user.EmailAddress && u.Password == user.Password)
-                                    .Select(u => 
-                                        new User 
-                                            { 
-                                                UserId = u.UserId,
-                                                EmailAddress = u.EmailAddress,
-                                                FirstName = u.FirstName,
-                                                LastName = u.LastName,
-                                                Source = u.Source,
-                                                DarkTheme = u.DarkTheme,
-                                                Notifications = u.Notifications
-                                            })
                                     .FirstOrDefaultAsync();
 
             if (loggedInUser != null)
@@ -71,22 +64,52 @@ namespace BlazingChat.Server.Controllers
             return await Task.FromResult(loggedInUser);
         }
 
-
-        [HttpPost("registeruser")]
-        public async Task<ActionResult> RegisterUser(User user)
+        [HttpPost("authenticatejwt")]
+        public async Task<ActionResult<AuthenticationResponse>> AuthenticateJWT(AuthenticationRequest authenticationRequest)
         {
-            //in this method you should only create a user record and not authenticate the user
-            var emailAddressExists = _context.Users.Where(u => u.EmailAddress == user.EmailAddress).FirstOrDefault();
-            if(emailAddressExists == null)
+            string token = string.Empty;
+            authenticationRequest.Password = Utility.Encrypt(authenticationRequest.Password);
+            User loggedInUser = await _context.Users
+                                    .Where(u => u.EmailAddress == authenticationRequest.EmailAddress && u.Password == authenticationRequest.Password)
+                                    .FirstOrDefaultAsync();
+
+            if (loggedInUser != null)
             {
-                user.Password = Utility.Encrypt(user.Password);
-                user.Source = "APPL";
-                _context.Users.Add(user);
-                await _context.SaveChangesAsync();
+                token = GenerateJwtToken(loggedInUser);
             }
-           
-            return Ok();
+            
+            return await Task.FromResult(new AuthenticationResponse() { Token = token});
         }
+
+        private string GenerateJwtToken(User user)
+        {
+            // generate token that is valid for 7 days
+            string secretKey = _configuration["JWTSettings:SecretKey"];
+            
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(secretKey);
+            
+            //create a claims
+            var claimEmail = new Claim(ClaimTypes.Email, user.EmailAddress);
+            var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString());
+            //create claimsIdentity
+            var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier }, "serverAuth");
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = claimsIdentity,
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
+        /// <summary>
+        /// This API call gets the current authenticated user based on cookie authentication
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("getcurrentuser")]
         public async Task<ActionResult<User>> GetCurrentUser()
         {
@@ -111,6 +134,54 @@ namespace BlazingChat.Server.Controllers
             }
             return await Task.FromResult(currentUser);
         }
+
+         /// <summary>
+        /// This API call gets the current authenticated user based on cookie authentication
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("getcurrentuserjwt")]
+        public async Task<ActionResult<User>> GetCurrentUserJWT()
+        {
+            User currentUser = new User();
+
+            if (User.Identity.IsAuthenticated)
+            {
+                currentUser.EmailAddress = User.FindFirstValue(ClaimTypes.Email);
+                currentUser = await _context.Users.Where(u => u.EmailAddress == currentUser.EmailAddress).FirstOrDefaultAsync();
+
+                if (currentUser == null)
+                {
+                    currentUser = new User();
+                    currentUser.UserId = _context.Users.Max(user => user.UserId) + 1;
+                    currentUser.EmailAddress = User.FindFirstValue(ClaimTypes.Email);
+                    currentUser.Password = Utility.Encrypt(currentUser.EmailAddress);
+                    currentUser.Source = "EXTL";
+
+                    _context.Users.Add(currentUser);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            return await Task.FromResult(currentUser);
+        }
+
+
+
+        [HttpPost("registeruser")]
+        public async Task<ActionResult> RegisterUser(User user)
+        {
+            //in this method you should only create a user record and not authenticate the user
+            var emailAddressExists = _context.Users.Where(u => u.EmailAddress == user.EmailAddress).FirstOrDefault();
+            if(emailAddressExists == null)
+            {
+                user.Password = Utility.Encrypt(user.Password);
+                user.Source = "APPL";
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+            }
+           
+            return Ok();
+        }
+        
 
         [HttpGet("logoutuser")]
         public async Task<ActionResult<String>> LogOutUser()
