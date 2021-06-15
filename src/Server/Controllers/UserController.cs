@@ -77,7 +77,6 @@ namespace BlazingChat.Server.Controllers
             {
                 token = GenerateJwtToken(loggedInUser);
             }
-            
             return await Task.FromResult(new AuthenticationResponse() { Token = token});
         }
 
@@ -139,32 +138,40 @@ namespace BlazingChat.Server.Controllers
         /// This API call gets the current authenticated user based on cookie authentication
         /// </summary>
         /// <returns></returns>
-        [HttpGet("getcurrentuserjwt")]
-        public async Task<ActionResult<User>> GetCurrentUserJWT()
+        [HttpPost("getcurrentuserjwt")]
+        public async Task<ActionResult<User>> GetCurrentUserJWT([FromBody] string jwtToken)
         {
-            User currentUser = new User();
-
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                currentUser.EmailAddress = User.FindFirstValue(ClaimTypes.Email);
-                currentUser = await _context.Users.Where(u => u.EmailAddress == currentUser.EmailAddress).FirstOrDefaultAsync();
-
-                if (currentUser == null)
+                var tokenHandler = new JwtSecurityTokenHandler();
+                string secretKey = _configuration["JWTSettings:SecretKey"];
+                var key = Encoding.ASCII.GetBytes(secretKey);
+                
+                var tokenValidationParameters = new TokenValidationParameters
                 {
-                    currentUser = new User();
-                    currentUser.UserId = _context.Users.Max(user => user.UserId) + 1;
-                    currentUser.EmailAddress = User.FindFirstValue(ClaimTypes.Email);
-                    currentUser.Password = Utility.Encrypt(currentUser.EmailAddress);
-                    currentUser.Source = "EXTL";
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
 
-                    _context.Users.Add(currentUser);
-                    await _context.SaveChangesAsync();
+                SecurityToken securityToken;
+                var principle = tokenHandler.ValidateToken(jwtToken, tokenValidationParameters, out securityToken);
+                var jwtSecurityToken = (JwtSecurityToken)securityToken;
+
+                if (jwtSecurityToken != null && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var userId = principle.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                    return await _context.Users.Where(u => u.UserId == Convert.ToInt64(userId)).FirstOrDefaultAsync();
                 }
             }
-            return await Task.FromResult(currentUser);
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception : " + ex.Message);
+                return null; 
+            }
+            return null;
         }
-
-
 
         [HttpPost("registeruser")]
         public async Task<ActionResult> RegisterUser(User user)
@@ -178,11 +185,9 @@ namespace BlazingChat.Server.Controllers
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
             }
-           
             return Ok();
         }
         
-
         [HttpGet("logoutuser")]
         public async Task<ActionResult<String>> LogOutUser()
         {

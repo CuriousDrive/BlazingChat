@@ -24,8 +24,8 @@ namespace BlazingChat.Client
 
         public async override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            User currentUser = await _httpClient.GetFromJsonAsync<User>("user/getcurrentuser");
-            //User currentUser = await GetUserByJWTAsync();
+            //User currentUser = await _httpClient.GetFromJsonAsync<User>("user/getcurrentuser");
+            User currentUser = await GetUserByJWTAsync();
 
             if (currentUser != null && currentUser.EmailAddress != null)
             {
@@ -36,7 +36,6 @@ namespace BlazingChat.Client
                 var claimsIdentity = new ClaimsIdentity(new[] { claimEmailAddress, claimNameIdentifier }, "serverAuth");
                 //create claimsPrincipal
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
                 return new AuthenticationState(claimsPrincipal);
             }
             else
@@ -52,10 +51,8 @@ namespace BlazingChat.Client
         {
             var jwtToken = await _localStorageService.GetItemAsStringAsync("jwt_token");
 
-            string serializedJWT = JsonSerializer.Serialize(jwtToken);
-
-            var requestMessage = new HttpRequestMessage(HttpMethod.Post, "users/getcurrentuserjwt");
-            requestMessage.Content = new StringContent(serializedJWT);
+            var requestMessage = new HttpRequestMessage(HttpMethod.Post, "user/getcurrentuserjwt");
+            requestMessage.Content = new StringContent(jwtToken);
 
             requestMessage.Content.Headers.ContentType
                 = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
@@ -63,13 +60,13 @@ namespace BlazingChat.Client
             var response = await _httpClient.SendAsync(requestMessage);
 
             var responseStatusCode = response.StatusCode;
-            var responseBody = await response.Content.ReadAsStringAsync();
+            var returnedUser = await response.Content.ReadFromJsonAsync<User>();
 
-            var returnedUser = JsonSerializer.Deserialize<User>(responseBody);
-
-            Console.WriteLine(returnedUser.UserId);
-
-            return await Task.FromResult(returnedUser);
+            if(returnedUser != null)
+            {
+                return await Task.FromResult(returnedUser);
+            }
+            else return null;
         }
     }
 }
