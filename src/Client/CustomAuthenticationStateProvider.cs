@@ -42,27 +42,26 @@ namespace BlazingChat.Client
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
 
-        /// <summary>
-        /// This method will get the user from server side based on the JWT stored in 
-        /// the local storage
-        /// </summary>
-        /// <returns></returns>
         public async Task<User> GetUserByJWTAsync()
         {
+            //pulling the token from localStorage
             var jwtToken = await _localStorageService.GetItemAsStringAsync("jwt_token");
             if(jwtToken == null) return null;
 
+            //preparing the http request
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, "user/getuserbyjwt");
             requestMessage.Content = new StringContent(jwtToken);
 
             requestMessage.Content.Headers.ContentType
                 = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
+            //making the http request
             var response = await _httpClient.SendAsync(requestMessage);
 
             var responseStatusCode = response.StatusCode;
             var returnedUser = await response.Content.ReadFromJsonAsync<User>();
 
+            //returning the user if found
             if(returnedUser != null) return await Task.FromResult(returnedUser);
             else return null;
         }

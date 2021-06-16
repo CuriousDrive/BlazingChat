@@ -29,6 +29,7 @@ namespace BlazingChat.Client
             
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             builder.Services.AddBlazoredLocalStorage();
+            
             builder.Services.AddTransient<CustomAuthorizationHandler>();
             
             builder.Services.AddLogging(logging => {
@@ -46,7 +47,7 @@ namespace BlazingChat.Client
 
         public static void AddHttpClients(WebAssemblyHostBuilder builder)
         {
-            //transaction http clients
+            //transactional named http clients
             builder.Services.AddHttpClient<IProfileViewModel, ProfileViewModel>
                 ("ProfileViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
                 .AddHttpMessageHandler<CustomAuthorizationHandler>();

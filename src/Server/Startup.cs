@@ -48,8 +48,7 @@ namespace BlazingChat.Server
                 //options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }
-            )
+            })
             //.AddCookie(options => { options.LoginPath = "/user/notauthorized"; })
             .AddJwtBearer(jwtBearerOptions =>
             {

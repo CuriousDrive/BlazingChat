@@ -4,6 +4,7 @@
 @inject ILoginViewModel _loginViewModel
 @inject NavigationManager _navigationManager
 @inject ILocalStorageService _localStorageService
+@inject IToastService _toastService
 
 <h2 class="white-text"><b>Login</b></h2>
 <hr class="white-horizontal-line" />
@@ -77,16 +78,7 @@
         await _loginViewModel.LoginUser();
         _navigationManager.NavigateTo("/profile",true);
     }
-
-    public async Task AuthenticateJWT()
-    {
-        AuthenticationResponse authenticationResponse = await _loginViewModel.AuthenticateJWT();
-        await _localStorageService.SetItemAsync("jwt_token",authenticationResponse.Token);
-
-        _navigationManager.NavigateTo("/profile",true);
-
-    }
-
+    
     private void TwitterSignIn()
     {
         _navigationManager.NavigateTo($"user/TwitterSignIn?isPersistent={_loginViewModel.RememberMe}", true);
@@ -100,5 +92,19 @@
     private void GoogleSignIn()
     {
         _navigationManager.NavigateTo($"user/GoogleSignIn?isPersistent={_loginViewModel.RememberMe}", true);
+    }
+
+    public async Task AuthenticateJWT()
+    {
+        AuthenticationResponse authenticationResponse = await _loginViewModel.AuthenticateJWT();
+        if(authenticationResponse.Token != string.Empty)
+        {
+            await _localStorageService.SetItemAsync("jwt_token",authenticationResponse.Token);
+            _navigationManager.NavigateTo("/profile",true);
+        }
+        else
+        {
+            _toastService.ShowError("Invalid username or password");
+        }
     }
 }
