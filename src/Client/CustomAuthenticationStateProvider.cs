@@ -50,8 +50,9 @@ namespace BlazingChat.Client
         public async Task<User> GetUserByJWTAsync()
         {
             var jwtToken = await _localStorageService.GetItemAsStringAsync("jwt_token");
+            if(jwtToken == null) return null;
 
-            var requestMessage = new HttpRequestMessage(HttpMethod.Post, "user/getcurrentuserjwt");
+            var requestMessage = new HttpRequestMessage(HttpMethod.Post, "user/getuserbyjwt");
             requestMessage.Content = new StringContent(jwtToken);
 
             requestMessage.Content.Headers.ContentType
@@ -62,10 +63,7 @@ namespace BlazingChat.Client
             var responseStatusCode = response.StatusCode;
             var returnedUser = await response.Content.ReadFromJsonAsync<User>();
 
-            if(returnedUser != null)
-            {
-                return await Task.FromResult(returnedUser);
-            }
+            if(returnedUser != null) return await Task.FromResult(returnedUser);
             else return null;
         }
     }

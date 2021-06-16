@@ -13,7 +13,7 @@ namespace BlazingChat.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    //[Authorize]
+    [Authorize]
     public class ContactsController : ControllerBase
     {
         private readonly ILogger<UserController> logger;

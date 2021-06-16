@@ -138,8 +138,8 @@ namespace BlazingChat.Server.Controllers
         /// This API call gets the current authenticated user based on cookie authentication
         /// </summary>
         /// <returns></returns>
-        [HttpPost("getcurrentuserjwt")]
-        public async Task<ActionResult<User>> GetCurrentUserJWT([FromBody] string jwtToken)
+        [HttpPost("getuserbyjwt")]
+        public async Task<ActionResult<User>> GetUserByJWT([FromBody] string jwtToken)
         {
             try
             {

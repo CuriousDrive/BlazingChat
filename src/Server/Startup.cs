@@ -51,11 +51,11 @@ namespace BlazingChat.Server
             }
             )
             //.AddCookie(options => { options.LoginPath = "/user/notauthorized"; })
-            .AddJwtBearer(x =>
+            .AddJwtBearer(jwtBearerOptions =>
             {
-                x.RequireHttpsMetadata = true;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
+                jwtBearerOptions.RequireHttpsMetadata = true;
+                jwtBearerOptions.SaveToken = true;
+                jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JWTSettings:SecretKey"])),

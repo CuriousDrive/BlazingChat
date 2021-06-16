@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using BlazingChat.Client.Logging;
 using Blazored.Toast;
 using Blazored.LocalStorage;
+using BlazingChat.Client.Handlers;
 
 namespace BlazingChat.Client
 {
@@ -22,13 +23,13 @@ namespace BlazingChat.Client
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
 
-            builder.Services.AddScoped(sp =>
-                new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-            LoadHttpClients(builder);
+            AddHttpClients(builder);
             
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddTransient<CustomAuthorizationHandler>();
             
             builder.Services.AddLogging(logging => {
                 var httpClient = builder.Services.BuildServiceProvider().GetRequiredService<HttpClient>();
@@ -43,17 +44,22 @@ namespace BlazingChat.Client
             await builder.Build().RunAsync();
         }
 
-        public static void LoadHttpClients(WebAssemblyHostBuilder builder)
+        public static void AddHttpClients(WebAssemblyHostBuilder builder)
         {
+            //transaction http clients
             builder.Services.AddHttpClient<IProfileViewModel, ProfileViewModel>
-                ("BlazingChatClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+                ("ProfileViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+                .AddHttpMessageHandler<CustomAuthorizationHandler>();
 
             builder.Services.AddHttpClient<IContactsViewModel, ContactsViewModel>
-                ("BlazingChatClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+                ("ContactsViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+                .AddHttpMessageHandler<CustomAuthorizationHandler>();
 
             builder.Services.AddHttpClient<ISettingsViewModel, SettingsViewModel>
-                ("BlazingChatClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+                ("SettingsViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+                .AddHttpMessageHandler<CustomAuthorizationHandler>();
 
+            //authentication http clients
             builder.Services.AddHttpClient<ILoginViewModel, LoginViewModel>
                 ("BlazingChatClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
             
