@@ -31,18 +31,9 @@ namespace BlazingChat.ViewModels
             await _httpClient.PostAsJsonAsync<User>($"user/loginuser?isPersistent={this.RememberMe}", this);
         }
 
-        public async Task<AuthenticationResponse> AuthenticateJWT()
+        public Task<AuthenticationResponse> AuthenticateJWT()
         {
-            //creating authentication request
-            AuthenticationRequest authenticationRequest = new AuthenticationRequest();
-            authenticationRequest.EmailAddress = this.EmailAddress;
-            authenticationRequest.Password = this.Password;
-            
-            //authenticating the request
-            var httpMessageReponse = await _httpClient.PostAsJsonAsync<AuthenticationRequest>($"user/authenticatejwt", authenticationRequest);
-            
-            //sending the token to the client to store
-            return await httpMessageReponse.Content.ReadFromJsonAsync<AuthenticationResponse>();
+            return null;
         }
 
         public static implicit operator LoginViewModel(User user)

@@ -62,10 +62,10 @@ namespace BlazingChat.Client
 
             //authentication http clients
             builder.Services.AddHttpClient<ILoginViewModel, LoginViewModel>
-                ("BlazingChatClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+                ("LoginViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
             
             builder.Services.AddHttpClient<IRegisterViewModel, RegisterViewModel>
-                ("BlazingChatClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+                ("RegisterViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
         }
     }
 }
