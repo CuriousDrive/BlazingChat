@@ -49,16 +49,13 @@ namespace BlazingChat.Client
         {
             //transactional named http clients
             builder.Services.AddHttpClient<IProfileViewModel, ProfileViewModel>
-                ("ProfileViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
-                .AddHttpMessageHandler<CustomAuthorizationHandler>();
+                ("ProfileViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 
             builder.Services.AddHttpClient<IContactsViewModel, ContactsViewModel>
-                ("ContactsViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
-                .AddHttpMessageHandler<CustomAuthorizationHandler>();
+                ("ContactsViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 
             builder.Services.AddHttpClient<ISettingsViewModel, SettingsViewModel>
-                ("SettingsViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
-                .AddHttpMessageHandler<CustomAuthorizationHandler>();
+                ("SettingsViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 
             //authentication http clients
             builder.Services.AddHttpClient<ILoginViewModel, LoginViewModel>
