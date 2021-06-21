@@ -57,7 +57,8 @@
 
     private async Task LogoutUser()
     {
-        await _httpClient.GetAsync("user/logoutuser");
+        //await _httpClient.GetAsync("user/logoutuser");
+        await _localStorageService.RemoveItemAsync("jwt_token");
         _navigationManager.NavigateTo("/", true);
     }
 
