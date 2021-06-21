@@ -148,6 +148,51 @@ namespace BlazingChat.Server.Controllers
         }
         
         //Migrating to JWT Authorization...
+        private string GenerateJwtToken(User user)
+        {
+            //getting the secret key
+            string secretKey = _configuration["JWTSettings:SecretKey"];
+            var key = Encoding.ASCII.GetBytes(secretKey);
+        
+            //create claims
+            var claimEmail = new Claim(ClaimTypes.Email, user.EmailAddress);
+            var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString());
+        
+            //create claimsIdentity
+            var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier }, "serverAuth");
+        
+            // generate token that is valid for 7 days
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = claimsIdentity,
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            //creating a token handler
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+        
+            //returning the token back
+            return tokenHandler.WriteToken(token);
+        }
 
+        [HttpPost("authenticatejwt")]
+        public async Task<ActionResult<AuthenticationResponse>> AuthenticateJWT(AuthenticationRequest authenticationRequest)
+        {
+            string token = string.Empty;
+        
+            //checking if the user exists in the database
+            authenticationRequest.Password = Utility.Encrypt(authenticationRequest.Password);
+            User loggedInUser = await _context.Users
+                        .Where(u => u.EmailAddress == authenticationRequest.EmailAddress && u.Password == authenticationRequest.Password)
+                        .FirstOrDefaultAsync();
+        
+            if (loggedInUser != null)
+            {
+                //generating the token
+                token = GenerateJwtToken(loggedInUser);
+            }
+            return await Task.FromResult(new AuthenticationResponse() { Token = token });
+        }
     }
 }
