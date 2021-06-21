@@ -100,7 +100,7 @@
         if(authenticationResponse.Token != string.Empty)
         {
             await _localStorageService.SetItemAsync("jwt_token",authenticationResponse.Token);
-            //_navigationManager.NavigateTo("/profile",true);
+            _navigationManager.NavigateTo("/profile",true);
         }
         else
         {

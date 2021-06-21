@@ -194,5 +194,45 @@ namespace BlazingChat.Server.Controllers
             }
             return await Task.FromResult(new AuthenticationResponse() { Token = token });
         }
+        [HttpPost("getuserbyjwt")]
+        public async Task<ActionResult<User>> GetUserByJWT([FromBody] string jwtToken)
+        {
+            try
+            {
+                //getting the secret key
+                string secretKey = _configuration["JWTSettings:SecretKey"];
+                var key = Encoding.ASCII.GetBytes(secretKey);
+        
+                //preparing the validation parameters
+                var tokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+                var tokenHandler = new JwtSecurityTokenHandler();
+                SecurityToken securityToken;
+        
+                //validating the token
+                var principle = tokenHandler.ValidateToken(jwtToken, tokenValidationParameters, out securityToken);
+                var jwtSecurityToken = (JwtSecurityToken)securityToken;
+        
+                if (jwtSecurityToken != null && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    //returning the user if found
+                    var userId = principle.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                    return await _context.Users.Where(u => u.UserId == Convert.ToInt64(userId)).FirstOrDefaultAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                //logging the error and returning null
+                Console.WriteLine("Exception : " + ex.Message);
+                return null;
+            }
+            //returning null if token is not validated
+            return null;
+        }
     }
 }
