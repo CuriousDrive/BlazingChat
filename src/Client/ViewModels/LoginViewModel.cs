@@ -33,11 +33,15 @@ namespace BlazingChat.ViewModels
 
         public async Task<AuthenticationResponse> AuthenticateJWT()
         {
+            //creating authentication request
             AuthenticationRequest authenticationRequest = new AuthenticationRequest();
             authenticationRequest.EmailAddress = this.EmailAddress;
             authenticationRequest.Password = this.Password;
             
+            //authenticating the request
             var httpMessageReponse = await _httpClient.PostAsJsonAsync<AuthenticationRequest>($"user/authenticatejwt", authenticationRequest);
+            
+            //sending the token to the client to store
             return await httpMessageReponse.Content.ReadFromJsonAsync<AuthenticationResponse>();
         }
 

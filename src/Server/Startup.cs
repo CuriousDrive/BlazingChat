@@ -12,6 +12,10 @@ using BlazingChat.Server.Hubs;
 using Microsoft.Extensions.Logging;
 using BlazingChat.Server.Logging;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace BlazingChat.Server
 {
@@ -41,9 +45,24 @@ namespace BlazingChat.Server
 
             services.AddAuthentication(options =>
             {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }
-            ).AddCookie(options => { options.LoginPath = "/user/notauthorized"; })
+                //options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            //.AddCookie(options => { options.LoginPath = "/user/notauthorized"; })
+            .AddJwtBearer(jwtBearerOptions =>
+            {
+                jwtBearerOptions.RequireHttpsMetadata = true;
+                jwtBearerOptions.SaveToken = true;
+                jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JWTSettings:SecretKey"])),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                };
+            })
             .AddTwitter(twitterOptions =>
             {
                 twitterOptions.ConsumerKey = Configuration["Authentication:Twitter:ConsumerKey"];
@@ -60,10 +79,13 @@ namespace BlazingChat.Server
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
+
+
             // services.AddLogging(logging =>
             // {
             //     logging.ClearProviders();
             // });
+
             services.AddHttpContextAccessor();
         }
 

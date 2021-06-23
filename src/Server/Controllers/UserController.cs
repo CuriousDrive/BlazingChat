@@ -63,53 +63,7 @@ namespace BlazingChat.Server.Controllers
             }
             return await Task.FromResult(loggedInUser);
         }
-
-        [HttpPost("authenticatejwt")]
-        public async Task<ActionResult<AuthenticationResponse>> AuthenticateJWT(AuthenticationRequest authenticationRequest)
-        {
-            string token = string.Empty;
-            authenticationRequest.Password = Utility.Encrypt(authenticationRequest.Password);
-            User loggedInUser = await _context.Users
-                                    .Where(u => u.EmailAddress == authenticationRequest.EmailAddress && u.Password == authenticationRequest.Password)
-                                    .FirstOrDefaultAsync();
-
-            if (loggedInUser != null)
-            {
-                token = GenerateJwtToken(loggedInUser);
-            }
-            
-            return await Task.FromResult(new AuthenticationResponse() { Token = token});
-        }
-
-        private string GenerateJwtToken(User user)
-        {
-            // generate token that is valid for 7 days
-            string secretKey = _configuration["JWTSettings:SecretKey"];
-            
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(secretKey);
-            
-            //create a claims
-            var claimEmail = new Claim(ClaimTypes.Email, user.EmailAddress);
-            var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString());
-            //create claimsIdentity
-            var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier }, "serverAuth");
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = claimsIdentity,
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
-
-        /// <summary>
-        /// This API call gets the current authenticated user based on cookie authentication
-        /// </summary>
-        /// <returns></returns>
+        
         [HttpGet("getcurrentuser")]
         public async Task<ActionResult<User>> GetCurrentUser()
         {
@@ -135,37 +89,6 @@ namespace BlazingChat.Server.Controllers
             return await Task.FromResult(currentUser);
         }
 
-         /// <summary>
-        /// This API call gets the current authenticated user based on cookie authentication
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("getcurrentuserjwt")]
-        public async Task<ActionResult<User>> GetCurrentUserJWT()
-        {
-            User currentUser = new User();
-
-            if (User.Identity.IsAuthenticated)
-            {
-                currentUser.EmailAddress = User.FindFirstValue(ClaimTypes.Email);
-                currentUser = await _context.Users.Where(u => u.EmailAddress == currentUser.EmailAddress).FirstOrDefaultAsync();
-
-                if (currentUser == null)
-                {
-                    currentUser = new User();
-                    currentUser.UserId = _context.Users.Max(user => user.UserId) + 1;
-                    currentUser.EmailAddress = User.FindFirstValue(ClaimTypes.Email);
-                    currentUser.Password = Utility.Encrypt(currentUser.EmailAddress);
-                    currentUser.Source = "EXTL";
-
-                    _context.Users.Add(currentUser);
-                    await _context.SaveChangesAsync();
-                }
-            }
-            return await Task.FromResult(currentUser);
-        }
-
-
-
         [HttpPost("registeruser")]
         public async Task<ActionResult> RegisterUser(User user)
         {
@@ -178,11 +101,9 @@ namespace BlazingChat.Server.Controllers
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
             }
-           
             return Ok();
         }
         
-
         [HttpGet("logoutuser")]
         public async Task<ActionResult<String>> LogOutUser()
         {
@@ -225,6 +146,93 @@ namespace BlazingChat.Server.Controllers
         {
             return Unauthorized();
         }
+        
+        //Migrating to JWT Authorization...
+        private string GenerateJwtToken(User user)
+        {
+            //getting the secret key
+            string secretKey = _configuration["JWTSettings:SecretKey"];
+            var key = Encoding.ASCII.GetBytes(secretKey);
+        
+            //create claims
+            var claimEmail = new Claim(ClaimTypes.Email, user.EmailAddress);
+            var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString());
+        
+            //create claimsIdentity
+            var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier }, "serverAuth");
+        
+            // generate token that is valid for 7 days
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = claimsIdentity,
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            //creating a token handler
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+        
+            //returning the token back
+            return tokenHandler.WriteToken(token);
+        }
 
+        [HttpPost("authenticatejwt")]
+        public async Task<ActionResult<AuthenticationResponse>> AuthenticateJWT(AuthenticationRequest authenticationRequest)
+        {
+            string token = string.Empty;
+        
+            //checking if the user exists in the database
+            authenticationRequest.Password = Utility.Encrypt(authenticationRequest.Password);
+            User loggedInUser = await _context.Users
+                        .Where(u => u.EmailAddress == authenticationRequest.EmailAddress && u.Password == authenticationRequest.Password)
+                        .FirstOrDefaultAsync();
+        
+            if (loggedInUser != null)
+            {
+                //generating the token
+                token = GenerateJwtToken(loggedInUser);
+            }
+            return await Task.FromResult(new AuthenticationResponse() { Token = token });
+        }
+        [HttpPost("getuserbyjwt")]
+        public async Task<ActionResult<User>> GetUserByJWT([FromBody] string jwtToken)
+        {
+            try
+            {
+                //getting the secret key
+                string secretKey = _configuration["JWTSettings:SecretKey"];
+                var key = Encoding.ASCII.GetBytes(secretKey);
+        
+                //preparing the validation parameters
+                var tokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+                var tokenHandler = new JwtSecurityTokenHandler();
+                SecurityToken securityToken;
+        
+                //validating the token
+                var principle = tokenHandler.ValidateToken(jwtToken, tokenValidationParameters, out securityToken);
+                var jwtSecurityToken = (JwtSecurityToken)securityToken;
+        
+                if (jwtSecurityToken != null && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    //returning the user if found
+                    var userId = principle.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                    return await _context.Users.Where(u => u.UserId == Convert.ToInt64(userId)).FirstOrDefaultAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                //logging the error and returning null
+                Console.WriteLine("Exception : " + ex.Message);
+                return null;
+            }
+            //returning null if token is not validated
+            return null;
+        }
     }
 }

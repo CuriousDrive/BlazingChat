@@ -52,11 +52,11 @@
     {
         var authState = await authenticationState;
         var user = authState.User;
-
+        
         if(user.Identity.IsAuthenticated)
         {
             var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
-            _profileViewModel.UserId = Convert.ToInt64(claim?.Value) ;
+            _profileViewModel.UserId = Convert.ToInt64(claim?.Value);
             try
             {
                 await _profileViewModel.GetProfile();
