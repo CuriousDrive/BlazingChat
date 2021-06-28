@@ -40,5 +40,5 @@ function setScroll() {
 }
 
 function facebookPopupWindow() {
-    this.authWindow = window.open('https://www.facebook.com/v2.11/dialog/oauth?&response_type=token&display=popup&client_id=377885146958933&redirect_uri=http://localhost:5001/facebook-auth&scope=email',null,'width=600,height=400');
+    this.authWindow = window.open('https://www.facebook.com/v2.11/dialog/oauth?&response_type=token&display=popup&client_id=377885146958933&redirect_uri=https://localhost:5001/FacebookAuth&scope=email',null,'width=600,height=400');
 }

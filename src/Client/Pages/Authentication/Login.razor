@@ -111,7 +111,6 @@
 
     public async Task FacebookJWT()
     {
-        var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
-        await module.InvokeVoidAsync("facebookPopupWindow");
+        await _jsRuntime.InvokeVoidAsync("facebookPopupWindow");
     }
 }
