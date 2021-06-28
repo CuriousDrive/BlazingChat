@@ -1,3 +1,21 @@
 @page "/FacebookAuth"
 
-<h1> After user is logged in</h1>
+@using Microsoft.AspNetCore.WebUtilities
+@inject NavigationManager NavManager
+
+<h1> @AccessToken</h1>
+
+@code{
+
+    public string AccessToken {get; set;}
+    protected override void OnInitialized()
+    {
+        var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
+        AccessToken = uri.PathAndQuery;
+        if (QueryHelpers.ParseQuery(uri.PathAndQuery).TryGetValue("access_token", out var _accessToken1))
+        {
+            AccessToken = _accessToken1;
+        }
+    } 
+
+}
