@@ -1,0 +1,26 @@
+@using Microsoft.Extensions.Logging
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@using System.Security.Claims
+@inject ILogger<Error> _logger
+@inject IToastService _toastService
+@inject IWebAssemblyHostEnvironment _webAssemblyHostEnvironment
+
+<CascadingValue Value=this IsFixed=true>
+    @ChildContent
+</CascadingValue>
+
+@code{
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    public void ProcessError(Exception ex)
+    {
+        if(!_webAssemblyHostEnvironment.IsDevelopment())
+            _toastService.ShowError("Oops, something has gone wrong. Please contact system admin");
+        else
+            _toastService.ShowError("Oops, something has gone wrong. Please check the logs");
+
+        _logger.LogError(ex, "");
+    }
+}
