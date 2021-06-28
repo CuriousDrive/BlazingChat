@@ -63,7 +63,7 @@ namespace BlazingChat.Server.Controllers
             }
             return await Task.FromResult(loggedInUser);
         }
-        
+
         [HttpGet("getcurrentuser")]
         public async Task<ActionResult<User>> GetCurrentUser()
         {
@@ -94,7 +94,7 @@ namespace BlazingChat.Server.Controllers
         {
             //in this method you should only create a user record and not authenticate the user
             var emailAddressExists = _context.Users.Where(u => u.EmailAddress == user.EmailAddress).FirstOrDefault();
-            if(emailAddressExists == null)
+            if (emailAddressExists == null)
             {
                 user.Password = Utility.Encrypt(user.Password);
                 user.Source = "APPL";
@@ -103,7 +103,7 @@ namespace BlazingChat.Server.Controllers
             }
             return Ok();
         }
-        
+
         [HttpGet("logoutuser")]
         public async Task<ActionResult<String>> LogOutUser()
         {
@@ -146,21 +146,21 @@ namespace BlazingChat.Server.Controllers
         {
             return Unauthorized();
         }
-        
+
         //Migrating to JWT Authorization...
         private string GenerateJwtToken(User user)
         {
             //getting the secret key
             string secretKey = _configuration["JWTSettings:SecretKey"];
             var key = Encoding.ASCII.GetBytes(secretKey);
-        
+
             //create claims
             var claimEmail = new Claim(ClaimTypes.Email, user.EmailAddress);
             var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString());
-        
+
             //create claimsIdentity
             var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier }, "serverAuth");
-        
+
             // generate token that is valid for 7 days
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -171,7 +171,7 @@ namespace BlazingChat.Server.Controllers
             //creating a token handler
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
-        
+
             //returning the token back
             return tokenHandler.WriteToken(token);
         }
@@ -180,13 +180,13 @@ namespace BlazingChat.Server.Controllers
         public async Task<ActionResult<AuthenticationResponse>> AuthenticateJWT(AuthenticationRequest authenticationRequest)
         {
             string token = string.Empty;
-        
+
             //checking if the user exists in the database
             authenticationRequest.Password = Utility.Encrypt(authenticationRequest.Password);
             User loggedInUser = await _context.Users
                         .Where(u => u.EmailAddress == authenticationRequest.EmailAddress && u.Password == authenticationRequest.Password)
                         .FirstOrDefaultAsync();
-        
+
             if (loggedInUser != null)
             {
                 //generating the token
@@ -202,7 +202,7 @@ namespace BlazingChat.Server.Controllers
                 //getting the secret key
                 string secretKey = _configuration["JWTSettings:SecretKey"];
                 var key = Encoding.ASCII.GetBytes(secretKey);
-        
+
                 //preparing the validation parameters
                 var tokenValidationParameters = new TokenValidationParameters
                 {
@@ -213,11 +213,11 @@ namespace BlazingChat.Server.Controllers
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();
                 SecurityToken securityToken;
-        
+
                 //validating the token
                 var principle = tokenHandler.ValidateToken(jwtToken, tokenValidationParameters, out securityToken);
                 var jwtSecurityToken = (JwtSecurityToken)securityToken;
-        
+
                 if (jwtSecurityToken != null && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
                 {
                     //returning the user if found
@@ -234,5 +234,63 @@ namespace BlazingChat.Server.Controllers
             //returning null if token is not validated
             return null;
         }
+
+        // POST api/externalauth/facebook
+        // [HttpPost]
+        // public async Task<IActionResult> FacebookJWT([FromBody] FacebookAuthViewModel model)
+        // {
+            
+        //     // 1.generate an app access token
+        //     var appAccessTokenResponse = await Client.GetStringAsync($"https://graph.facebook.com/oauth/access_token?client_id={_fbAuthSettings.AppId}&client_secret={_fbAuthSettings.AppSecret}&grant_type=client_credentials");
+        //     var appAccessToken = JsonConvert.DeserializeObject<FacebookAppAccessToken>(appAccessTokenResponse);
+            
+        //     // 2. validate the user access token
+        //     var userAccessTokenValidationResponse = await Client.GetStringAsync($"https://graph.facebook.com/debug_token?input_token={model.AccessToken}&access_token={appAccessToken.AccessToken}");
+        //     var userAccessTokenValidation = JsonConvert.DeserializeObject<FacebookUserAccessTokenValidation>(userAccessTokenValidationResponse);
+
+        //     if (!userAccessTokenValidation.Data.IsValid)
+        //     {
+        //         return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid facebook token.", ModelState));
+        //     }
+
+        //     // 3. we've got a valid token so we can request user data from fb
+        //     var userInfoResponse = await Client.GetStringAsync($"https://graph.facebook.com/v2.8/me?fields=id,email,first_name,last_name,name,gender,locale,birthday,picture&access_token={model.AccessToken}");
+        //     var userInfo = JsonConvert.DeserializeObject<FacebookUserData>(userInfoResponse);
+
+        //     // 4. ready to create the local user account (if necessary) and jwt
+        //     var user = await _userManager.FindByEmailAsync(userInfo.Email);
+
+        //     if (user == null)
+        //     {
+        //         var appUser = new AppUser
+        //         {
+        //             FirstName = userInfo.FirstName,
+        //             LastName = userInfo.LastName,
+        //             FacebookId = userInfo.Id,
+        //             Email = userInfo.Email,
+        //             UserName = userInfo.Email,
+        //             PictureUrl = userInfo.Picture.Data.Url
+        //         };
+
+        //         var result = await _userManager.CreateAsync(appUser, Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8));
+
+        //         if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
+
+        //         await _appDbContext.Customers.AddAsync(new Customer { IdentityId = appUser.Id, Location = "", Locale = userInfo.Locale, Gender = userInfo.Gender });
+        //         await _appDbContext.SaveChangesAsync();
+        //     }
+
+        //     // generate the jwt for the local user...
+        //     var localUser = await _userManager.FindByNameAsync(userInfo.Email);
+
+        //     if (localUser == null)
+        //     {
+        //         return BadRequest(Errors.AddErrorToModelState("login_failure", "Failed to create local user account.", ModelState));
+        //     }
+
+        //     var jwt = await Tokens.GenerateJwt(_jwtFactory.GenerateClaimsIdentity(localUser.UserName, localUser.Id), _jwtFactory, localUser.UserName, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented });
+
+        //     return new OkObjectResult(jwt);
+        // }
     }
 }

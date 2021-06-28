@@ -24,7 +24,7 @@ namespace BlazingChat.Server.Controllers
             this.logger = logger;
             this._context = context;
         }
-        
+
         //loading 20,000 contacts
         [HttpGet("getallcontactsdemo")]
         public List<User> GetAllContactsDemo()
@@ -62,7 +62,7 @@ namespace BlazingChat.Server.Controllers
         public async Task<int> GetContactsCount()
         {
             //throw new IndexOutOfRangeException();
-            return await _context.Users.CountAsync();    
+            return await _context.Users.CountAsync();
         }
     }
 }
