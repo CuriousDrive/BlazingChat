@@ -242,69 +242,44 @@ namespace BlazingChat.Server.Controllers
 
         //POST api/externalauth/facebook
         [HttpPost("getfacebookjwt")]
-        public async Task<IActionResult> GetFacebookJWT([FromBody] FacebookAuthRequest facebookAuthRequest)
+        public async Task<ActionResult<AuthenticationResponse>> GetFacebookJWT([FromBody] FacebookAuthRequest facebookAuthRequest)
         {
+            string token = string.Empty;
+
             // 1.create an http client
             var client = _httpClientFactory.CreateClient();
 
+            // 2.get AppId and AppSecrete
             string appId = _configuration["Authentication:Facebook:AppId"];
             string appSecrete = _configuration["Authentication:Facebook:AppSecrete"];
             Console.WriteLine("App Id : " + appId);
             Console.WriteLine("Secrete Id : " + appSecrete);
 
-            // 2.generate an app access token
+            // 3.generate an app access token
             var appAccessTokenResponse = await client.GetFromJsonAsync<FacebookAppAccessToken>($"https://graph.facebook.com/oauth/access_token?client_id={appId}&client_secret={appSecrete}&grant_type=client_credentials");
-            Console.WriteLine(appAccessTokenResponse.access_token);
-            //var appAccessToken = JsonConvert.DeserializeObject<FacebookAppAccessToken>(appAccessTokenResponse);
+            Console.WriteLine("App Access Token :" + appAccessTokenResponse.access_token);
+            Console.WriteLine("Auth Request Access Token :" + facebookAuthRequest.AccessToken);
 
-            // 3. validate the user access token
-            var userAccessTokenValidationResponse = await client.GetAsync($"https://graph.facebook.com/debug_token?input_token={facebookAuthRequest.AccessToken}&access_token={appAccessTokenResponse.access_token}");
-            Console.WriteLine(userAccessTokenValidationResponse);
-            // var userAccessTokenValidation = JsonConvert.DeserializeObject<FacebookUserAccessTokenValidation>(userAccessTokenValidationResponse);
+            // 4. validate the user access token
+            var userAccessTokenValidationResponse = await client.GetFromJsonAsync<FacebookUserAccessTokenValidation>($"https://graph.facebook.com/debug_token?input_token={facebookAuthRequest.AccessToken}&access_token={appAccessTokenResponse.access_token}");
+            Console.WriteLine("Is Token Valid : " + userAccessTokenValidationResponse.Data?.is_valid);
+            
+            if (!userAccessTokenValidationResponse.Data.is_valid) return BadRequest();
 
-            // if (!userAccessTokenValidation.Data.IsValid)
-            // {
-            //     return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid facebook token.", ModelState));
-            // }
+            // 5. we've got a valid token so we can request user data from facebook
+            var facebookUserData = await client.GetFromJsonAsync<FacebookUserData>($"https://graph.facebook.com/v11.0/me?fields=id,email,first_name,last_name,name,gender,locale,birthday,picture&access_token={facebookAuthRequest.AccessToken}");
+            Console.WriteLine(facebookUserData.Email);
 
-            // // 3. we've got a valid token so we can request user data from fb
-            // var userInfoResponse = await client.GetStringAsync($"https://graph.facebook.com/v2.8/me?fields=id,email,first_name,last_name,name,gender,locale,birthday,picture&access_token={model.AccessToken}");
-            // var userInfo = JsonConvert.DeserializeObject<FacebookUserData>(userInfoResponse);
+            //6. try to find the user in the database or create a new account
+            var loggedInUser = await _context.Users.Where(user => user.EmailAddress == facebookUserData.Email).FirstOrDefaultAsync();
 
-            // // 4. ready to create the local user account (if necessary) and jwt
-            // var user = await _userManager.FindByEmailAsync(userInfo.Email);
+            //7. generate the token
+            if(loggedInUser != null)
+            {
+                token = GenerateJwtToken(loggedInUser);
+            }
 
-            // if (user == null)
-            // {
-            //     var appUser = new AppUser
-            //     {
-            //         FirstName = userInfo.FirstName,
-            //         LastName = userInfo.LastName,
-            //         FacebookId = userInfo.Id,
-            //         Email = userInfo.Email,
-            //         UserName = userInfo.Email,
-            //         PictureUrl = userInfo.Picture.Data.Url
-            //     };
-
-            //     var result = await _userManager.CreateAsync(appUser, Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8));
-
-            //     if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
-
-            //     await _appDbContext.Customers.AddAsync(new Customer { IdentityId = appUser.Id, Location = "", Locale = userInfo.Locale, Gender = userInfo.Gender });
-            //     await _appDbContext.SaveChangesAsync();
-            // }
-
-            // // generate the jwt for the local user...
-            // var localUser = await _userManager.FindByNameAsync(userInfo.Email);
-
-            // if (localUser == null)
-            // {
-            //     return BadRequest(Errors.AddErrorToModelState("login_failure", "Failed to create local user account.", ModelState));
-            // }
-
-            // var jwt = await Tokens.GenerateJwt(_jwtFactory.GenerateClaimsIdentity(localUser.UserName, localUser.Id), _jwtFactory, localUser.UserName, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented });
-
-            return new OkObjectResult(appAccessTokenResponse);
+            return await Task.FromResult(new AuthenticationResponse() { Token = token });
         }
     }
 }
