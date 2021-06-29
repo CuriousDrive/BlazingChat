@@ -21,6 +21,7 @@ namespace BlazingChat.Server
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,6 +33,16 @@ namespace BlazingChat.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            services.AddCors(options =>
+                            {
+                                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                                builder =>
+                                                {
+                                                    builder.WithOrigins("https://graph.facebook.com");
+                                                });
+                            });
+            
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddSignalR();
@@ -72,21 +83,20 @@ namespace BlazingChat.Server
             .AddFacebook(facebookOptions =>
             {
                 facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecrete"];
             })
             .AddGoogle(googleOptions =>
             {
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
-
-
             // services.AddLogging(logging =>
             // {
             //     logging.ClearProviders();
             // });
 
             services.AddHttpContextAccessor();
+            services.AddHttpClient();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -119,6 +129,8 @@ namespace BlazingChat.Server
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseEndpoints(endpoints =>
             {

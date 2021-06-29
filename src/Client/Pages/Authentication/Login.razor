@@ -109,8 +109,8 @@
         }
     }
 
-    public async Task FacebookJWT()
+    public void FacebookJWT()
     {
-        await _jsRuntime.InvokeVoidAsync("facebookPopupWindow");
+        _navigationManager.NavigateTo("https://www.facebook.com/v2.11/dialog/oauth?&response_type=token&display=popup&client_id=377885146958933&redirect_uri=https://localhost:5001/FacebookAuth&scope=email", true);
     }
 }

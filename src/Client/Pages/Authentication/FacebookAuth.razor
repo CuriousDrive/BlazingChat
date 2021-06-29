@@ -1,20 +1,22 @@
 @page "/FacebookAuth"
 
 @using Microsoft.AspNetCore.WebUtilities
-@inject NavigationManager NavManager
+@using BlazingChat.Shared
+@using BlazingChat.ViewModels
+@inject NavigationManager _navigationManager
+@inject IFacebookAuthViewModel _facebookViewModel
 
 <h1> @AccessToken</h1>
+<h2>Please wait...</h2>
 
 @code{
-
     public string AccessToken {get; set;}
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
-        AccessToken = uri.PathAndQuery;
-        if (QueryHelpers.ParseQuery(uri.PathAndQuery).TryGetValue("access_token", out var _accessToken1))
+        if (QueryHelpers.ParseQuery(_navigationManager.Uri.Split('#')[1]).TryGetValue("access_token", out var _accessToken))
         {
-            AccessToken = _accessToken1;
+            AccessToken = _accessToken;        
+            await _facebookViewModel.GetFacebookJWTAsync(_accessToken);
         }
     } 
 
