@@ -261,7 +261,7 @@ namespace BlazingChat.Server.Controllers
             Console.WriteLine("\nApp Id : " + appId);
             Console.WriteLine("Secrete Id : " + appSecrete + "\n");
 
-            // 3.generate an app access token
+            // 3. generate an app access token
             var appAccessRequest = $"https://graph.facebook.com/oauth/access_token?client_id={appId}&client_secret={appSecrete}&grant_type=client_credentials";
             var appAccessTokenResponse = await client.GetFromJsonAsync<FacebookAppAccessToken>(appAccessRequest);
             Console.WriteLine("App Access Token : " + appAccessTokenResponse.access_token);
@@ -284,12 +284,7 @@ namespace BlazingChat.Server.Controllers
             var loggedInUser = await _context.Users.Where(user => user.EmailAddress == facebookUserData.Email).FirstOrDefaultAsync();
 
             //7. generate the token
-            if(loggedInUser != null)
-            {
-                token = GenerateJwtToken(loggedInUser);
-                Console.WriteLine("JWT : " + token + "\n");
-            }
-            else
+            if(loggedInUser == null)
             {
                 loggedInUser = new User();
                 loggedInUser.UserId = _context.Users.Max(user => user.UserId) + 1;
@@ -300,6 +295,10 @@ namespace BlazingChat.Server.Controllers
                 _context.Users.Add(loggedInUser);
                 await _context.SaveChangesAsync();
             }
+
+            token = GenerateJwtToken(loggedInUser);
+            Console.WriteLine("JWT : " + token + "\n");
+
             return await Task.FromResult(new AuthenticationResponse() { Token = token });
         }
         

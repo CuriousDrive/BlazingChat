@@ -2,7 +2,6 @@
 @using BlazingChat.ViewModels
 @using BlazingChat.Shared
 @inject ILoginViewModel _loginViewModel
-@inject IFacebookAuthViewModel _facebookAuthViewModel
 @inject NavigationManager _navigationManager
 @inject ILocalStorageService _localStorageService
 @inject IToastService _toastService
@@ -112,7 +111,7 @@
 
     public async Task FacebookJWT()
     {
-        var appId = await _facebookAuthViewModel.GetFacebookAppIDAsync();
+        var appId = await _loginViewModel.GetFacebookAppIDAsync();
         
         var accessTokenRequest = $"https://www.facebook.com/v11.0/dialog/oauth?&response_type=token&client_id={appId}&redirect_uri=https://localhost:5001/FacebookAuth";
         _navigationManager.NavigateTo(accessTokenRequest, true);

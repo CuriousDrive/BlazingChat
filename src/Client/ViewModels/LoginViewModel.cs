@@ -44,6 +44,10 @@ namespace BlazingChat.ViewModels
             //sending the token to the client to store
             return await httpMessageReponse.Content.ReadFromJsonAsync<AuthenticationResponse>();
         }
+        public async Task<string> GetFacebookAppIDAsync()
+        {
+            return await _httpClient.GetStringAsync("user/getfacebookappid");
+        }
 
         public static implicit operator LoginViewModel(User user)
         {

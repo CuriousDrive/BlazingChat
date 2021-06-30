@@ -17,11 +17,6 @@ namespace BlazingChat.ViewModels
             this._httpClient = httpClient;
         }
 
-        public async Task<string> GetFacebookAppIDAsync()
-        {
-            return await _httpClient.GetStringAsync("user/getfacebookappid");
-        }
-
         public async Task<string> GetFacebookJWTAsync(string accessToken)
         {
             var httpRequestMessage = await _httpClient.PostAsJsonAsync<FacebookAuthRequest>("user/getfacebookjwt", new FacebookAuthRequest() { AccessToken = accessToken });
