@@ -2,6 +2,7 @@
 @using BlazingChat.ViewModels
 @using BlazingChat.Shared
 @inject ILoginViewModel _loginViewModel
+@inject IFacebookAuthViewModel _facebookAuthViewModel
 @inject NavigationManager _navigationManager
 @inject ILocalStorageService _localStorageService
 @inject IToastService _toastService
@@ -109,8 +110,11 @@
         }
     }
 
-    public void FacebookJWT()
+    public async Task FacebookJWT()
     {
-        _navigationManager.NavigateTo("https://www.facebook.com/v2.11/dialog/oauth?&response_type=token&client_id=377885146958933&redirect_uri=https://localhost:5001/FacebookAuth&scope=email", true);
+        var appId = await _facebookAuthViewModel.GetFacebookAppIDAsync();
+        
+        var accessTokenRequest = $"https://www.facebook.com/v11.0/dialog/oauth?&response_type=token&client_id={appId}&redirect_uri=https://localhost:5001/FacebookAuth";
+        _navigationManager.NavigateTo(accessTokenRequest, true);
     }
 }

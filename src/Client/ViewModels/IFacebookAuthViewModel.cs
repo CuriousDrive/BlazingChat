@@ -11,5 +11,6 @@ namespace BlazingChat.ViewModels
     public interface IFacebookAuthViewModel
     {
         public Task<string> GetFacebookJWTAsync(string accessToken);
+        public Task<string> GetFacebookAppIDAsync();
     }
 }
