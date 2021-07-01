@@ -14,5 +14,6 @@ namespace BlazingChat.ViewModels
         public bool RememberMe { get; set; }
         public Task LoginUser();
         public Task<AuthenticationResponse> AuthenticateJWT();
+        public Task<string> GetFacebookAppIDAsync();
     }
 }

@@ -1,0 +1,26 @@
+@page "/FacebookAuth"
+
+@using Microsoft.AspNetCore.WebUtilities
+@using BlazingChat.ViewModels
+@inject NavigationManager _navigationManager
+@inject IFacebookAuthViewModel _facebookViewModel
+@inject ILocalStorageService _localStorageService
+
+<h1>Please wait...</h1>
+<h3> Access Token : @AccessToken</h3>
+
+@code{
+    public string AccessToken {get; set;}
+    protected override async Task OnInitializedAsync()
+    {
+        if (QueryHelpers.ParseQuery(_navigationManager.Uri.Split('#')[1]).TryGetValue("access_token", out var _accessToken))
+        {
+            AccessToken = _accessToken;        
+            
+            string token = await _facebookViewModel.GetFacebookJWTAsync(_accessToken);
+            await _localStorageService.SetItemAsync<string>("jwt_token", token);
+            
+            _navigationManager.NavigateTo("/profile", true);
+        }
+    } 
+}

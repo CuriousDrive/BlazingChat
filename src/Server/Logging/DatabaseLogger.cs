@@ -31,7 +31,7 @@ namespace BlazingChat.Server.Logging
         {
             var user = _httpContextAccessor?.HttpContext?.User;
             long userId = 0;
-            if(user.Identity.IsAuthenticated)
+            if (user.Identity.IsAuthenticated)
                 userId = Convert.ToInt64(user.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             Log log = new();

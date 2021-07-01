@@ -49,8 +49,8 @@
             //setting the themeName parameter for JS function
             var themeName = currentUser.DarkTheme == 1 ? "dark" : "light";
             //calling the JS function
-            var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
-            await module.InvokeVoidAsync("setTheme", themeName);
+            //var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
+            await _jsRuntime.InvokeVoidAsync("setTheme", themeName);
         }
         await base.OnInitializedAsync();
     }

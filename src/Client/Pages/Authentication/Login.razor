@@ -5,6 +5,7 @@
 @inject NavigationManager _navigationManager
 @inject ILocalStorageService _localStorageService
 @inject IToastService _toastService
+@inject IJSRuntime _jsRuntime
 
 <h2 class="white-text"><b>Login</b></h2>
 <hr class="white-horizontal-line" />
@@ -40,7 +41,7 @@
 </div>
 <br />
 <div class="col-xl-6 col-md-8 col-12">
-    <a class="btn btn-block btn-social btn-facebook" @onclick="FacebookSignIn" href="">
+    <a class="btn btn-block btn-social btn-facebook" @onclick="FacebookJWT" href="">
         <span class="fa fa-facebook"></span> <b>Sign in with Facebook</b>
     </a>
 </div>
@@ -106,5 +107,13 @@
         {
             _toastService.ShowError("Invalid username or password");
         }
+    }
+
+    public async Task FacebookJWT()
+    {
+        var appId = await _loginViewModel.GetFacebookAppIDAsync();
+        
+        var accessTokenRequest = $"https://www.facebook.com/v11.0/dialog/oauth?&response_type=token&client_id={appId}&redirect_uri=https://localhost:5001/FacebookAuth";
+        _navigationManager.NavigateTo(accessTokenRequest, true);
     }
 }

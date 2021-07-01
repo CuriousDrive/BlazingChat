@@ -17,12 +17,12 @@ namespace BlazingChat.Server.Logging
         }
         public ILogger CreateLogger(string categoryName)
         {
-            return new DatabaseLogger(_context,_httpContextAccessor);
+            return new DatabaseLogger(_context, _httpContextAccessor);
         }
 
         public void Dispose()
         {
-            
+
         }
     }
 }
