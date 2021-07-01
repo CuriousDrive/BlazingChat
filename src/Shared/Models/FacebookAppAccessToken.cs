@@ -2,7 +2,7 @@ namespace BlazingChat.Shared
 {
     public class FacebookAppAccessToken
     {
-        public string access_token { get; set; }
-        public string token_type { get; set; }
+        public string Access_Token { get; set; }
+        public string Token_Type { get; set; }
     }
 }

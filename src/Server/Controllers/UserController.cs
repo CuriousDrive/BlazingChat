@@ -264,15 +264,15 @@ namespace BlazingChat.Server.Controllers
             // 3. generate an app access token
             var appAccessRequest = $"https://graph.facebook.com/oauth/access_token?client_id={appId}&client_secret={appSecrete}&grant_type=client_credentials";
             var appAccessTokenResponse = await client.GetFromJsonAsync<FacebookAppAccessToken>(appAccessRequest);
-            Console.WriteLine("App Access Token : " + appAccessTokenResponse.access_token);
+            Console.WriteLine("App Access Token : " + appAccessTokenResponse.Access_Token);
             Console.WriteLine("Auth Request Access Token : " + facebookAuthRequest.AccessToken + "\n");
 
             // 4. validate the user access token
-            var userAccessValidationRequest = $"https://graph.facebook.com/debug_token?input_token={facebookAuthRequest.AccessToken}&access_token={appAccessTokenResponse.access_token}";
+            var userAccessValidationRequest = $"https://graph.facebook.com/debug_token?input_token={facebookAuthRequest.AccessToken}&access_token={appAccessTokenResponse.Access_Token}";
             var userAccessTokenValidationResponse = await client.GetFromJsonAsync<FacebookUserAccessTokenValidation>(userAccessValidationRequest);
-            Console.WriteLine("Is Token Valid : " + userAccessTokenValidationResponse.Data?.is_valid + "\n");
+            Console.WriteLine("Is Token Valid : " + userAccessTokenValidationResponse.Data?.Is_Valid + "\n");
             
-            if (!userAccessTokenValidationResponse.Data.is_valid) 
+            if (!userAccessTokenValidationResponse.Data.Is_Valid) 
                 return BadRequest();
 
             // 5. we've got a valid token so we can request user data from facebook

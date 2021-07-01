@@ -6,7 +6,7 @@ namespace BlazingChat.Shared
     }
     public class Data
     {
-        public bool is_valid { get; set; }
+        public bool Is_Valid { get; set; }
     }
     
 }
