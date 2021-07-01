@@ -21,7 +21,6 @@ namespace BlazingChat.Server
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -33,15 +32,6 @@ namespace BlazingChat.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddCors(options =>
-                            {
-                                options.AddPolicy(name: MyAllowSpecificOrigins,
-                                                builder =>
-                                                {
-                                                    builder.WithOrigins("https://graph.facebook.com");
-                                                });
-                            });
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -129,8 +119,6 @@ namespace BlazingChat.Server
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseEndpoints(endpoints =>
             {
