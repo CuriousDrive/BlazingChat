@@ -301,6 +301,5 @@ namespace BlazingChat.Server.Controllers
 
             return await Task.FromResult(new AuthenticationResponse() { Token = token });
         }
-        
     }
 }
