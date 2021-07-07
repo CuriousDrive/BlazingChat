@@ -1,13 +1,12 @@
 ﻿@using BlazingChat.Shared.Models
-@using Blazored.Toast.Configuration
+@using BlazingChat.ViewModels
 @inherits LayoutComponentBase
 @inject NavigationManager _navigationManager
-@inject HttpClient _httpClient
+@inject ILoginViewModel _loginViewModel
 @inject IJSRuntime _jsRuntime
 @inject ILocalStorageService _localStorageService
 
 <div class="page">
-
     <div class="sidebar">
         <AuthorizeView>
             <Authorized>
@@ -15,14 +14,12 @@
             </Authorized>
         </AuthorizeView>
     </div>
-
     <BlazoredToasts Position="ToastPosition.BottomRight"
                 Timeout="3"
                 IconType="IconType.FontAwesome"
                 SuccessClass="success-toast-override"
                 SuccessIcon="fa fa-thumbs-up"
                 ErrorIcon="fa fa-bug" />
-
     <div class="main">
         <AuthorizeView>
             <Authorized>
@@ -43,7 +40,11 @@
     protected override async Task OnInitializedAsync()
     {
         //getting the current authenticated user for the app
-        User currentUser = await _httpClient.GetFromJsonAsync<User>("user/getcurrentuser");
+        var jwtToken = await _localStorageService.GetItemAsStringAsync("jwt_token");
+        if(jwtToken == null) return;
+
+        User currentUser = await _loginViewModel.GetUserByJWTAsync(jwtToken);
+
         if(currentUser != null)
         {
             //setting the themeName parameter for JS function

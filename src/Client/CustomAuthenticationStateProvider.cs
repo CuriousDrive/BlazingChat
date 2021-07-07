@@ -1,10 +1,8 @@
 using System;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Security.Claims;
-using System.Text.Json;
 using System.Threading.Tasks;
 using BlazingChat.Shared.Models;
+using BlazingChat.ViewModels;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 
@@ -12,19 +10,19 @@ namespace BlazingChat.Client
 {
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {
-
-        private readonly HttpClient _httpClient;
+        private readonly ILoginViewModel _loginViewModel;
         private readonly ILocalStorageService _localStorageService;
 
-        public CustomAuthenticationStateProvider(HttpClient httpClient, ILocalStorageService localStorageService)
+        public CustomAuthenticationStateProvider(ILoginViewModel loginViewModel, ILocalStorageService localStorageService)
         {
-            _httpClient = httpClient;
+            _loginViewModel = loginViewModel;
             _localStorageService = localStorageService;
         }
 
         public async override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            User currentUser = await GetUserByJWTAsync(); //_httpClient.GetFromJsonAsync<User>("user/getcurrentuser");
+            //User currentUser = _httpClient.GetFromJsonAsync<User>("user/getcurrentuser"); //this was for cookie authentication
+            User currentUser = await GetUserByJWTAsync(); 
 
             if (currentUser != null && currentUser.EmailAddress != null)
             {
@@ -46,23 +44,8 @@ namespace BlazingChat.Client
             //pulling the token from localStorage
             var jwtToken = await _localStorageService.GetItemAsStringAsync("jwt_token");
             if(jwtToken == null) return null;
-        
-            //preparing the http request
-            var requestMessage = new HttpRequestMessage(HttpMethod.Post, "user/getuserbyjwt");
-            requestMessage.Content = new StringContent(jwtToken);
-        
-            requestMessage.Content.Headers.ContentType
-                = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-        
-            //making the http request
-            var response = await _httpClient.SendAsync(requestMessage);
-        
-            var responseStatusCode = response.StatusCode;
-            var returnedUser = await response.Content.ReadFromJsonAsync<User>();
-        
-            //returning the user if found
-            if(returnedUser != null) return await Task.FromResult(returnedUser);
-            else return null;
+
+            return await _loginViewModel.GetUserByJWTAsync(jwtToken);
         }
     }
 }
