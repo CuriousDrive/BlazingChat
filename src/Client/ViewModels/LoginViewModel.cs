@@ -51,7 +51,7 @@ namespace BlazingChat.ViewModels
 
         public async Task<User> GetUserByJWTAsync(string jwtToken)
         {
-             //preparing the http request
+            //preparing the http request
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, "user/getuserbyjwt");
             requestMessage.Content = new StringContent(jwtToken);
         
@@ -67,6 +67,11 @@ namespace BlazingChat.ViewModels
             //returning the user if found
             if(returnedUser != null) return await Task.FromResult(returnedUser);
             else return null;
+        }
+
+        public async Task<string> GetTwitterOAuthTokenAsync()
+        {
+            return await _httpClient.GetStringAsync("user/gettwitteroauthtoken");
         }
 
         public static implicit operator LoginViewModel(User user)

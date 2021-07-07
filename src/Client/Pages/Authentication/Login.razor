@@ -35,7 +35,7 @@
 </div>
 <hr class="white-horizontal-line" />
 <div class="col-xl-6 col-md-8 col-12">
-    <a class="btn btn-block btn-social btn-twitter" @onclick="TwitterSignIn" href="">
+    <a class="btn btn-block btn-social btn-twitter" @onclick="TwitterJWT" href="">
         <span class="fa fa-twitter"></span> <b>Sign in with Twitter</b>
     </a>
 </div>
@@ -113,7 +113,17 @@
     {
         var appId = await _loginViewModel.GetFacebookAppIDAsync();
         
-        var accessTokenRequest = $"https://www.facebook.com/v11.0/dialog/oauth?&response_type=token&client_id={appId}&redirect_uri=https://localhost:5001/FacebookAuth";
+        var accessTokenRequest = $"https://www.facebook.com/v11.0/dialog/oauth";
+        accessTokenRequest += "?response_type=token";
+        accessTokenRequest += $"&client_id={appId}";
+        accessTokenRequest += "&redirect_uri=https://localhost:5001/FacebookAuth";
+        
         _navigationManager.NavigateTo(accessTokenRequest, true);
+    }
+
+    public async Task TwitterJWT()
+    {
+        var oAuthToken = await _loginViewModel.GetTwitterOAuthTokenAsync();
+        Console.WriteLine(oAuthToken);
     }
 }

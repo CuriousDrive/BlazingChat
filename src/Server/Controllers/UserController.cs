@@ -19,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
+using System.Net.Http.Headers;
 
 namespace BlazingChat.Server.Controllers
 {
@@ -253,7 +254,7 @@ namespace BlazingChat.Server.Controllers
         {
             // 1.create a token and an http client
             string token = string.Empty;
-            var client = _httpClientFactory.CreateClient();
+            var httpClient = _httpClientFactory.CreateClient();
 
             // 2.get AppId and AppSecrete
             string appId = _configuration["Authentication:Facebook:AppId"];
@@ -263,13 +264,13 @@ namespace BlazingChat.Server.Controllers
 
             // 3. generate an app access token
             var appAccessRequest = $"https://graph.facebook.com/oauth/access_token?client_id={appId}&client_secret={appSecrete}&grant_type=client_credentials";
-            var appAccessTokenResponse = await client.GetFromJsonAsync<FacebookAppAccessToken>(appAccessRequest);
+            var appAccessTokenResponse = await httpClient.GetFromJsonAsync<FacebookAppAccessToken>(appAccessRequest);
             Console.WriteLine("App Access Token : " + appAccessTokenResponse.Access_Token);
             Console.WriteLine("Auth Request Access Token : " + facebookAuthRequest.AccessToken + "\n");
 
             // 4. validate the user access token
             var userAccessValidationRequest = $"https://graph.facebook.com/debug_token?input_token={facebookAuthRequest.AccessToken}&access_token={appAccessTokenResponse.Access_Token}";
-            var userAccessTokenValidationResponse = await client.GetFromJsonAsync<FacebookUserAccessTokenValidation>(userAccessValidationRequest);
+            var userAccessTokenValidationResponse = await httpClient.GetFromJsonAsync<FacebookUserAccessTokenValidation>(userAccessValidationRequest);
             Console.WriteLine("Is Token Valid : " + userAccessTokenValidationResponse.Data?.Is_Valid + "\n");
             
             if (!userAccessTokenValidationResponse.Data.Is_Valid) 
@@ -277,7 +278,7 @@ namespace BlazingChat.Server.Controllers
 
             // 5. we've got a valid token so we can request user data from facebook
             var userDataRequest = $"https://graph.facebook.com/v11.0/me?fields=id,email,first_name,last_name,name,gender,locale,birthday,picture&access_token={facebookAuthRequest.AccessToken}";
-            var facebookUserData = await client.GetFromJsonAsync<FacebookUserData>(userDataRequest);
+            var facebookUserData = await httpClient.GetFromJsonAsync<FacebookUserData>(userDataRequest);
             Console.WriteLine("Facebook Email Address : " + facebookUserData.Email + "\n");
 
             //6. try to find the user in the database or create a new account
@@ -298,8 +299,35 @@ namespace BlazingChat.Server.Controllers
 
             token = GenerateJwtToken(loggedInUser);
             Console.WriteLine("JWT : " + token + "\n");
-
+            
+            httpClient.Dispose();
+            
             return await Task.FromResult(new AuthenticationResponse() { Token = token });
+        }
+    
+        //Twitter Authentication using JWT
+        [HttpGet("gettwitteroauthtoken")]
+        public async Task<ActionResult<string>> GetTwitterOAuthTokenAsync()
+        {
+            var httpClient = _httpClientFactory.CreateClient();
+            var consumerKey = _configuration["Authentication:Twitter:ConsumerKey"];
+            var consumerSecrete = _configuration["Authentication:Twitter:ConsumerSecrete"];
+
+            //preparing the http request
+            var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"https://api.twitter.com/oauth/request_token");
+            var authHeader = string.Format(@"OAuth oauth_consumer_key=""{0}"", oauth_nonce=""kYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg"", oauth_signature=""tnnArxj06cWHq44gCs1OSKk%2FjLY%3D"", oauth_signature_method=""HMAC-SHA1"", oauth_timestamp=""1318622958"", oauth_version=""1.0""", consumerKey);
+
+            Console.WriteLine(authHeader);
+
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Authorization", authHeader);
+            
+            var response = await httpClient.SendAsync(requestMessage);
+        
+            var responseStatusCode = response.StatusCode;
+            var oAuthTokenResponse = await response.Content.ReadAsStringAsync();
+
+            //returning the oAuth token if found
+            return oAuthTokenResponse;
         }
     }
 }
