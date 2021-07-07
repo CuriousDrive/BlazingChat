@@ -1,0 +1,88 @@
+@page "/contacts"
+@using BlazingChat.ViewModels
+@inject IContactsViewModel _contactsViewModel
+@inject NavigationManager _navigationManager
+
+<h2 class="white-text"><b>Contacts</b></h2> 
+<hr class="white-horizontal-line"/>
+
+<div class="col-12 row">
+    <input type="text" class="col-12 form-control dark-theme-textbox" placeholder="search" />
+</div>
+<br />
+
+@if (_contactsViewModel.ContactsCount > 0)
+{
+    @* foreach(var contact in _contactsViewModel.Contacts)
+    {
+        <div style="height: 50px">
+                <a href="/chat/@contact.ContactId"
+                class="list-group-item list-group-item-action flex-column align-items-start contact-list-item">
+                    @contact.FirstName <span> </span> @contact.LastName
+                </a>
+        </div>
+    } *@
+
+    <Virtualize ItemsProvider="LoadOnlyVisibleContacts" Context="contact">
+        <ItemContent>
+            <div style="height: 50px">
+                <a href="/chat/@contact.ContactId"
+                class="list-group-item list-group-item-action flex-column align-items-start contact-list-item">
+                    @contact.FirstName <span> </span> @contact.LastName
+                </a>
+            </div>
+        </ItemContent>
+        <Placeholder>
+            <div style="height: 50px">
+                <p>Loading...</p>
+            </div>
+        </Placeholder>
+    </Virtualize>
+}
+<br />
+
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+
+    [CascadingParameter]
+    public Error Error { get; set; }
+ 
+    private async ValueTask<ItemsProviderResult<Contact>> LoadOnlyVisibleContacts(ItemsProviderRequest itemsProviderRequest)
+    {
+        Console.WriteLine($"Start Index : {itemsProviderRequest.StartIndex}");
+        Console.WriteLine($"Count : {itemsProviderRequest.Count}");
+        
+        //await Task.Delay(2000);
+        await _contactsViewModel.LoadOnlyVisibleContactsDB(itemsProviderRequest.StartIndex,itemsProviderRequest.Count);
+
+        return new ItemsProviderResult<Contact>(_contactsViewModel.Contacts, _contactsViewModel.ContactsCount);
+    }
+
+    protected override async Task OnInitializedAsync() 
+    {
+        try
+        {
+            var authState = await authenticationState;
+            var user = authState.User;
+
+            if (user.Identity.IsAuthenticated)
+            {
+                //await _contactsViewModel.LoadAllContactsDemo();
+                
+                //throw new IndexOutOfRangeException();
+                await _contactsViewModel.LoadContactsCountDB();
+            }
+            else _navigationManager.NavigateTo("/");
+        }
+        catch (System.Exception ex)
+        {
+            Error.ProcessError(ex);
+        }
+    }
+    
+    private void NavigateToChat()
+    {
+        _navigationManager.NavigateTo("/chat");
+    }
+}

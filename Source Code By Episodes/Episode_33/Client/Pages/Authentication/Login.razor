@@ -1,0 +1,119 @@
+@page "/"
+@using BlazingChat.ViewModels
+@using BlazingChat.Shared
+@inject ILoginViewModel _loginViewModel
+@inject NavigationManager _navigationManager
+@inject ILocalStorageService _localStorageService
+@inject IToastService _toastService
+@inject IJSRuntime _jsRuntime
+
+<h2 class="white-text"><b>Login</b></h2>
+<hr class="white-horizontal-line" />
+
+<div class="col-xl-6 col-md-8 col-12">
+    <input type="text" @bind="_loginViewModel.EmailAddress" class="form-control dark-theme-textbox" placeholder="email address">
+</div>
+<br />
+<div class="col-xl-6 col-md-8 col-12">
+    <input type="password" @bind="_loginViewModel.Password" class="form-control dark-theme-textbox" placeholder="password">
+</div>
+<div class="col-xl-6 col-md-8 col-12 row">
+    <div class="col-xl-2 col-lg-2 col-md-6 col-sm-3 col-3">
+        <RadzenSwitch style="margin-bottom: 20px;" @bind-Value="@_loginViewModel.RememberMe" Name="RememberMe" />
+    </div>
+    <div class="col-xl-5 col-lg-5 col-md-6 col-sm-9 col-9">
+        <label style="margin-top: 20px; font-weight: bold; color: #0366d6;" class="white-text">Remember Me</label>
+    </div>
+</div>
+<div class="col-xl-6 col-md-8 col-12 row">
+    <div class="col-xl-2 col-lg-2 col-md-6 col-sm-3 col-3">
+        <button class="btn btn-danger" @onclick="AuthenticateJWT">Login</button>
+    </div>
+    <div class="col-xl-5 col-lg-5 col-md-6 col-sm-9 col-9">
+        <a style="font-weight: bold;" href="/createaccount">Create an account</a>
+    </div>
+</div>
+<hr class="white-horizontal-line" />
+<div class="col-xl-6 col-md-8 col-12">
+    <a class="btn btn-block btn-social btn-twitter" @onclick="TwitterSignIn" href="">
+        <span class="fa fa-twitter"></span> <b>Sign in with Twitter</b>
+    </a>
+</div>
+<br />
+<div class="col-xl-6 col-md-8 col-12">
+    <a class="btn btn-block btn-social btn-facebook" @onclick="FacebookJWT" href="">
+        <span class="fa fa-facebook"></span> <b>Sign in with Facebook</b>
+    </a>
+</div>
+<br />
+<div class="col-xl-6 col-md-8 col-12">
+    <a class="btn btn-block btn-social btn-google" @onclick="GoogleSignIn" href="">
+        <span class="fa fa-google"></span> <b>Sign in with Google</b>
+    </a>
+</div>
+<hr class="white-horizontal-line" />
+<div class="col-12 white-text">
+    <p style="font-size: larger;" class="white-text">Or you can login with John Smith' crendetials</p>
+    <p style="font-size: large;" class="white-text">
+        <b>email address :</b> john.smith@gmail.com <br /> <b>password : </b>john.smith
+    </p>
+</div>
+
+@code {
+
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authenticationState;
+        var user = authState.User;
+        if(user.Identity.IsAuthenticated)
+        {
+            _navigationManager.NavigateTo("/profile",true);
+        }
+    }
+    
+    public async Task LoginUser()
+    {
+        await _loginViewModel.LoginUser();
+        _navigationManager.NavigateTo("/profile",true);
+    }
+    
+    private void TwitterSignIn()
+    {
+        _navigationManager.NavigateTo($"user/TwitterSignIn?isPersistent={_loginViewModel.RememberMe}", true);
+    }
+
+    private void FacebookSignIn()
+    {
+        _navigationManager.NavigateTo($"user/FacebookSignIn?isPersistent={_loginViewModel.RememberMe}", true);
+    }
+
+    private void GoogleSignIn()
+    {
+        _navigationManager.NavigateTo($"user/GoogleSignIn?isPersistent={_loginViewModel.RememberMe}", true);
+    }
+
+    public async Task AuthenticateJWT()
+    {
+        AuthenticationResponse authenticationResponse = await _loginViewModel.AuthenticateJWT();
+        if(authenticationResponse.Token != string.Empty)
+        {
+            await _localStorageService.SetItemAsync("jwt_token",authenticationResponse.Token);
+            _navigationManager.NavigateTo("/profile",true);
+        }
+        else
+        {
+            _toastService.ShowError("Invalid username or password");
+        }
+    }
+
+    public async Task FacebookJWT()
+    {
+        var appId = await _loginViewModel.GetFacebookAppIDAsync();
+        
+        var accessTokenRequest = $"https://www.facebook.com/v11.0/dialog/oauth?&response_type=token&client_id={appId}&redirect_uri=https://localhost:5001/FacebookAuth";
+        _navigationManager.NavigateTo(accessTokenRequest, true);
+    }
+}
