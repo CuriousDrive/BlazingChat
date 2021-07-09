@@ -310,16 +310,15 @@ namespace BlazingChat.Server.Controllers
         public async Task<ActionResult<string>> GetTwitterOAuthTokenAsync()
         {
             var httpClient = _httpClientFactory.CreateClient();
+            
+            //Step 1: Encode consumer key and secret
             var consumerKey = _configuration["Authentication:Twitter:ConsumerKey"];
             var consumerSecrete = _configuration["Authentication:Twitter:ConsumerSecrete"];
 
-            //preparing the http request
+            //Step 2: Obtain a Bearer Token
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"https://api.twitter.com/oauth/request_token");
-            var authHeader = string.Format(@"OAuth oauth_consumer_key=""{0}"", oauth_nonce=""kYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg"", oauth_signature=""tnnArxj06cWHq44gCs1OSKk%2FjLY%3D"", oauth_signature_method=""HMAC-SHA1"", oauth_timestamp=""1318622958"", oauth_version=""1.0""", consumerKey);
 
-            Console.WriteLine(authHeader);
-
-            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Authorization", authHeader);
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Authorization", "authHeader");
             
             var response = await httpClient.SendAsync(requestMessage);
         
