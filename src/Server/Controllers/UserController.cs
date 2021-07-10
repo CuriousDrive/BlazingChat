@@ -20,6 +20,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
 
 namespace BlazingChat.Server.Controllers
 {
@@ -314,19 +315,74 @@ namespace BlazingChat.Server.Controllers
             //Step 1: Encode consumer key and secret
             var consumerKey = _configuration["Authentication:Twitter:ConsumerKey"];
             var consumerSecrete = _configuration["Authentication:Twitter:ConsumerSecrete"];
+            var accessToken = _configuration["Authentication:Twitter:ConsumerSecrete"];
+            var accessTokenSecret = _configuration["Authentication:Twitter:accessTokenSecret"];
 
-            //Step 2: Obtain a Bearer Token
+            string headerParameters = string.Empty;
+            headerParameters += $"POST";
+            headerParameters += $"&https%3A%2F%2Fapi.twitter.com%2Foauth%2Frequest_token";
+            headerParameters += $"&oauth_consumer_key={consumerKey}";
+            headerParameters += $"&oauth_callback=https%3A%2F%2Flocalhost%3A5001%2Fsignin-twitter";
+            headerParameters += $"&oauth_signature_method=HMAC-SHA1";
+            headerParameters += $"&oauth_nonce={GetNonce()}";
+            headerParameters += $"&oauth_timestamp=\"{GetCurrentTimeStamp()}\", ";
+            headerParameters += $"&oauth_version=\"1.0\"";
+
+            var signingKey = $"{consumerKey}&{accessTokenSecret}";
+
+            Byte[] secretBytes = UTF8Encoding.UTF8.GetBytes(signingKey);
+            HMACSHA1 hMACSHA1 = new HMACSHA1(secretBytes);
+
+            Byte[] dataBytes = UTF8Encoding.UTF8.GetBytes(headerParameters);
+            Byte[] calcHash = hMACSHA1.ComputeHash(dataBytes);
+            String oAuthSignature = Convert.ToBase64String(calcHash);
+
+            Console.WriteLine("Header Parameters : " + headerParameters);
+            Console.WriteLine("oAuthSignature : " + oAuthSignature);
+            Console.WriteLine();
+
+            string authHeader = string.Empty;
+            authHeader += "OAuth ";
+            authHeader += "oauth_nonce=\"" + GetNonce()  + "\", ";
+            authHeader += "oauth_callback=\"https%3A%2F%2Flocalhost%3A5001%2Fsignin-twitter\", ";
+            authHeader += "oauth_signature_method=\"HMAC-SHA1\", ";
+            authHeader += "oauth_timestamp=\"" + GetCurrentTimeStamp() + "\", ";
+            authHeader += "oauth_consumer_key=\"" + consumerKey + "\", ";
+            authHeader += "oauth_signature=\"" + Uri.EscapeDataString(oAuthSignature) + "\", ";
+            authHeader += "oauth_version=\"1.0\"";
+
+            Console.WriteLine(authHeader);
+
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"https://api.twitter.com/oauth/request_token");
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Authorization", authHeader);
 
-            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Authorization", "authHeader");
-            
             var response = await httpClient.SendAsync(requestMessage);
-        
+
             var responseStatusCode = response.StatusCode;
             var oAuthTokenResponse = await response.Content.ReadAsStringAsync();
 
             //returning the oAuth token if found
             return oAuthTokenResponse;
+        }
+
+        private string GetNonce()
+        {
+            Random random = new Random();
+            int length = 32;
+            var randomString = string.Empty;
+            for (var i = 0; i < length; i++)
+                randomString += ((char)(random.Next(1, 26) + 64)).ToString().ToLower();
+            
+            var bytes = Encoding.UTF8.GetBytes(randomString);
+            var encodedString = Convert.ToBase64String(bytes);
+
+            return encodedString;
+        }
+        private string GetCurrentTimeStamp()
+        {
+            var epochDateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var now = DateTime.Now;
+            return (now - epochDateTime).TotalSeconds.ToString().Split('.')[0];
         }
     }
 }

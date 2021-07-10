@@ -23,7 +23,9 @@ namespace BlazingChat.Client
         {
             //User currentUser = _httpClient.GetFromJsonAsync<User>("user/getcurrentuser"); //this was for cookie authentication
             User currentUser = await GetUserByJWTAsync();
-            await Task.Delay(2000);
+            
+            //await Task.Delay(2000); //adding this to show Authorizing text
+            
             if (currentUser != null && currentUser.EmailAddress != null)
             {
                 //create a claims
