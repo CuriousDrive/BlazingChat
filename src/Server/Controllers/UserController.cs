@@ -315,43 +315,48 @@ namespace BlazingChat.Server.Controllers
             //Step 1: Encode consumer key and secret
             var consumerKey = _configuration["Authentication:Twitter:ConsumerKey"];
             var consumerSecrete = _configuration["Authentication:Twitter:ConsumerSecrete"];
-            var accessToken = _configuration["Authentication:Twitter:ConsumerSecrete"];
-            var accessTokenSecret = _configuration["Authentication:Twitter:accessTokenSecret"];
+            var accessToken = _configuration["Authentication:Twitter:AccessToken"];
+            var accessTokenSecrete = _configuration["Authentication:Twitter:AccessTokenSecrete"];
+            var callbackUrl = "https://localhost:5001/signin-twitter";
+            var requestTokenUrl = "https://api.twitter.com/oauth/request_token";
+            var nonce = GetNonce();
+            var timeStamp = GetCurrentTimeStamp();
 
-            string headerParameters = string.Empty;
-            headerParameters += $"POST";
-            headerParameters += $"&https%3A%2F%2Fapi.twitter.com%2Foauth%2Frequest_token";
-            headerParameters += $"&oauth_consumer_key={consumerKey}";
-            headerParameters += $"&oauth_callback=https%3A%2F%2Flocalhost%3A5001%2Fsignin-twitter";
-            headerParameters += $"&oauth_signature_method=HMAC-SHA1";
-            headerParameters += $"&oauth_nonce={GetNonce()}";
-            headerParameters += $"&oauth_timestamp=\"{GetCurrentTimeStamp()}\", ";
-            headerParameters += $"&oauth_version=\"1.0\"";
+            //Colleting parameters
+            var parameters = $"oauth_callback={Uri.EscapeDataString(callbackUrl)}";
+            parameters += $"&oauth_consumer_key={consumerKey}";
+            parameters += $"&oauth_nonce={nonce}";
+            parameters += $"&oauth_signature_method=HMAC-SHA1";
+            parameters += $"&oauth_timestamp={timeStamp}";
+            parameters += $"&oauth_token={accessToken}";
+            parameters += $"&oauth_version=1.0";
 
-            var signingKey = $"{consumerKey}&{accessTokenSecret}";
+            //Creating base signature string
+            var baseSignatureString = $"POST";
+            baseSignatureString += $"&{Uri.EscapeDataString(requestTokenUrl)}";
+            baseSignatureString += $"&{Uri.EscapeDataString(parameters)}";
 
+            //Creating Signing Key
+            var signingKey = $"{consumerSecrete}&{accessTokenSecrete}";
+
+            //Generating the signature
             Byte[] secretBytes = UTF8Encoding.UTF8.GetBytes(signingKey);
             HMACSHA1 hMACSHA1 = new HMACSHA1(secretBytes);
 
-            Byte[] dataBytes = UTF8Encoding.UTF8.GetBytes(headerParameters);
+            Byte[] dataBytes = UTF8Encoding.UTF8.GetBytes(baseSignatureString);
             Byte[] calcHash = hMACSHA1.ComputeHash(dataBytes);
             String oAuthSignature = Convert.ToBase64String(calcHash);
-
-            Console.WriteLine("Header Parameters : " + headerParameters);
-            Console.WriteLine("oAuthSignature : " + oAuthSignature);
-            Console.WriteLine();
-
+            
             string authHeader = string.Empty;
             authHeader += "OAuth ";
-            authHeader += "oauth_nonce=\"" + GetNonce()  + "\", ";
-            authHeader += "oauth_callback=\"https%3A%2F%2Flocalhost%3A5001%2Fsignin-twitter\", ";
+            authHeader += "oauth_nonce=\"" + nonce  + "\", ";
+            authHeader += "oauth_callback=\"" + Uri.EscapeDataString(callbackUrl) + "\", ";
             authHeader += "oauth_signature_method=\"HMAC-SHA1\", ";
-            authHeader += "oauth_timestamp=\"" + GetCurrentTimeStamp() + "\", ";
+            authHeader += "oauth_timestamp=\"" + timeStamp + "\", ";
+            authHeader += "oauth_token=\"" + accessToken + "\", ";
             authHeader += "oauth_consumer_key=\"" + consumerKey + "\", ";
             authHeader += "oauth_signature=\"" + Uri.EscapeDataString(oAuthSignature) + "\", ";
             authHeader += "oauth_version=\"1.0\"";
-
-            Console.WriteLine(authHeader);
 
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"https://api.twitter.com/oauth/request_token");
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Authorization", authHeader);
@@ -361,6 +366,13 @@ namespace BlazingChat.Server.Controllers
             var responseStatusCode = response.StatusCode;
             var oAuthTokenResponse = await response.Content.ReadAsStringAsync();
 
+            Console.WriteLine("Parameters : " + parameters + "\n");
+            Console.WriteLine("Base Signature String : " + baseSignatureString + "\n");
+            Console.WriteLine("signingKey : " + signingKey + "\n");
+            Console.WriteLine("oAuthSignature : " + oAuthSignature + "\n");
+            Console.WriteLine("Authorization Header : " + authHeader + "\n");
+            Console.WriteLine("oAuth Token : " + oAuthTokenResponse + "\n");
+
             //returning the oAuth token if found
             return oAuthTokenResponse;
         }
@@ -368,7 +380,7 @@ namespace BlazingChat.Server.Controllers
         private string GetNonce()
         {
             Random random = new Random();
-            int length = 32;
+            int length = 16;
             var randomString = string.Empty;
             for (var i = 0; i < length; i++)
                 randomString += ((char)(random.Next(1, 26) + 64)).ToString().ToLower();
@@ -376,7 +388,7 @@ namespace BlazingChat.Server.Controllers
             var bytes = Encoding.UTF8.GetBytes(randomString);
             var encodedString = Convert.ToBase64String(bytes);
 
-            return encodedString;
+            return new String(encodedString.Where(c => Char.IsLetterOrDigit(c)).ToArray());
         }
         private string GetCurrentTimeStamp()
         {
@@ -386,3 +398,8 @@ namespace BlazingChat.Server.Controllers
         }
     }
 }
+            //var request = $"https://api.twitter.com/oauth/request_token?oauth_consumer_key={consumerKey}&oauth_signature_method=HMAC-SHA1&oauth_timestamp={GetCurrentTimeStamp()}&oauth_nonce={GetNonce()}&oauth_version=1.0&oauth_callback={Uri.EscapeDataString("https://localhost:5001/signin-twitter")}&oauth_signature={Uri.EscapeDataString(oAuthSignature)}";
+            //var response2 = httpClient.GetStringAsync(request);
+
+            //Console.WriteLine("Request : " + request + "\n");
+            //Console.WriteLine("Response : " + response2 + "\n");
