@@ -3,24 +3,23 @@
 @using Microsoft.AspNetCore.WebUtilities
 @using BlazingChat.ViewModels
 @inject NavigationManager _navigationManager
-@inject IFacebookAuthViewModel _facebookViewModel
 @inject ILocalStorageService _localStorageService
 
 <h1>Please wait...</h1>
-<h3> Access Token : @AccessToken</h3>
+<h3> OAuth Verifier : @OAuthVerifier</h3>
 
 @code{
-    public string AccessToken {get; set;}
+    public string OAuthVerifier {get; set;}
     protected override async Task OnInitializedAsync()
     {
-        if (QueryHelpers.ParseQuery(_navigationManager.Uri.Split('#')[1]).TryGetValue("access_token", out var _accessToken))
+        if (QueryHelpers.ParseQuery(_navigationManager.Uri).TryGetValue("oauth_verifier", out var _oAuthVerifier))
         {
-            AccessToken = _accessToken;        
+            OAuthVerifier = _oAuthVerifier;        
             
-            string token = await _facebookViewModel.GetFacebookJWTAsync(_accessToken);
-            await _localStorageService.SetItemAsync<string>("jwt_token", token);
+            //string token = await _facebookViewModel.GetFacebookJWTAsync(_requestToken);
+            //await _localStorageService.SetItemAsync<string>("jwt_token", token);
             
-            _navigationManager.NavigateTo("/profile", true);
+            //_navigationManager.NavigateTo("/profile", true);
         }
     } 
 }

@@ -125,5 +125,7 @@
     {
         var oAuthToken = await _loginViewModel.GetTwitterOAuthTokenAsync();
         Console.WriteLine(oAuthToken);
+        
+        _navigationManager.NavigateTo("https://api.twitter.com/oauth/authorize?oauth_token=" + oAuthToken);
     }
 }

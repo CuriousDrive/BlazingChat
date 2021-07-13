@@ -21,6 +21,9 @@ using Newtonsoft.Json;
 using System.Net.Http.Json;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
+using RestSharp.Authenticators;
+using RestSharp;
+using System.Web;
 
 namespace BlazingChat.Server.Controllers
 {
@@ -328,7 +331,7 @@ namespace BlazingChat.Server.Controllers
             parameters += $"&oauth_nonce={nonce}";
             parameters += $"&oauth_signature_method=HMAC-SHA1";
             parameters += $"&oauth_timestamp={timeStamp}";
-            parameters += $"&oauth_token={accessToken}";
+            //parameters += $"&oauth_token={accessToken}";
             parameters += $"&oauth_version=1.0";
 
             //Creating base signature string
@@ -353,7 +356,7 @@ namespace BlazingChat.Server.Controllers
             authHeader += "oauth_callback=\"" + Uri.EscapeDataString(callbackUrl) + "\", ";
             authHeader += "oauth_signature_method=\"HMAC-SHA1\", ";
             authHeader += "oauth_timestamp=\"" + timeStamp + "\", ";
-            authHeader += "oauth_token=\"" + accessToken + "\", ";
+            //authHeader += "oauth_token=\"" + accessToken + "\", ";
             authHeader += "oauth_consumer_key=\"" + consumerKey + "\", ";
             authHeader += "oauth_signature=\"" + Uri.EscapeDataString(oAuthSignature) + "\", ";
             authHeader += "oauth_version=\"1.0\"";
@@ -377,6 +380,35 @@ namespace BlazingChat.Server.Controllers
             return oAuthTokenResponse;
         }
 
+        [HttpGet("gettwitteroauthtokenusingresharp")]
+        public ActionResult<string> GetTwitterOAuthTokenUsingResharpAsync()
+        {
+            var consumerKey = _configuration["Authentication:Twitter:ConsumerKey"];
+            var consumerSecrete = _configuration["Authentication:Twitter:ConsumerSecrete"];
+            var callbackUrl = _configuration["Authentication:Twitter:CallbackUrl"];
+
+            var client = new RestClient("https://api.twitter.com"); // Note NO /1
+
+            client.Authenticator = OAuth1Authenticator.ForRequestToken(
+                consumerKey, 
+                consumerSecrete, 
+                callbackUrl // Value for the oauth_callback parameter
+            );
+
+            var request = new RestRequest("/oauth/request_token", Method.POST);
+            var response = client.Execute(request);
+
+            var qs = HttpUtility.ParseQueryString(response.Content);
+
+            var _token = qs["oauth_token"];
+            var _tokenSecret = qs["oauth_token_secret"];
+
+            Console.WriteLine("Request Token : " + _token);
+            Console.WriteLine("Token Secrete : " + _tokenSecret);
+
+            return _token;
+        }
+
         private string GetNonce()
         {
             Random random = new Random();
@@ -398,8 +430,3 @@ namespace BlazingChat.Server.Controllers
         }
     }
 }
-            //var request = $"https://api.twitter.com/oauth/request_token?oauth_consumer_key={consumerKey}&oauth_signature_method=HMAC-SHA1&oauth_timestamp={GetCurrentTimeStamp()}&oauth_nonce={GetNonce()}&oauth_version=1.0&oauth_callback={Uri.EscapeDataString("https://localhost:5001/signin-twitter")}&oauth_signature={Uri.EscapeDataString(oAuthSignature)}";
-            //var response2 = httpClient.GetStringAsync(request);
-
-            //Console.WriteLine("Request : " + request + "\n");
-            //Console.WriteLine("Response : " + response2 + "\n");
