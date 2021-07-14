@@ -310,78 +310,9 @@ namespace BlazingChat.Server.Controllers
         }
     
         //Twitter Authentication using JWT
-        [HttpGet("gettwitteroauthtoken")]
-        public async Task<ActionResult<string>> GetTwitterOAuthTokenAsync()
-        {
-            var httpClient = _httpClientFactory.CreateClient();
-            
-            //Step 1: Encode consumer key and secret
-            var consumerKey = _configuration["Authentication:Twitter:ConsumerKey"];
-            var consumerSecrete = _configuration["Authentication:Twitter:ConsumerSecrete"];
-            var accessToken = _configuration["Authentication:Twitter:AccessToken"];
-            var accessTokenSecrete = _configuration["Authentication:Twitter:AccessTokenSecrete"];
-            var callbackUrl = "https://localhost:5001/signin-twitter";
-            var requestTokenUrl = "https://api.twitter.com/oauth/request_token";
-            var nonce = GetNonce();
-            var timeStamp = GetCurrentTimeStamp();
-
-            //Colleting parameters
-            var parameters = $"oauth_callback={Uri.EscapeDataString(callbackUrl)}";
-            parameters += $"&oauth_consumer_key={consumerKey}";
-            parameters += $"&oauth_nonce={nonce}";
-            parameters += $"&oauth_signature_method=HMAC-SHA1";
-            parameters += $"&oauth_timestamp={timeStamp}";
-            //parameters += $"&oauth_token={accessToken}";
-            parameters += $"&oauth_version=1.0";
-
-            //Creating base signature string
-            var baseSignatureString = $"POST";
-            baseSignatureString += $"&{Uri.EscapeDataString(requestTokenUrl)}";
-            baseSignatureString += $"&{Uri.EscapeDataString(parameters)}";
-
-            //Creating Signing Key
-            var signingKey = $"{consumerSecrete}&{accessTokenSecrete}";
-
-            //Generating the signature
-            Byte[] secretBytes = UTF8Encoding.UTF8.GetBytes(signingKey);
-            HMACSHA1 hMACSHA1 = new HMACSHA1(secretBytes);
-
-            Byte[] dataBytes = UTF8Encoding.UTF8.GetBytes(baseSignatureString);
-            Byte[] calcHash = hMACSHA1.ComputeHash(dataBytes);
-            String oAuthSignature = Convert.ToBase64String(calcHash);
-            
-            string authHeader = string.Empty;
-            authHeader += "OAuth ";
-            authHeader += "oauth_nonce=\"" + nonce  + "\", ";
-            authHeader += "oauth_callback=\"" + Uri.EscapeDataString(callbackUrl) + "\", ";
-            authHeader += "oauth_signature_method=\"HMAC-SHA1\", ";
-            authHeader += "oauth_timestamp=\"" + timeStamp + "\", ";
-            //authHeader += "oauth_token=\"" + accessToken + "\", ";
-            authHeader += "oauth_consumer_key=\"" + consumerKey + "\", ";
-            authHeader += "oauth_signature=\"" + Uri.EscapeDataString(oAuthSignature) + "\", ";
-            authHeader += "oauth_version=\"1.0\"";
-
-            var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"https://api.twitter.com/oauth/request_token");
-            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Authorization", authHeader);
-
-            var response = await httpClient.SendAsync(requestMessage);
-
-            var responseStatusCode = response.StatusCode;
-            var oAuthTokenResponse = await response.Content.ReadAsStringAsync();
-
-            Console.WriteLine("Parameters : " + parameters + "\n");
-            Console.WriteLine("Base Signature String : " + baseSignatureString + "\n");
-            Console.WriteLine("signingKey : " + signingKey + "\n");
-            Console.WriteLine("oAuthSignature : " + oAuthSignature + "\n");
-            Console.WriteLine("Authorization Header : " + authHeader + "\n");
-            Console.WriteLine("oAuth Token : " + oAuthTokenResponse + "\n");
-
-            //returning the oAuth token if found
-            return oAuthTokenResponse;
-        }
-
+        
         [HttpGet("gettwitteroauthtokenusingresharp")]
-        public ActionResult<string> GetTwitterOAuthTokenUsingResharpAsync()
+        public ActionResult<TwitterRequestTokenResponse> GetTwitterOAuthTokenUsingResharpAsync()
         {
             var consumerKey = _configuration["Authentication:Twitter:ConsumerKey"];
             var consumerSecrete = _configuration["Authentication:Twitter:ConsumerSecrete"];
@@ -402,17 +333,156 @@ namespace BlazingChat.Server.Controllers
 
             var _token = qs["oauth_token"];
             var _tokenSecret = qs["oauth_token_secret"];
+            var _callbackUrlConfirmed = qs["oauth_callback_confirmed"];
 
-            Console.WriteLine("Request Token : " + _token);
-            Console.WriteLine("Token Secrete : " + _tokenSecret);
-
-            return _token;
+            return new TwitterRequestTokenResponse() { OAuthToken = _token, OAuthTokenSecrete = _tokenSecret, OAuthCallBackConfirmed = _callbackUrlConfirmed } ;
         }
 
+        [HttpPost("gettwitterjwt")]
+        public async Task<ActionResult<AuthenticationResponse>> GetTwitterJWT([FromBody] TwitterRequestTokenResponse twitterRequestTokenResponse)
+        {
+            // 1.create a token and an http client
+            string token = string.Empty;
+            var httpClient = _httpClientFactory.CreateClient();
+
+            var consumerKey = _configuration["Authentication:Twitter:ConsumerKey"];
+            var consumerSecrete = _configuration["Authentication:Twitter:ConsumerSecrete"];
+            var callbackUrl = _configuration["Authentication:Twitter:CallbackUrl"];
+
+            var client = new RestClient("https://api.twitter.com"); // Note NO /1
+
+            client.Authenticator = OAuth1Authenticator.ForAccessToken(
+                consumerKey, 
+                consumerSecrete, 
+                twitterRequestTokenResponse.OAuthToken,
+                twitterRequestTokenResponse.OAuthTokenSecrete,
+                twitterRequestTokenResponse.OAuthVerifier
+            );
+
+            var request = new RestRequest("/oauth/access_token", Method.POST);
+            var response = client.Execute(request);
+
+            var qs = HttpUtility.ParseQueryString(response.Content);
+
+            var _token = qs["oauth_token"];
+            var _tokenSecret = qs["oauth_token_secret"];
+
+            Console.WriteLine("OAuth Token : " + _token + "\n");
+            Console.WriteLine("OAuth Token Secrete : " + _tokenSecret + "\n");
+
+            await GetTwitterEmailAddress(_token, _tokenSecret);
+
+            // 5. we've got a valid token so we can request user data from facebook
+            // var userAccessTokenRequest = $"https://api.twitter.com/oauth/access_token?oauth_token={twitterRequestTokenResponse.OAuthToken}&oauth_verifier={twitterRequestTokenResponse.OAuthVerifier}";
+            // var accessDataResponse = await httpClient.PostAsync(userAccessTokenRequest, null);
+
+            //Console.WriteLine("Access Data Response :" + accessDataResponse +"\n");
+
+            //6. try to find the user in the database or create a new account
+            // var loggedInUser = await _context.Users.Where(user => user.EmailAddress == facebookUserData.Email).FirstOrDefaultAsync();
+
+            // //7. generate the token
+            // if(loggedInUser == null)
+            // {
+            //     loggedInUser = new User();
+            //     loggedInUser.UserId = _context.Users.Max(user => user.UserId) + 1;
+            //     loggedInUser.EmailAddress = User.FindFirstValue(ClaimTypes.Email);
+            //     loggedInUser.Password = Utility.Encrypt(loggedInUser.EmailAddress);
+            //     loggedInUser.Source = "EXTL";
+
+            //     _context.Users.Add(loggedInUser);
+            //     await _context.SaveChangesAsync();
+            // }
+
+            // token = GenerateJwtToken(loggedInUser);
+            // Console.WriteLine("JWT : " + token + "\n");
+
+            httpClient.Dispose();
+            
+            return await Task.FromResult(new AuthenticationResponse() { Token = token });
+        }
+
+        //Twitter OAuth that did not work =>
+
+        //[HttpGet("gettwitteroauthtoken")]
+        public async Task<ActionResult<string>> GetTwitterEmailAddress(string token, string tokenSecrete)
+        {
+            var httpClient = _httpClientFactory.CreateClient();
+            
+            //Step 1: Encode consumer key and secret
+            var consumerKey = _configuration["Authentication:Twitter:ConsumerKey"];
+            var consumerSecrete = _configuration["Authentication:Twitter:ConsumerSecrete"];
+            var callbackUrl = "https://localhost:5001/TwitterAuth";
+            var verifyCredentialsUrl = "https://api.twitter.com/1.1/account/verify_credentials.json";
+            var nonce = GetNonce();
+            var timeStamp = GetCurrentTimeStamp();
+
+            //Colleting parameters
+            var parameters = $"include_email=true";
+            parameters += $"&oauth_callback={Uri.EscapeDataString(callbackUrl)}";
+            parameters += $"&oauth_consumer_key={consumerKey}";
+            parameters += $"&oauth_nonce={nonce}";
+            parameters += $"&oauth_signature_method=HMAC-SHA1";
+            parameters += $"&oauth_timestamp={timeStamp}";
+            parameters += $"&oauth_token={token}";
+            parameters += $"&oauth_version=1.0";
+
+            //Creating base signature string
+            var baseSignatureString = $"GET";
+            baseSignatureString += $"&{Uri.EscapeDataString(verifyCredentialsUrl)}";
+            baseSignatureString += $"&{Uri.EscapeDataString(parameters)}";
+
+            //Creating Signing Key
+            var signingKey = $"{consumerSecrete}&{tokenSecrete}";
+
+            //Generating the signature
+            Byte[] secretBytes = UTF8Encoding.UTF8.GetBytes(signingKey);
+            HMACSHA1 hMACSHA1 = new HMACSHA1(secretBytes);
+
+            Byte[] dataBytes = UTF8Encoding.UTF8.GetBytes(baseSignatureString);
+            Byte[] calcHash = hMACSHA1.ComputeHash(dataBytes);
+            String oAuthSignature = Convert.ToBase64String(calcHash);
+
+            var verifyCredentialsRequest = $"https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true";
+            verifyCredentialsRequest += $"&oauth_consumer_key={consumerKey}";
+            verifyCredentialsRequest += $"&oauth_token={token}";
+            verifyCredentialsRequest += $"&oauth_signature_method=HMAC-SHA1";
+            verifyCredentialsRequest += $"&oauth_timestamp={timeStamp}";
+            verifyCredentialsRequest += $"&oauth_nonce={nonce}";
+            verifyCredentialsRequest += $"&oauth_version=1.0";
+            verifyCredentialsRequest += $"&oauth_callback={Uri.EscapeDataString(callbackUrl)}";
+            verifyCredentialsRequest += $"&oauth_signature={Uri.EscapeDataString(oAuthSignature)}";
+
+            var client = new RestClient(verifyCredentialsRequest);
+            client.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("Cookie", "guest_id=v1%3A162567207397101939; personalization_id=\"v1_g/jn5lMfvZyYGC7eQanF0g==\"; lang=en");
+            IRestResponse response = client.Execute(request);
+
+            Console.WriteLine("Parameters : " + parameters + "\n");
+            Console.WriteLine("Base Signature String : " + baseSignatureString + "\n");
+            Console.WriteLine("signingKey : " + signingKey + "\n");
+            Console.WriteLine("oAuthSignature : " + oAuthSignature + "\n");
+            Console.WriteLine("Verify Credentials Request : " + verifyCredentialsRequest + "\n");
+            Console.WriteLine("oAuth Token : " + response.Content + "\n");
+
+            //returning the oAuth token if found
+            return response.Content;  
+        }
+
+        public void GetTwitterEmailAddress()
+        {
+            var client = new RestClient("https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true&oauth_consumer_key=Wg0UoqwRbq8vFECAjZTl5L2aa&oauth_token=99234270-Cnhqwza81vIL8dSSGwi6Sg6s6Q5qBV5kwGtny1BWa&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1626265115&oauth_nonce=x9KWaxGf1wP&oauth_version=1.0&oauth_callback=https%3A%2F%2Flocalhost%3A5001%2Fsignin-twitter&oauth_signature=B8VOwp5XbjurvZliPWa3NYQK458%3D");
+            client.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("Cookie", "guest_id=v1%3A162567207397101939; personalization_id=\"v1_g/jn5lMfvZyYGC7eQanF0g==\"; lang=en");
+            IRestResponse response = client.Execute(request);
+            Console.WriteLine(response.Content);
+        }
         private string GetNonce()
         {
             Random random = new Random();
-            int length = 16;
+            int length = 32;
             var randomString = string.Empty;
             for (var i = 0; i < length; i++)
                 randomString += ((char)(random.Next(1, 26) + 64)).ToString().ToLower();

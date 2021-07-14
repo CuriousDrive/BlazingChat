@@ -123,9 +123,9 @@
 
     public async Task TwitterJWT()
     {
-        var oAuthToken = await _loginViewModel.GetTwitterOAuthTokenAsync();
-        Console.WriteLine(oAuthToken);
-        
-        _navigationManager.NavigateTo("https://api.twitter.com/oauth/authorize?oauth_token=" + oAuthToken);
+        var twitterRequestTokenResponse = await _loginViewModel.GetTwitterOAuthTokenAsync();
+        await _localStorageService.SetItemAsync("twitterRequestTokenResponse", twitterRequestTokenResponse);
+
+        _navigationManager.NavigateTo("https://api.twitter.com/oauth/authorize?oauth_token=" + twitterRequestTokenResponse.OAuthToken);
     }
 }

@@ -69,9 +69,9 @@ namespace BlazingChat.ViewModels
             else return null;
         }
 
-        public async Task<string> GetTwitterOAuthTokenAsync()
+        public async Task<TwitterRequestTokenResponse> GetTwitterOAuthTokenAsync()
         {
-            return await _httpClient.GetStringAsync("user/gettwitteroauthtokenusingresharp");
+            return await _httpClient.GetFromJsonAsync<TwitterRequestTokenResponse>("user/gettwitteroauthtokenusingresharp");
         }
 
         public static implicit operator LoginViewModel(User user)
