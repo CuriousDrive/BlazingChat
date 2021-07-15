@@ -69,6 +69,9 @@ namespace BlazingChat.Client
             
             builder.Services.AddHttpClient<IFacebookAuthViewModel, FacebookAuthViewModel>
                 ("FacebookAuthViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+
+             builder.Services.AddHttpClient<ITwitterAuthViewModel, TwitterAuthViewModel>
+                ("TwitterAuthViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
         }
     }
 }

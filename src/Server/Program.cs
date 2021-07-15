@@ -15,7 +15,7 @@ namespace BlazingChat.Server
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            System.Console.WriteLine("Application has started at : https://localhost:5001");
+            System.Console.WriteLine("Application has started at : https://localhost:5001\n");
             host.Run();
         }
 

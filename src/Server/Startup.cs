@@ -67,7 +67,7 @@ namespace BlazingChat.Server
             .AddTwitter(twitterOptions =>
             {
                 twitterOptions.ConsumerKey = Configuration["Authentication:Twitter:ConsumerKey"];
-                twitterOptions.ConsumerSecret = Configuration["Authentication:Twitter:ConsumerSecret"];
+                twitterOptions.ConsumerSecret = Configuration["Authentication:Twitter:ConsumerSecrete"];
                 twitterOptions.RetrieveUserDetails = true;
             })
             .AddFacebook(facebookOptions =>
