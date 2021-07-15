@@ -22,9 +22,9 @@
             twitterRequestTokenResponse.OAuthVerifier = OAuthVerifier;
             
             string token = await _twitterAuthViewModel.GetTwitterJWTAsync(twitterRequestTokenResponse);
-            //await _localStorageService.SetItemAsync<string>("jwt_token", token);
+            await _localStorageService.SetItemAsync<string>("jwt_token", token);
             
-            //_navigationManager.NavigateTo("/profile", true);
+            _navigationManager.NavigateTo("/profile", true);
         }
     } 
 }
