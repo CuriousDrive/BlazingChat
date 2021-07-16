@@ -44,9 +44,9 @@ namespace BlazingChat.ViewModels
             //sending the token to the client to store
             return await httpMessageReponse.Content.ReadFromJsonAsync<AuthenticationResponse>();
         }
-        public async Task<string> GetFacebookAppIDAsync()
+        public async Task<string> GetFacebookAppIDAndRedirectUriAsync()
         {
-            return await _httpClient.GetStringAsync("user/getfacebookappid");
+            return await _httpClient.GetStringAsync("user/getfacebookappidandredirecturi");
         }
 
         public async Task<User> GetUserByJWTAsync(string jwtToken)
@@ -72,6 +72,11 @@ namespace BlazingChat.ViewModels
         public async Task<TwitterRequestTokenResponse> GetTwitterOAuthTokenAsync()
         {
             return await _httpClient.GetFromJsonAsync<TwitterRequestTokenResponse>("user/gettwitteroauthtokenusingresharp");
+        }
+
+        public async Task<string> GetGoogleClientIDAndRedirectUriAsync()
+        {
+            return await _httpClient.GetStringAsync("user/getgoogleclientidandredirecturi");
         }
 
         public static implicit operator LoginViewModel(User user)

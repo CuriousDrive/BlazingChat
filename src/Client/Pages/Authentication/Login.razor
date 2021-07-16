@@ -111,12 +111,12 @@
 
     public async Task FacebookJWT()
     {
-        var appId = await _loginViewModel.GetFacebookAppIDAsync();
+        var appIdAndRedirectUri = (await _loginViewModel.GetFacebookAppIDAndRedirectUriAsync()).Split('&');
         
         var accessTokenRequest = $"https://www.facebook.com/v11.0/dialog/oauth";
         accessTokenRequest += "?response_type=token";
-        accessTokenRequest += $"&client_id={appId}";
-        accessTokenRequest += "&redirect_uri=https://localhost:5001/FacebookAuth";
+        accessTokenRequest += $"&client_id={appIdAndRedirectUri[0]}";
+        accessTokenRequest += $"&redirect_uri={appIdAndRedirectUri[1]}";
         
         _navigationManager.NavigateTo(accessTokenRequest, true);
     }
@@ -127,5 +127,17 @@
         await _localStorageService.SetItemAsync("twitterRequestTokenResponse", twitterRequestTokenResponse);
 
         _navigationManager.NavigateTo("https://api.twitter.com/oauth/authorize?oauth_token=" + twitterRequestTokenResponse.OAuthToken);
+    }
+
+    public async Task GoogleJWT()
+    {
+        var appIdAndRedirectUri = (await _loginViewModel.GetGoogleClientIDAndRedirectUriAsync()).Split('&');
+        
+        var accessTokenRequest = $"https://www.facebook.com/v11.0/dialog/oauth";
+        accessTokenRequest += "?response_type=token";
+        accessTokenRequest += $"&client_id={appIdAndRedirectUri[0]}";
+        accessTokenRequest += $"&redirect_uri={appIdAndRedirectUri[1]}";
+        
+        _navigationManager.NavigateTo(accessTokenRequest, true);
     }
 }
