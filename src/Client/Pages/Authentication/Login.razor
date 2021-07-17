@@ -47,7 +47,7 @@
 </div>
 <br />
 <div class="col-xl-6 col-md-8 col-12">
-    <a class="btn btn-block btn-social btn-google" @onclick="GoogleSignIn" href="">
+    <a class="btn btn-block btn-social btn-google" @onclick="GoogleJWT" href="">
         <span class="fa fa-google"></span> <b>Sign in with Google</b>
     </a>
 </div>
@@ -133,10 +133,14 @@
     {
         var appIdAndRedirectUri = (await _loginViewModel.GetGoogleClientIDAndRedirectUriAsync()).Split('&');
         
-        var accessTokenRequest = $"https://www.facebook.com/v11.0/dialog/oauth";
-        accessTokenRequest += "?response_type=token";
-        accessTokenRequest += $"&client_id={appIdAndRedirectUri[0]}";
-        accessTokenRequest += $"&redirect_uri={appIdAndRedirectUri[1]}";
+        var accessTokenRequest = "https://accounts.google.com/o/oauth2/v2/auth?";
+        accessTokenRequest += $"scope=https%3A//www.googleapis.com/auth/drive.metadata.readonly&";
+        accessTokenRequest += $"access_type=offline&";
+        accessTokenRequest += $"include_granted_scopes=true&";
+        accessTokenRequest += $"response_type=code&";
+        accessTokenRequest += $"state=state_parameter_passthrough_value&";
+        accessTokenRequest += $"client_id={appIdAndRedirectUri[0]}&";
+        accessTokenRequest += $"redirect_uri={appIdAndRedirectUri[1]}";
         
         _navigationManager.NavigateTo(accessTokenRequest, true);
     }
