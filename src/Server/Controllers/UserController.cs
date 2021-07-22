@@ -247,10 +247,10 @@ namespace BlazingChat.Server.Controllers
         }
 
         // Facebook Authentication using JWT
-        [HttpGet("getfacebookappid")]
-        public ActionResult<string> GetFacebookAppID()
+        [HttpGet("getfacebookappidandredirecturi")]
+        public ActionResult<string> GetFacebookAppIDAndRedirectUri()
         {
-            return _configuration["Authentication:Facebook:AppId"];
+            return _configuration["Authentication:Facebook:AppId"] + "&" + _configuration["Authentication:Facebook:RedirectUri"];
         }
 
         [HttpPost("getfacebookjwt")]
@@ -310,7 +310,6 @@ namespace BlazingChat.Server.Controllers
         }
     
         //Twitter Authentication using JWT
-        
         [HttpGet("gettwitteroauthtokenusingresharp")]
         public ActionResult<TwitterRequestTokenResponse> GetTwitterOAuthTokenUsingResharpAsync()
         {
@@ -337,7 +336,6 @@ namespace BlazingChat.Server.Controllers
 
             return new TwitterRequestTokenResponse() { OAuthToken = _token, OAuthTokenSecrete = _tokenSecret, OAuthCallBackConfirmed = _callbackUrlConfirmed } ;
         }
-
         [HttpPost("gettwitterjwt")]
         public async Task<ActionResult<AuthenticationResponse>> GetTwitterJWT([FromBody] TwitterRequestTokenResponse twitterRequestTokenResponse)
         {
@@ -392,7 +390,6 @@ namespace BlazingChat.Server.Controllers
             // Step 7 : returning the token back to the client
             return await Task.FromResult(new AuthenticationResponse() { Token = token });
         }
-        
         public async Task<string> GetTwitterEmailAddress(string token, string tokenSecrete)
         {
             // Step 1 : initializing variables
@@ -449,7 +446,6 @@ namespace BlazingChat.Server.Controllers
             // Step 8 :returning email address of the user
             return twitterUserData.Email;  
         }
-
         private string GetNonce()
         {
             Random random = new Random();
@@ -468,6 +464,13 @@ namespace BlazingChat.Server.Controllers
             var epochDateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             var now = DateTime.Now;
             return (now - epochDateTime).TotalSeconds.ToString().Split('.')[0];
+        }
+    
+        //Google Authentication using JWT
+        [HttpGet("getgoogleclientidandredirecturi")]
+        public ActionResult<string> GetGoogleClientIDAndRedirectUri()
+        {
+            return _configuration["Authentication:Google:ClientId"] + "&" + _configuration["Authentication:Google:RedirectUri"];
         }
     }
 }

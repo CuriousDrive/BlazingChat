@@ -1,0 +1,18 @@
+@page "/live/{TermsFeedId}"
+
+@inject NavigationManager _navigationManager
+
+@code{
+
+    //7fbb8c14-686b-46e6-918c-240b3adf04ea => privacy policy
+    ///8a9ee106-4a05-4bbd-83b6-77a57020c051 => terms and services
+    [Parameter] public string TermsFeedId {get; set;}
+    protected override void OnInitialized()
+    {
+        if(TermsFeedId == "7fbb8c14-686b-46e6-918c-240b3adf04ea")
+            _navigationManager.NavigateTo("https://www.termsfeed.com/live/7fbb8c14-686b-46e6-918c-240b3adf04ea");
+        else if(TermsFeedId == "8a9ee106-4a05-4bbd-83b6-77a57020c051")
+            _navigationManager.NavigateTo("https://www.termsfeed.com/live/8a9ee106-4a05-4bbd-83b6-77a57020c051");
+    }
+
+}
