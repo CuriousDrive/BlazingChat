@@ -44,8 +44,14 @@ namespace BlazingChat.Client
 
         public static void AddHttpClients(WebAssemblyHostBuilder builder)
         {
+            string baseAddress = string.Empty;
+
             //var baseAddress = builder.HostEnvironment.BaseAddress;
-            var baseAddress = "https://localhost:6001/";
+            
+            if(builder.HostEnvironment.IsDevelopment())
+                baseAddress = "https://localhost:6001/";
+            else
+                baseAddress = "https://blazingchatwebapi.azurewebsites.net/";
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) });
             
