@@ -48,6 +48,7 @@
     [CascadingParameter]
     public Task<AuthenticationState> authenticationState { get; set; }
     public bool IsLoading { get; set; } = true;
+    
     protected override async Task OnInitializedAsync() 
     {
         var authState = await authenticationState;
@@ -57,7 +58,6 @@
         {
             var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
             _profileViewModel.UserId = Convert.ToInt64(claim?.Value);
-            //Console.WriteLine(_profileViewModel.UserId);
 
             try
             {

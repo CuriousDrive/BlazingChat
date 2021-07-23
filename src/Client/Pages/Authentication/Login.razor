@@ -68,33 +68,13 @@
     {
         var authState = await authenticationState;
         var user = authState.User;
+        
         if(user.Identity.IsAuthenticated)
         {
-            _navigationManager.NavigateTo("/profile",true);
+            _navigationManager.NavigateTo("/profile");
         }
     }
     
-    public async Task LoginUser()
-    {
-        await _loginViewModel.LoginUser();
-        _navigationManager.NavigateTo("/profile",true);
-    }
-    
-    private void TwitterSignIn()
-    {
-        _navigationManager.NavigateTo($"user/TwitterSignIn?isPersistent={_loginViewModel.RememberMe}", true);
-    }
-
-    private void FacebookSignIn()
-    {
-        _navigationManager.NavigateTo($"user/FacebookSignIn?isPersistent={_loginViewModel.RememberMe}", true);
-    }
-
-    private void GoogleSignIn()
-    {
-        _navigationManager.NavigateTo($"user/GoogleSignIn?isPersistent={_loginViewModel.RememberMe}", true);
-    }
-
     public async Task AuthenticateJWT()
     {
         AuthenticationResponse authenticationResponse = await _loginViewModel.AuthenticateJWT();
