@@ -50,7 +50,6 @@ namespace BlazingChat.Server
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            //.AddCookie(options => { options.LoginPath = "/user/notauthorized"; })
             .AddJwtBearer(jwtBearerOptions =>
             {
                 jwtBearerOptions.RequireHttpsMetadata = true;
@@ -80,11 +79,7 @@ namespace BlazingChat.Server
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
-            // services.AddLogging(logging =>
-            // {
-            //     logging.ClearProviders();
-            // });
-
+            
             services.AddHttpContextAccessor();
             services.AddHttpClient();
         }
@@ -125,7 +120,7 @@ namespace BlazingChat.Server
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
                 endpoints.MapHub<ChatHub>("/chathub");
-                //endpoints.MapFallbackToFile("index.html");
+                endpoints.MapFallbackToFile("index.html");
             });
         }
     }
