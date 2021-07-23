@@ -350,3 +350,4 @@ MigrationBackup/
 .ionide/
 /src/Server/Properties/ServiceDependencies/blazingchatserver - Web Deploy
 /src/Notes.txt
+/src/WebAPI/Properties/ServiceDependencies/blazingchatwebapi - Web Deploy/profile.arm.json

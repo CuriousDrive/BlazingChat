@@ -41,7 +41,8 @@ namespace BlazingChat.WebAPI
                                   builder =>
                                   {
                                       builder.WithOrigins("https://localhost:5001",
-                                                          "https://blazingchat.com")
+                                                          "https://blazingchat.com",
+                                                          "http://blazingchatwebapi.azurewebsites.net/")
                                                            .AllowAnyHeader()
                                                            .AllowAnyMethod();
                                   });
