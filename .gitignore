@@ -348,5 +348,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-/src/Server/Properties/ServiceDependencies/blazingchatwasm - Web Deploy
-src/Server/BlazingChat.Server.csproj.user
+/src/Server/Properties/ServiceDependencies/blazingchatserver - Web Deploy
+/src/Notes.txt
