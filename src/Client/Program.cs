@@ -23,8 +23,6 @@ namespace BlazingChat.Client
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
             AddHttpClients(builder);
             
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
@@ -36,7 +34,6 @@ namespace BlazingChat.Client
                 var httpClient = builder.Services.BuildServiceProvider().GetRequiredService<HttpClient>();
                 var authenticationStateProvider = builder.Services.BuildServiceProvider().GetRequiredService<AuthenticationStateProvider>();
                 logging.SetMinimumLevel(LogLevel.Error);
-                //logging.ClearProviders();
                 logging.AddProvider(new ApplicationLoggerProvider(httpClient, authenticationStateProvider));
             });
 
@@ -47,31 +44,36 @@ namespace BlazingChat.Client
 
         public static void AddHttpClients(WebAssemblyHostBuilder builder)
         {
+            //var baseAddress = builder.HostEnvironment.BaseAddress;
+            var baseAddress = "https://localhost:6001/";
+
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) });
+            
             //transactional named http clients
             builder.Services.AddHttpClient<IProfileViewModel, ProfileViewModel>
-                ("ProfileViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+                ("ProfileViewModelClient", client => client.BaseAddress = new Uri(baseAddress))
                 .AddHttpMessageHandler<CustomAuthorizationHandler>();
 
             builder.Services.AddHttpClient<IContactsViewModel, ContactsViewModel>
-                ("ContactsViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+                ("ContactsViewModelClient", client => client.BaseAddress = new Uri(baseAddress))
                 .AddHttpMessageHandler<CustomAuthorizationHandler>();
 
             builder.Services.AddHttpClient<ISettingsViewModel, SettingsViewModel>
-                ("SettingsViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+                ("SettingsViewModelClient", client => client.BaseAddress = new Uri(baseAddress))
                 .AddHttpMessageHandler<CustomAuthorizationHandler>();
 
             //authentication http clients
             builder.Services.AddHttpClient<ILoginViewModel, LoginViewModel>
-                ("LoginViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+                ("LoginViewModelClient", client => client.BaseAddress = new Uri(baseAddress));
             
             builder.Services.AddHttpClient<IRegisterViewModel, RegisterViewModel>
-                ("RegisterViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+                ("RegisterViewModelClient", client => client.BaseAddress = new Uri(baseAddress));
             
             builder.Services.AddHttpClient<IFacebookAuthViewModel, FacebookAuthViewModel>
-                ("FacebookAuthViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+                ("FacebookAuthViewModelClient", client => client.BaseAddress = new Uri(baseAddress));
 
              builder.Services.AddHttpClient<ITwitterAuthViewModel, TwitterAuthViewModel>
-                ("TwitterAuthViewModelClient", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+                ("TwitterAuthViewModelClient", client => client.BaseAddress = new Uri(baseAddress));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿@inject HttpClient _httpClient
 @inject NavigationManager _navigationManager
+@inject ILocalStorageService _localStorageService
 
 <div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand bold-text" href="">BlazingChat</a>
@@ -24,12 +25,12 @@
             <NavLink class="nav-link" href="settings">
                 <span class="oi oi-plus" aria-hidden="true"></span> Settings
             </NavLink>
-        </li>   
+        </li>
         <li class="nav-item px-3">
             <a class="nav-link" href="" @onclick="Logout">
                 <span class="oi oi-lock-locked" aria-hidden="true"></span> Logout
             </a>
-        </li>        
+        </li>
     </ul>
 </div>
 
@@ -45,7 +46,8 @@
 
     private async Task Logout()
     {
-        await _httpClient.GetAsync("user/logoutuser");
+        //await _httpClient.GetAsync("user/logoutuser");
+        await _localStorageService.RemoveItemAsync("jwt_token");
         _navigationManager.NavigateTo("/", true);
     }
 }

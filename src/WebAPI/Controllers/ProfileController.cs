@@ -5,22 +5,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using BlazingChat.Server.Models;
+using BlazingChat.WebAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
 
-namespace BlazingChat.Server.Controllers
+namespace BlazingChat.WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [Authorize]
     public class ProfileController : ControllerBase
     {
-        private readonly ILogger<UserController> logger;
+        private readonly ILogger<ProfileController> logger;
         private readonly BlazingChatContext _context;
 
-        public ProfileController(ILogger<UserController> logger, BlazingChatContext context)
+        public ProfileController(ILogger<ProfileController> logger, BlazingChatContext context)
         {
             this.logger = logger;
             this._context = context;
@@ -45,7 +45,6 @@ namespace BlazingChat.Server.Controllers
         [HttpGet("getprofile/{userId}")]
         public async Task<User> GetProfile(int userId)
         {
-            Console.WriteLine("UserId : " + userId);
             return await _context.Users.Where(u => u.UserId == userId).FirstOrDefaultAsync();
         }
 
