@@ -1,5 +1,5 @@
 
-function setTheme(themeName) {    
+export function setTheme(themeName) {    
     //add a new css link
     let newLink = document.createElement("link");
     newLink.setAttribute("id", "theme");
@@ -13,7 +13,7 @@ function setTheme(themeName) {
     head.appendChild(newLink);
 }
 
-function downloadFile(mimeType, base64String, fileName) {
+export function downloadFile(mimeType, base64String, fileName) {
 
     var fileDataUrl = "data:" + mimeType + ";base64," + base64String;
     fetch(fileDataUrl)
@@ -32,7 +32,7 @@ function downloadFile(mimeType, base64String, fileName) {
         });  
 }
 
-function setScroll() {
+export function setScroll() {
     //let's fix scroll here
     var divMessageContainerBase = document.getElementById('divMessageContainerBase');
     if (divMessageContainerBase != null)

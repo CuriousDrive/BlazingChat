@@ -3,19 +3,25 @@
 @using BlazingChat.Shared.Models
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.SignalR.Client
+@using BlazingChat.ViewModels
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
 @inject NavigationManager _navigationManager
 @inject IJSRuntime _jsRuntime
 @inject HttpClient _httpClient
+@inject ILocalStorageService _localStorageService
+@inject ILoginViewModel _loginViewModel
+@inject IProfileViewModel _prolfileViewModel
+@inject IWebAssemblyHostEnvironment _webAssemblyHostEnvironment
 
-<div style="border:0px;height:90vh;">    
+<div style="border:0px;height:90vh;">
     <div class="panel panel-primary" style="height: 100%;">
         <div class="panel-heading top-bar">
             <div class="col-md-8 col-xs-8">
                 <h3 class="panel-title">
-                    @if(ToUser != null)
+                    @if (ToUser != null)
                     {
-                        @if(ToUser.FirstName != null || ToUser.LastName != null)
-                        {                    
+                        @if (ToUser.FirstName != null || ToUser.LastName != null)
+                        {
                             <b>@ToUser.FirstName<span>&nbsp;</span>@ToUser.LastName</b>
                         }
                         else
@@ -27,11 +33,11 @@
             </div>
         </div>
         <div id="divMessageContainerBase" class="panel-body msg_container_base">
-            @if(Messages != null && Messages.Count() > 0 )
+            @if (Messages != null && Messages.Count() > 0)
             {
                 @foreach (var message in Messages)
-                {            
-                    @if(message.FromUserId == FromUserId)
+                {
+                    @if (message.FromUserId == FromUserId)
                     {
                         <div class="row msg_container base_sent">
                             <div class="col-md-10 col-xs-10">
@@ -57,8 +63,8 @@
         <!--CHAT USER BOX-->
         <div class="panel-footer">
             <div class="input-group" id="myForm">
-                <input id="txtMessageInput" @bind="MessageText" type="text" class="form-control input-sm chat_input" 
-                placeholder="Write your message here...">
+                <input id="txtMessageInput" @bind="MessageText" type="text" class="form-control input-sm chat_input"
+                       placeholder="Write your message here...">
                 <button class="btn btn-primary" @onclick="Send">Send</button>
             </div>
         </div>
@@ -71,7 +77,7 @@
     public User ToUser { get; set; } = new User();
     public string FromUserId { get; set; }
     public string MessageText { get; set; }
-    public List<Message> Messages {get; set;} = new List<Message>();
+    public List<Message> Messages { get; set; } = new List<Message>();
 
     [CascadingParameter]
     public Task<AuthenticationState> authenticationStateTask { get; set; }
@@ -84,18 +90,35 @@
         if (!claimsPrincipal.Identity.IsAuthenticated)
             _navigationManager.NavigateTo("/");
 
-        FromUserId = (await _httpClient.GetFromJsonAsync<User>("user/getcurrentuser")).UserId.ToString();
-        
+        var jwtToken = await _localStorageService.GetItemAsStringAsync("jwt_token");
+        if (jwtToken == null) return;
+
+        FromUserId = (await _loginViewModel.GetUserByJWTAsync(jwtToken)).UserId.ToString();
+
         if (Convert.ToInt32(ToUserId) > 0)
-            ToUser = await _httpClient.GetFromJsonAsync<User>("profile/getprofile/" + ToUserId);
-        
+        {
+            _prolfileViewModel.UserId = Convert.ToInt64(ToUserId);
+            await _prolfileViewModel.GetProfile(); //_httpClient.GetFromJsonAsync<User>("profile/getprofile/" + ToUserId);
+            ToUser = new User();
+
+            ToUser.FirstName = _prolfileViewModel.FirstName;
+            ToUser.LastName = _prolfileViewModel.LastName;
+            ToUser.EmailAddress = _prolfileViewModel.EmailAddress;
+        }
+        string baseAddress = string.Empty;
+
+        if (!_webAssemblyHostEnvironment.IsDevelopment())
+            baseAddress = "https://localhost:6001/";
+        else
+            baseAddress = "https://blazingchatwebapi.azurewebsites.net/";
+
         hubConnection = new HubConnectionBuilder()
-            .WithUrl(_navigationManager.ToAbsoluteUri("/chathub"))
-            .Build();
-        
+        .WithUrl(baseAddress + "chathub")
+        .Build();
+
         hubConnection.On<Message>("ReceiveMessage", (message) =>
         {
-            if(message.FromUserId == FromUserId || 
+            if (message.FromUserId == FromUserId ||
             (message.ToUserId == FromUserId && message.FromUserId == ToUserId))
             {
                 Messages.Add(message);
@@ -109,21 +132,21 @@
 
     public async Task Send()
     {
-        if(MessageText.Length > 0)
+        if (MessageText.Length > 0)
         {
             Message message = new Message();
             message.ToUserId = ToUserId;
             message.FromUserId = FromUserId;
             message.MessageText = MessageText;
 
-            await hubConnection.SendAsync("SendMessage",message);
+            await hubConnection.SendAsync("SendMessage", message);
             MessageText = "";
         }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
+        var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/site.js");
         await module.InvokeVoidAsync("setScroll");
     }
 
