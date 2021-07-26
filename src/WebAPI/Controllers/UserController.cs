@@ -21,6 +21,8 @@ using System.Security.Cryptography;
 using RestSharp.Authenticators;
 using RestSharp;
 using System.Web;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace BlazingChat.WebAPI.Controllers
 {
@@ -28,17 +30,23 @@ namespace BlazingChat.WebAPI.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly ILogger<UserController> logger;
+        private readonly ILogger<UserController> _logger;
         private readonly BlazingChatContext _context;
         private readonly IConfiguration _configuration;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public UserController(ILogger<UserController> logger, BlazingChatContext context, IConfiguration configuration, IHttpClientFactory httpClientFactory)
+        public UserController(ILogger<UserController> logger, 
+                                BlazingChatContext context, 
+                                IConfiguration configuration, 
+                                IHttpClientFactory httpClientFactory,
+                                IWebHostEnvironment webHostEnvironment)
         {
-            this.logger = logger;
+            this._logger = logger;
             this._context = context;
             this._configuration = configuration;
             this._httpClientFactory = httpClientFactory;
+            this._webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet("getcontacts")]
@@ -222,7 +230,12 @@ namespace BlazingChat.WebAPI.Controllers
         {
             var consumerKey = _configuration["Authentication:Twitter:ConsumerKey"];
             var consumerSecrete = _configuration["Authentication:Twitter:ConsumerSecrete"];
-            var callbackUrl = _configuration["Authentication:Twitter:CallbackUrl"];
+            var callbackUrl = string.Empty;
+
+            if(_webHostEnvironment.IsDevelopment())
+                callbackUrl = _configuration["Authentication:Twitter:CallbackUrlDev"];
+            else
+                callbackUrl = _configuration["Authentication:Twitter:CallbackUrlProd"];
 
             var client = new RestClient("https://api.twitter.com"); // Note NO /1
 
@@ -254,7 +267,12 @@ namespace BlazingChat.WebAPI.Controllers
             // Step 2 : getting keys from appsettings.json
             var consumerKey = _configuration["Authentication:Twitter:ConsumerKey"];
             var consumerSecrete = _configuration["Authentication:Twitter:ConsumerSecrete"];
-            var callbackUrl = _configuration["Authentication:Twitter:CallbackUrl"];
+            var callbackUrl = string.Empty;
+
+            if (_webHostEnvironment.IsDevelopment())
+                callbackUrl = _configuration["Authentication:Twitter:CallbackUrlDev"];
+            else
+                callbackUrl = _configuration["Authentication:Twitter:CallbackUrlProd"];
 
             // Step 3 : requesting oauth_token & oauth_token_secrete
             var client = new RestClient("https://api.twitter.com"); // Note NO /1
