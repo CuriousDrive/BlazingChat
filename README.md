@@ -9,7 +9,6 @@ Check it out here [https://www.blazingchat.com](https://www.blazingchat.com)
 
 ![Demo_App](https://github.com/CuriousDrive/BlazingChat/blob/main/Documents/Gifs/Intro2.gif)
 
-
 ## How to run it?
 
 - Make sure you have .NET 5 is installed on your machine.
@@ -21,21 +20,18 @@ Check it out here [https://www.blazingchat.com](https://www.blazingchat.com)
 - Or you can login with your Twitter or Facebook
 - Congratulations!!! you are using BlazingChat.
 
-
 ## How does it work?
 
 The front-end is made using Blazor WebAssembly and the back-end is made using ASP.NET Core Web API + Entity Framework Core. SQLite is used to store the data. You can run this app on Windows, Mac or Linux operating systems. The repo is maintained episode by episode so that you can go back to particular episode and the code related to it.
-
 
 ## How can I build it from scratch?
 
 The best part about BlazingChat app is that it's been documented while it was getting built. 
 
-Please check out below videos if you want to learn how to build your own Blazor WebAssembply app from scratch.
+Please check out the videos below, if you want to learn how to build your own Blazor WebAssembly app from scratch.
 | Video Series | Topics |
 | ----- | ---- |
 | [Start Watching](https://www.youtube.com/playlist?list=PL4WEkbdagHIRjjBJvK_TSfddJSvEEAtnt) | Blazor WebAssembly |
-
 
 ## Have any other questions?
 
