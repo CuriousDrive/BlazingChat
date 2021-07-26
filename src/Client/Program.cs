@@ -46,12 +46,12 @@ namespace BlazingChat.Client
         {
             string baseAddress = string.Empty;
 
-            //var baseAddress = builder.HostEnvironment.BaseAddress;
-            
-            if(builder.HostEnvironment.IsDevelopment())
-                baseAddress = "https://localhost:6001/";
+            if (builder.HostEnvironment.IsDevelopment())
+                baseAddress = AppSettings.BASE_ADDRESS_DEV;
             else
-                baseAddress = "https://blazingchatwebapi.azurewebsites.net/";
+                baseAddress = AppSettings.BASE_ADDRESS_PRD;
+
+            //baseAddress = builder.HostEnvironment.BaseAddress;
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) });
             

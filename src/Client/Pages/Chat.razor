@@ -107,14 +107,16 @@
         }
         string baseAddress = string.Empty;
 
-        if (!_webAssemblyHostEnvironment.IsDevelopment())
-            baseAddress = "https://localhost:6001/";
+        if (_webAssemblyHostEnvironment.IsDevelopment())
+            baseAddress = AppSettings.BASE_ADDRESS_DEV;
         else
-            baseAddress = "https://blazingchatwebapi.azurewebsites.net/";
+            baseAddress = AppSettings.BASE_ADDRESS_PRD;
+
+        //baseAddress = _webAssemblyHostEnvironment.BaseAddress;
 
         hubConnection = new HubConnectionBuilder()
-        .WithUrl(baseAddress + "chathub")
-        .Build();
+                            .WithUrl(baseAddress + "chathub")
+                            .Build();
 
         hubConnection.On<Message>("ReceiveMessage", (message) =>
         {
@@ -127,7 +129,6 @@
         });
 
         await hubConnection.StartAsync();
-
     }
 
     public async Task Send()

@@ -105,7 +105,7 @@ namespace BlazingChat.WebAPI
 
             app.UseResponseCompression();
             app.UseHttpsRedirection();
-
+            
             app.UseRouting();
             
             app.UseCors(MyAllowSpecificOrigins);

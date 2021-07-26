@@ -72,6 +72,8 @@
             string token = await _loginViewModel.GetTwitterJWTAsync(twitterRequestTokenResponse);
             await _localStorageService.SetItemAsync<string>("jwt_token", token);
 
+            await _localStorageService.RemoveItemAsync("twitterRequestTokenResponse");
+
             _navigationManager.NavigateTo("/", true);
         }
 
