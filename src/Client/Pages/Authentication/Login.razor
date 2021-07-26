@@ -1,6 +1,7 @@
 @page "/"
 @using BlazingChat.ViewModels
 @using BlazingChat.Shared
+@using Microsoft.AspNetCore.WebUtilities
 @inject ILoginViewModel _loginViewModel
 @inject NavigationManager _navigationManager
 @inject ILocalStorageService _localStorageService
@@ -12,7 +13,6 @@
     <h2 class="white-text">
         <b>Login</b>
     </h2>
-    
 </div>
 <hr class="white-horizontal-line" />
 <div class="col-xl-6 col-md-8 col-12">
@@ -64,6 +64,26 @@
 
     protected override async Task OnInitializedAsync()
     {
+        if (QueryHelpers.ParseQuery(_navigationManager.Uri).TryGetValue("oauth_verifier", out var _oAuthVerifier))
+        {
+            var twitterRequestTokenResponse = await _localStorageService.GetItemAsync<TwitterRequestTokenResponse>("twitterRequestTokenResponse");
+            twitterRequestTokenResponse.OAuthVerifier = _oAuthVerifier;
+
+            string token = await _loginViewModel.GetTwitterJWTAsync(twitterRequestTokenResponse);
+            await _localStorageService.SetItemAsync<string>("jwt_token", token);
+
+            _navigationManager.NavigateTo("/", true);
+        }
+
+        var facebookUri = _navigationManager.Uri.Split('#');
+        if (facebookUri.Length > 1 && QueryHelpers.ParseQuery(facebookUri[1]).TryGetValue("access_token", out var _accessToken))
+        {
+            string token = await _loginViewModel.GetFacebookJWTAsync(_accessToken);
+            await _localStorageService.SetItemAsync<string>("jwt_token", token);
+
+            _navigationManager.NavigateTo("/", true);
+        }
+
         //Initializing the login details for John Smith
 
         _loginViewModel.EmailAddress = "john.smith@gmail.com";

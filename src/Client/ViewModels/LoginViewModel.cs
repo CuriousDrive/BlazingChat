@@ -88,6 +88,18 @@ namespace BlazingChat.ViewModels
             };
         }
 
+        public async Task<string> GetTwitterJWTAsync(TwitterRequestTokenResponse twitterRequestTokenResponse)
+        {
+            var httpMessageResponse = await _httpClient.PostAsJsonAsync<TwitterRequestTokenResponse>("user/getTwitterjwt", twitterRequestTokenResponse);
+            return (await httpMessageResponse.Content.ReadFromJsonAsync<AuthenticationResponse>()).Token;
+        }
+
+        public async Task<string> GetFacebookJWTAsync(string accessToken)
+        {
+            var httpMessageResponse = await _httpClient.PostAsJsonAsync<FacebookAuthRequest>("user/getfacebookjwt", new FacebookAuthRequest() { AccessToken = accessToken });
+            return (await httpMessageResponse.Content.ReadFromJsonAsync<AuthenticationResponse>()).Token;
+        }
+
         public static implicit operator User(LoginViewModel loginViewModel)
         {
             return new User

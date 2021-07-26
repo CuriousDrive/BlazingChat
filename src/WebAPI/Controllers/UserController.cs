@@ -165,7 +165,14 @@ namespace BlazingChat.WebAPI.Controllers
         [HttpGet("getfacebookappidandredirecturi")]
         public ActionResult<string> GetFacebookAppIDAndRedirectUri()
         {
-            return _configuration["Authentication:Facebook:AppId"] + "&" + _configuration["Authentication:Facebook:RedirectUri"];
+            var redirectUri = string.Empty;
+
+            if (_webHostEnvironment.IsDevelopment())
+                redirectUri = _configuration["Authentication:Facebook:RedirectUriDev"];
+            else
+                redirectUri = _configuration["Authentication:Facebook:RedirectUriProd"];
+
+            return _configuration["Authentication:Facebook:AppId"] + "&" + redirectUri;
         }
 
         [HttpPost("getfacebookjwt")]

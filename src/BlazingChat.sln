@@ -2,13 +2,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.0.0
 MinimumVisualStudioVersion = 16.0.0.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazingChat.Server", "Server\BlazingChat.Server.csproj", "{A738A9A5-BAAF-46A7-8595-C0F88E65D89D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazingChat.Client", "Client\BlazingChat.Client.csproj", "{811175EA-0C28-4948-B8D0-7DCC652E08A4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazingChat.Shared", "Shared\BlazingChat.Shared.csproj", "{2848704E-8C99-4C98-BEA5-41791E503B5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazingChat.WebAPI", "WebAPI\BlazingChat.WebAPI.csproj", "{1CA0A29B-D81A-4EC8-B0AF-DA91F31EC818}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazingChat.WebAPI", "WebAPI\BlazingChat.WebAPI.csproj", "{1CA0A29B-D81A-4EC8-B0AF-DA91F31EC818}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,18 +18,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A738A9A5-BAAF-46A7-8595-C0F88E65D89D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A738A9A5-BAAF-46A7-8595-C0F88E65D89D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A738A9A5-BAAF-46A7-8595-C0F88E65D89D}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A738A9A5-BAAF-46A7-8595-C0F88E65D89D}.Debug|x64.Build.0 = Debug|Any CPU
-		{A738A9A5-BAAF-46A7-8595-C0F88E65D89D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A738A9A5-BAAF-46A7-8595-C0F88E65D89D}.Debug|x86.Build.0 = Debug|Any CPU
-		{A738A9A5-BAAF-46A7-8595-C0F88E65D89D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A738A9A5-BAAF-46A7-8595-C0F88E65D89D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A738A9A5-BAAF-46A7-8595-C0F88E65D89D}.Release|x64.ActiveCfg = Release|Any CPU
-		{A738A9A5-BAAF-46A7-8595-C0F88E65D89D}.Release|x64.Build.0 = Release|Any CPU
-		{A738A9A5-BAAF-46A7-8595-C0F88E65D89D}.Release|x86.ActiveCfg = Release|Any CPU
-		{A738A9A5-BAAF-46A7-8595-C0F88E65D89D}.Release|x86.Build.0 = Release|Any CPU
 		{811175EA-0C28-4948-B8D0-7DCC652E08A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{811175EA-0C28-4948-B8D0-7DCC652E08A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{811175EA-0C28-4948-B8D0-7DCC652E08A4}.Debug|x64.ActiveCfg = Debug|Any CPU

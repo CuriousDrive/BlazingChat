@@ -18,5 +18,7 @@ namespace BlazingChat.ViewModels
         public Task<TwitterRequestTokenResponse> GetTwitterOAuthTokenAsync();
         public Task<string> GetGoogleClientIDAndRedirectUriAsync();
         public Task<User> GetUserByJWTAsync(string jwtToken);
+        public Task<string> GetTwitterJWTAsync(TwitterRequestTokenResponse twitterRequestTokenResponse);
+        public Task<string> GetFacebookJWTAsync(string accessToken);
     }
 }
