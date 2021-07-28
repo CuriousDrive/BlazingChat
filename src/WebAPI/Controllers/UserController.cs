@@ -36,9 +36,9 @@ namespace BlazingChat.WebAPI.Controllers
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public UserController(ILogger<UserController> logger, 
-                                BlazingChatContext context, 
-                                IConfiguration configuration, 
+        public UserController(ILogger<UserController> logger,
+                                BlazingChatContext context,
+                                IConfiguration configuration,
                                 IHttpClientFactory httpClientFactory,
                                 IWebHostEnvironment webHostEnvironment)
         {
@@ -71,7 +71,7 @@ namespace BlazingChat.WebAPI.Controllers
             }
             return Ok();
         }
-       
+
         //Migrating to JWT Authorization...
         private string GenerateJwtToken(User user)
         {
@@ -144,11 +144,13 @@ namespace BlazingChat.WebAPI.Controllers
                 var principle = tokenHandler.ValidateToken(jwtToken, tokenValidationParameters, out securityToken);
                 var jwtSecurityToken = (JwtSecurityToken)securityToken;
 
-                if (jwtSecurityToken != null && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                if (jwtSecurityToken != null
+                    && jwtSecurityToken.ValidTo > DateTime.Now
+                    && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
                 {
                     //returning the user if found
                     var userId = principle.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                    return await _context.Users.Where(u => u.UserId == Convert.ToInt64(userId)).FirstOrDefaultAsync();
+                    return await GetUserByUserID(Convert.ToInt64(userId));
                 }
             }
             catch (Exception ex)
@@ -183,24 +185,24 @@ namespace BlazingChat.WebAPI.Controllers
             var httpClient = _httpClientFactory.CreateClient();
 
             // 2.get AppId and AppSecrete
-            string appId = _configuration["Authentication:Facebook:AppId"];
-            string appSecrete = _configuration["Authentication:Facebook:AppSecrete"];
-            Console.WriteLine("\nApp Id : " + appId);
-            Console.WriteLine("Secrete Id : " + appSecrete + "\n");
+            // string appId = _configuration["Authentication:Facebook:AppId"];
+            // string appSecrete = _configuration["Authentication:Facebook:AppSecrete"];
+            // Console.WriteLine("\nApp Id : " + appId);
+            // Console.WriteLine("Secrete Id : " + appSecrete + "\n");
 
-            // 3. generate an app access token
-            var appAccessRequest = $"https://graph.facebook.com/oauth/access_token?client_id={appId}&client_secret={appSecrete}&grant_type=client_credentials";
-            var appAccessTokenResponse = await httpClient.GetFromJsonAsync<FacebookAppAccessToken>(appAccessRequest);
-            Console.WriteLine("App Access Token : " + appAccessTokenResponse.Access_Token);
-            Console.WriteLine("Auth Request Access Token : " + facebookAuthRequest.AccessToken + "\n");
+            // // 3. generate an app access token
+            // var appAccessRequest = $"https://graph.facebook.com/oauth/access_token?client_id={appId}&client_secret={appSecrete}&grant_type=client_credentials";
+            // var appAccessTokenResponse = await httpClient.GetFromJsonAsync<FacebookAppAccessToken>(appAccessRequest);
+            // Console.WriteLine("App Access Token : " + appAccessTokenResponse.Access_Token);
+            // Console.WriteLine("Auth Request Access Token : " + facebookAuthRequest.AccessToken + "\n");
 
-            // 4. validate the user access token
-            var userAccessValidationRequest = $"https://graph.facebook.com/debug_token?input_token={facebookAuthRequest.AccessToken}&access_token={appAccessTokenResponse.Access_Token}";
-            var userAccessTokenValidationResponse = await httpClient.GetFromJsonAsync<FacebookUserAccessTokenValidation>(userAccessValidationRequest);
-            Console.WriteLine("Is Token Valid : " + userAccessTokenValidationResponse.Data?.Is_Valid + "\n");
-            
-            if (!userAccessTokenValidationResponse.Data.Is_Valid) 
-                return BadRequest();
+            // // 4. validate the user access token
+            // var userAccessValidationRequest = $"https://graph.facebook.com/debug_token?input_token={facebookAuthRequest.AccessToken}&access_token={appAccessTokenResponse.Access_Token}";
+            // var userAccessTokenValidationResponse = await httpClient.GetFromJsonAsync<FacebookUserAccessTokenValidation>(userAccessValidationRequest);
+            // Console.WriteLine("Is Token Valid : " + userAccessTokenValidationResponse.Data?.Is_Valid + "\n");
+
+            // if (!userAccessTokenValidationResponse.Data.Is_Valid) 
+            //     return BadRequest();
 
             // 5. we've got a valid token so we can request user data from facebook
             var userDataRequest = $"https://graph.facebook.com/v11.0/me?fields=id,email,first_name,last_name,name,gender,locale,birthday,picture&access_token={facebookAuthRequest.AccessToken}";
@@ -208,29 +210,19 @@ namespace BlazingChat.WebAPI.Controllers
             Console.WriteLine("Facebook Email Address : " + facebookUserData.Email + "\n");
 
             //6. try to find the user in the database or create a new account
-            var loggedInUser = await _context.Users.Where(user => user.EmailAddress == facebookUserData.Email).FirstOrDefaultAsync();
+            var loggedInUser = await GetUserByEmailAddress(facebookUserData.Email);
 
             //7. generate the token
-            if(loggedInUser == null)
-            {
-                loggedInUser = new User();
-                loggedInUser.UserId = _context.Users.Max(user => user.UserId) + 1;
-                loggedInUser.EmailAddress = User.FindFirstValue(ClaimTypes.Email);
-                loggedInUser.Password = Utility.Encrypt(loggedInUser.EmailAddress);
-                loggedInUser.Source = "EXTL";
-
-                _context.Users.Add(loggedInUser);
-                await _context.SaveChangesAsync();
-            }
+            if (loggedInUser == null) loggedInUser = await CreateExternalUser(facebookUserData.Email);
 
             token = GenerateJwtToken(loggedInUser);
             Console.WriteLine("JWT : " + token + "\n");
-            
+
             httpClient.Dispose();
-            
+
             return await Task.FromResult(new AuthenticationResponse() { Token = token });
         }
-    
+
         //Twitter Authentication using JWT
         [HttpGet("gettwitteroauthtokenusingresharp")]
         public ActionResult<TwitterRequestTokenResponse> GetTwitterOAuthTokenUsingResharpAsync()
@@ -239,7 +231,7 @@ namespace BlazingChat.WebAPI.Controllers
             var consumerSecrete = _configuration["Authentication:Twitter:ConsumerSecrete"];
             var callbackUrl = string.Empty;
 
-            if(_webHostEnvironment.IsDevelopment())
+            if (_webHostEnvironment.IsDevelopment())
                 callbackUrl = _configuration["Authentication:Twitter:CallbackUrlDev"];
             else
                 callbackUrl = _configuration["Authentication:Twitter:CallbackUrlProd"];
@@ -247,8 +239,8 @@ namespace BlazingChat.WebAPI.Controllers
             var client = new RestClient("https://api.twitter.com"); // Note NO /1
 
             client.Authenticator = OAuth1Authenticator.ForRequestToken(
-                consumerKey, 
-                consumerSecrete, 
+                consumerKey,
+                consumerSecrete,
                 callbackUrl // Value for the oauth_callback parameter
             );
 
@@ -261,9 +253,9 @@ namespace BlazingChat.WebAPI.Controllers
             var _tokenSecret = qs["oauth_token_secret"];
             var _callbackUrlConfirmed = qs["oauth_callback_confirmed"];
 
-            return new TwitterRequestTokenResponse() { OAuthToken = _token, OAuthTokenSecrete = _tokenSecret, OAuthCallBackConfirmed = _callbackUrlConfirmed } ;
+            return new TwitterRequestTokenResponse() { OAuthToken = _token, OAuthTokenSecrete = _tokenSecret, OAuthCallBackConfirmed = _callbackUrlConfirmed };
         }
-        
+
         [HttpPost("gettwitterjwt")]
         public async Task<ActionResult<AuthenticationResponse>> GetTwitterJWT([FromBody] TwitterRequestTokenResponse twitterRequestTokenResponse)
         {
@@ -285,8 +277,8 @@ namespace BlazingChat.WebAPI.Controllers
             var client = new RestClient("https://api.twitter.com"); // Note NO /1
 
             client.Authenticator = OAuth1Authenticator.ForAccessToken(
-                consumerKey, 
-                consumerSecrete, 
+                consumerKey,
+                consumerSecrete,
                 twitterRequestTokenResponse.OAuthToken,
                 twitterRequestTokenResponse.OAuthTokenSecrete,
                 twitterRequestTokenResponse.OAuthVerifier
@@ -303,23 +295,14 @@ namespace BlazingChat.WebAPI.Controllers
             var emailAddress = await GetTwitterEmailAddress(_token, _tokenSecret);
 
             // Step 5 : try to find the user in the database or create a new account
-            var loggedInUser = await _context.Users.Where(user => user.EmailAddress == emailAddress).FirstOrDefaultAsync();
+            var loggedInUser = await GetUserByEmailAddress(emailAddress);
 
             // Step 6 : generate the token
-            if(loggedInUser == null)
-            {
-                loggedInUser = new User();
-                loggedInUser.UserId = _context.Users.Max(user => user.UserId) + 1;
-                loggedInUser.EmailAddress = User.FindFirstValue(ClaimTypes.Email);
-                loggedInUser.Password = Utility.Encrypt(loggedInUser.EmailAddress);
-                loggedInUser.Source = "EXTL";
+            if (loggedInUser == null) loggedInUser = await CreateExternalUser(emailAddress);
 
-                _context.Users.Add(loggedInUser);
-                await _context.SaveChangesAsync();
-            }
             token = GenerateJwtToken(loggedInUser);
             httpClient.Dispose();
-            
+
             // Step 7 : returning the token back to the client
             return await Task.FromResult(new AuthenticationResponse() { Token = token });
         }
@@ -329,6 +312,23 @@ namespace BlazingChat.WebAPI.Controllers
         public ActionResult<string> GetGoogleClientIDAndRedirectUri()
         {
             return _configuration["Authentication:Google:ClientId"] + "&" + _configuration["Authentication:Google:RedirectUri"];
+        }
+
+        // Authorization Code
+        [HttpGet("getuserswithoutrole")]
+        public async Task<List<User>> GetUsersWithoutRole()
+        {
+            return await _context.Users.Where(user => user.Role == null).ToListAsync();
+        }
+
+        [HttpPut("assignrole")]
+        public async Task<int> AssignRole([FromBody] User user)
+        {
+            User userToUpdate = await _context.Users.Where(u => u.UserId == user.UserId).FirstOrDefaultAsync();
+            userToUpdate.Role = user.Role;
+            int result = await _context.SaveChangesAsync();
+
+            return result;
         }
 
         //Helper methods
@@ -344,7 +344,7 @@ namespace BlazingChat.WebAPI.Controllers
             var consumerKey = _configuration["Authentication:Twitter:ConsumerKey"];
             var consumerSecrete = _configuration["Authentication:Twitter:ConsumerSecrete"];
             var callbackUrl = "https://localhost:5001/TwitterAuth";
-            
+
             // Step 3 : colleting parameters
             var parameters = $"include_email=true";
             parameters += $"&oauth_callback={Uri.EscapeDataString(callbackUrl)}";
@@ -386,7 +386,7 @@ namespace BlazingChat.WebAPI.Controllers
             var twitterUserData = await httpClient.GetFromJsonAsync<TwitterUserData>(verifyCredentialsRequest);
 
             // Step 8 :returning email address of the user
-            return twitterUserData.Email;  
+            return twitterUserData.Email;
         }
         protected string GetNonce()
         {
@@ -395,7 +395,7 @@ namespace BlazingChat.WebAPI.Controllers
             var randomString = string.Empty;
             for (var i = 0; i < length; i++)
                 randomString += ((char)(random.Next(1, 26) + 64)).ToString().ToLower();
-            
+
             var bytes = Encoding.UTF8.GetBytes(randomString);
             var encodedString = Convert.ToBase64String(bytes);
 
@@ -415,6 +415,38 @@ namespace BlazingChat.WebAPI.Controllers
                 //ExpiresUtc = DateTime.UtcNow.AddMinutes(10),
                 RedirectUri = "/profile"
             };
+        }
+        protected async Task<User> GetUserByUserID(long userId)
+        {
+            return await _context.Users.Select(user => new User
+            {
+                UserId = user.UserId,
+                EmailAddress = user.EmailAddress,
+                Role = user.Role
+            }).Where(user => user.UserId == userId).FirstOrDefaultAsync();
+        }
+        protected async Task<User> GetUserByEmailAddress(string emailAddress)
+        {
+            return await _context.Users.Select(user => new User
+            {
+                UserId = user.UserId,
+                EmailAddress = user.EmailAddress,
+                Role = user.Role
+            }).Where(user => user.EmailAddress == emailAddress).FirstOrDefaultAsync();
+        }
+        protected async Task<User> CreateExternalUser(string emailAddress)
+        {
+            var externalUser = new User();
+            externalUser.UserId = _context.Users.Max(user => user.UserId) + 1;
+            externalUser.EmailAddress = emailAddress;
+            externalUser.Password = Utility.Encrypt(externalUser.EmailAddress);
+            externalUser.Source = "EXTL";
+
+            _context.Users.Add(externalUser);
+            int result = await _context.SaveChangesAsync();
+
+            if (result > 0) return externalUser;
+            else return null;
         }
     }
 }

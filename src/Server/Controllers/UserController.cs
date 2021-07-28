@@ -276,8 +276,8 @@ namespace BlazingChat.Server.Controllers
             var userAccessValidationRequest = $"https://graph.facebook.com/debug_token?input_token={facebookAuthRequest.AccessToken}&access_token={appAccessTokenResponse.Access_Token}";
             var userAccessTokenValidationResponse = await httpClient.GetFromJsonAsync<FacebookUserAccessTokenValidation>(userAccessValidationRequest);
             Console.WriteLine("Is Token Valid : " + userAccessTokenValidationResponse.Data?.Is_Valid + "\n");
-            
-            if (!userAccessTokenValidationResponse.Data.Is_Valid) 
+
+            if (!userAccessTokenValidationResponse.Data.Is_Valid)
                 return BadRequest();
 
             // 5. we've got a valid token so we can request user data from facebook
@@ -289,7 +289,7 @@ namespace BlazingChat.Server.Controllers
             var loggedInUser = await _context.Users.Where(user => user.EmailAddress == facebookUserData.Email).FirstOrDefaultAsync();
 
             //7. generate the token
-            if(loggedInUser == null)
+            if (loggedInUser == null)
             {
                 loggedInUser = new User();
                 loggedInUser.UserId = _context.Users.Max(user => user.UserId) + 1;
@@ -303,12 +303,12 @@ namespace BlazingChat.Server.Controllers
 
             token = GenerateJwtToken(loggedInUser);
             Console.WriteLine("JWT : " + token + "\n");
-            
+
             httpClient.Dispose();
-            
+
             return await Task.FromResult(new AuthenticationResponse() { Token = token });
         }
-    
+
         //Twitter Authentication using JWT
         [HttpGet("gettwitteroauthtokenusingresharp")]
         public ActionResult<TwitterRequestTokenResponse> GetTwitterOAuthTokenUsingResharpAsync()
@@ -320,8 +320,8 @@ namespace BlazingChat.Server.Controllers
             var client = new RestClient("https://api.twitter.com"); // Note NO /1
 
             client.Authenticator = OAuth1Authenticator.ForRequestToken(
-                consumerKey, 
-                consumerSecrete, 
+                consumerKey,
+                consumerSecrete,
                 callbackUrl // Value for the oauth_callback parameter
             );
 
@@ -334,7 +334,7 @@ namespace BlazingChat.Server.Controllers
             var _tokenSecret = qs["oauth_token_secret"];
             var _callbackUrlConfirmed = qs["oauth_callback_confirmed"];
 
-            return new TwitterRequestTokenResponse() { OAuthToken = _token, OAuthTokenSecrete = _tokenSecret, OAuthCallBackConfirmed = _callbackUrlConfirmed } ;
+            return new TwitterRequestTokenResponse() { OAuthToken = _token, OAuthTokenSecrete = _tokenSecret, OAuthCallBackConfirmed = _callbackUrlConfirmed };
         }
         [HttpPost("gettwitterjwt")]
         public async Task<ActionResult<AuthenticationResponse>> GetTwitterJWT([FromBody] TwitterRequestTokenResponse twitterRequestTokenResponse)
@@ -352,8 +352,8 @@ namespace BlazingChat.Server.Controllers
             var client = new RestClient("https://api.twitter.com"); // Note NO /1
 
             client.Authenticator = OAuth1Authenticator.ForAccessToken(
-                consumerKey, 
-                consumerSecrete, 
+                consumerKey,
+                consumerSecrete,
                 twitterRequestTokenResponse.OAuthToken,
                 twitterRequestTokenResponse.OAuthTokenSecrete,
                 twitterRequestTokenResponse.OAuthVerifier
@@ -373,7 +373,7 @@ namespace BlazingChat.Server.Controllers
             var loggedInUser = await _context.Users.Where(user => user.EmailAddress == emailAddress).FirstOrDefaultAsync();
 
             // Step 6 : generate the token
-            if(loggedInUser == null)
+            if (loggedInUser == null)
             {
                 loggedInUser = new User();
                 loggedInUser.UserId = _context.Users.Max(user => user.UserId) + 1;
@@ -386,7 +386,7 @@ namespace BlazingChat.Server.Controllers
             }
             token = GenerateJwtToken(loggedInUser);
             httpClient.Dispose();
-            
+
             // Step 7 : returning the token back to the client
             return await Task.FromResult(new AuthenticationResponse() { Token = token });
         }
@@ -402,7 +402,7 @@ namespace BlazingChat.Server.Controllers
             var consumerKey = _configuration["Authentication:Twitter:ConsumerKey"];
             var consumerSecrete = _configuration["Authentication:Twitter:ConsumerSecrete"];
             var callbackUrl = "https://localhost:5001/TwitterAuth";
-            
+
             // Step 3 : colleting parameters
             var parameters = $"include_email=true";
             parameters += $"&oauth_callback={Uri.EscapeDataString(callbackUrl)}";
@@ -444,7 +444,7 @@ namespace BlazingChat.Server.Controllers
             var twitterUserData = await httpClient.GetFromJsonAsync<TwitterUserData>(verifyCredentialsRequest);
 
             // Step 8 :returning email address of the user
-            return twitterUserData.Email;  
+            return twitterUserData.Email;
         }
         private string GetNonce()
         {
@@ -453,7 +453,7 @@ namespace BlazingChat.Server.Controllers
             var randomString = string.Empty;
             for (var i = 0; i < length; i++)
                 randomString += ((char)(random.Next(1, 26) + 64)).ToString().ToLower();
-            
+
             var bytes = Encoding.UTF8.GetBytes(randomString);
             var encodedString = Convert.ToBase64String(bytes);
 
@@ -465,7 +465,7 @@ namespace BlazingChat.Server.Controllers
             var now = DateTime.Now;
             return (now - epochDateTime).TotalSeconds.ToString().Split('.')[0];
         }
-    
+
         //Google Authentication using JWT
         [HttpGet("getgoogleclientidandredirecturi")]
         public ActionResult<string> GetGoogleClientIDAndRedirectUri()

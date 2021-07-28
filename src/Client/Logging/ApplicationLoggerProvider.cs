@@ -22,7 +22,7 @@ namespace BlazingChat.Client.Logging
 
         public void Dispose()
         {
-            
+
         }
     }
 }

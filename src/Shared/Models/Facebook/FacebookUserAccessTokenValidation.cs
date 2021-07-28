@@ -8,5 +8,5 @@ namespace BlazingChat.Shared
     {
         public bool Is_Valid { get; set; }
     }
-    
+
 }

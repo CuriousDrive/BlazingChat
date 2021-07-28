@@ -18,11 +18,11 @@ namespace BlazingChat.Client.Handlers
         {
             //getting token from the localstorage
             var jwtToken = await _localStorageService.GetItemAsync<string>("jwt_token");
-            
+
             //adding the token in authorization header
             if (jwtToken != null)
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
-            
+
             //sending the request
             return await base.SendAsync(request, cancellationToken);
         }

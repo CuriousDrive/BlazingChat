@@ -79,7 +79,7 @@ namespace BlazingChat.Server
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
-            
+
             services.AddHttpContextAccessor();
             services.AddHttpClient();
         }

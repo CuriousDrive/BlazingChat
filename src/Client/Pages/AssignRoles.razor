@@ -1,0 +1,29 @@
+@page "/assignroles"
+@using BlazingChat.ViewModels
+@inject IAssignRolesViewModel _assignRolesViewModel
+
+<h2 class="white-text"><b>Assign Roles</b></h2> 
+<hr class="white-horizontal-line"/>
+
+<div class="col-12 row">
+    <input type="text" class="col-12 form-control dark-theme-textbox" placeholder="search" />
+</div>
+<br />
+
+@if (_assignRolesViewModel.UsersWithoutRole != null && _assignRolesViewModel.UsersWithoutRole.Count() > 0)
+{
+    foreach(var user in _assignRolesViewModel.UsersWithoutRole)
+    {
+        <div style="height: 50px;">
+            @user.FirstName <span> </span> @user.LastName
+        </div>
+    }
+}
+<br />
+
+@code {
+    protected override async Task OnInitializedAsync() 
+    {
+        await _assignRolesViewModel.LoadUsersWithoutRole();
+    }
+}

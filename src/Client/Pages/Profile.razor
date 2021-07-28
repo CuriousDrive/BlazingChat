@@ -10,6 +10,10 @@
 <h2 class="white-text"><b>Profile</b></h2> 
 <hr class="white-horizontal-line"/>
 
+<AuthorizeView Roles ="admin">
+    <p>Only admin can see this!!!</p>
+</AuthorizeView>
+
 <SpinLoader IsLoading="IsLoading">
     <LoadingTemplate>
             <div class="col-12" style="background-color: lightgray; height:400px; vertical-align:middle">

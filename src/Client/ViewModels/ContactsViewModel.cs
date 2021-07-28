@@ -47,7 +47,7 @@ namespace BlazingChat.ViewModels
         {
             this.ContactsCount = 20000;
         }
-        
+
         //loading actual contacts
         public async Task LoadAllContactsDB()
         {

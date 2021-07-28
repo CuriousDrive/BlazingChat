@@ -12,7 +12,7 @@ namespace BlazingChat.ViewModels
     {
         public List<Contact> Contacts { get; set; }
         public int ContactsCount { get; set; }
-        
+
         //Next two methods are gonna load 20,000 contacts
         public Task LoadAllContactsDemo();
         public Task LoadOnlyVisibleContactsDemo(int startIndex, int numberOfUsers);

@@ -21,18 +21,17 @@ namespace BlazingChat.Client
 
         public async override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            //User currentUser = _httpClient.GetFromJsonAsync<User>("user/getcurrentuser"); //this was for cookie authentication
             User currentUser = await GetUserByJWTAsync();
-            
-            //await Task.Delay(2000); //adding this to show Authorizing text
-            
+
             if (currentUser != null && currentUser.EmailAddress != null)
             {
                 //create a claims
                 var claimEmailAddress = new Claim(ClaimTypes.Name, currentUser.EmailAddress);
                 var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, Convert.ToString(currentUser.UserId));
+                var claimRole = new Claim(ClaimTypes.Role, "admin");
+
                 //create claimsIdentity
-                var claimsIdentity = new ClaimsIdentity(new[] { claimEmailAddress, claimNameIdentifier }, "serverAuth");
+                var claimsIdentity = new ClaimsIdentity(new[] { claimEmailAddress, claimNameIdentifier, claimRole }, "serverAuth");
                 //create claimsPrincipal
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 return new AuthenticationState(claimsPrincipal);
@@ -45,7 +44,7 @@ namespace BlazingChat.Client
         {
             //pulling the token from localStorage
             var jwtToken = await _localStorageService.GetItemAsStringAsync("jwt_token");
-            if(jwtToken == null) return null;
+            if (jwtToken == null) return null;
 
             return await _loginViewModel.GetUserByJWTAsync(jwtToken);
         }
