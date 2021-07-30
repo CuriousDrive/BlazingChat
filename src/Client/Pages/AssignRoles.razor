@@ -1,9 +1,11 @@
 @page "/assignroles"
 @using BlazingChat.ViewModels
+@using BlazingChat.Shared.Models
 @inject IAssignRolesViewModel _assignRolesViewModel
+@inject IToastService _toastService
 
-<h2 class="white-text"><b>Assign Roles</b></h2> 
-<hr class="white-horizontal-line"/>
+<h2 class="white-text"><b>Assign Roles</b></h2>
+<hr class="white-horizontal-line" />
 
 <div class="col-12 row">
     <input type="text" class="col-12 form-control dark-theme-textbox" placeholder="search" />
@@ -12,18 +14,50 @@
 
 @if (_assignRolesViewModel.UsersWithoutRole != null && _assignRolesViewModel.UsersWithoutRole.Count() > 0)
 {
-    foreach(var user in _assignRolesViewModel.UsersWithoutRole)
+    foreach (User user in _assignRolesViewModel.UsersWithoutRole)
     {
-        <div style="height: 50px;">
-            @user.FirstName <span> </span> @user.LastName
+        <div class="list-group-item list-group-item-action flex-column align-items-start contact-list-item" style="height: 55px;">
+            <div class="row col-12">
+                <div class="col-6" style="font-size: large;">
+                    @user.FirstName <span> </span> @user.LastName
+                </div>
+                <div class="col-3">
+                    <select class="form-control" 
+                            name="roles" 
+                            id="roles" 
+                            @onchange = "@AssignRole">
+                        <option value="">None</option>
+                        <option value=@("admin#"+ user.UserId)>Admin</option>
+                        <option value=@("general#"+ user.UserId)>General</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-danger" @onclick="DeleteUser">Delete</button>
+                </div>
+            </div>
         </div>
     }
 }
 <br />
 
 @code {
-    protected override async Task OnInitializedAsync() 
+    
+    protected override async Task OnInitializedAsync()
     {
         await _assignRolesViewModel.LoadUsersWithoutRole();
+    }
+
+    private void DeleteUser()
+    {
+
+    }
+
+    private async Task AssignRole(ChangeEventArgs eventArgs)
+    {
+        Console.WriteLine(eventArgs.Value);
+        var selectedValues = eventArgs.Value.ToString().Split('#');
+
+        await _assignRolesViewModel.AssignRole(Convert.ToInt64(selectedValues[1]), selectedValues[0]);
+        _toastService.ShowSuccess("Role updated successfully");
     }
 }
