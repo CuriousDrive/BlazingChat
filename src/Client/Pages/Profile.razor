@@ -10,10 +10,6 @@
 <h2 class="white-text"><b>Profile</b></h2> 
 <hr class="white-horizontal-line"/>
 
-<AuthorizeView Roles ="admin">
-    <p>Only admin can see this!!!</p>
-</AuthorizeView>
-
 <SpinLoader IsLoading="IsLoading">
     <LoadingTemplate>
             <div class="col-12" style="background-color: lightgray; height:400px; vertical-align:middle">
@@ -36,7 +32,7 @@
                 <br/>
                 <textarea @bind="_profileViewModel.AboutMe" class="form-control dark-theme-textbox" placeholder="about me"></textarea>
                 <br/>
-                <button class="btn btn-primary" @onclick="_profileViewModel.UpdateProfile">Save</button>
+                <button class="btn btn-primary" disabled="@(!IsUserAuthorized)" @onclick="_profileViewModel.UpdateProfile">Save</button>
                 <button class="btn btn-primary" @onclick="DownloadProfilePicture">Download Picture</button>
                 @* <button class="btn btn-primary" @onclick="DownloadServerFile">Download a Document</button> *@
             </div>
@@ -52,7 +48,7 @@
     [CascadingParameter]
     public Task<AuthenticationState> authenticationState { get; set; }
     public bool IsLoading { get; set; } = true;
-    
+    public bool IsUserAuthorized { get; set; } = false;
     protected override async Task OnInitializedAsync() 
     {
         var authState = await authenticationState;
@@ -62,6 +58,7 @@
         {
             var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
             _profileViewModel.UserId = Convert.ToInt64(claim?.Value);
+            IsUserAuthorized = user.IsInRole("admin") || user.IsInRole("general");
 
             try
             {

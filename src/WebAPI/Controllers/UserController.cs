@@ -23,6 +23,7 @@ using RestSharp;
 using System.Web;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlazingChat.WebAPI.Controllers
 {
@@ -73,34 +74,7 @@ namespace BlazingChat.WebAPI.Controllers
         }
 
         //Migrating to JWT Authorization...
-        private string GenerateJwtToken(User user)
-        {
-            //getting the secret key
-            string secretKey = _configuration["JWTSettings:SecretKey"];
-            var key = Encoding.ASCII.GetBytes(secretKey);
-
-            //create claims
-            var claimEmail = new Claim(ClaimTypes.Email, user.EmailAddress);
-            var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString());
-
-            //create claimsIdentity
-            var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier }, "serverAuth");
-
-            // generate token that is valid for 7 days
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = claimsIdentity,
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            //creating a token handler
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            //returning the token back
-            return tokenHandler.WriteToken(token);
-        }
-
+       
         [HttpPost("authenticatejwt")]
         public async Task<ActionResult<AuthenticationResponse>> AuthenticateJWT(AuthenticationRequest authenticationRequest)
         {
@@ -318,7 +292,7 @@ namespace BlazingChat.WebAPI.Controllers
         [HttpGet("getuserswithoutrole")]
         public async Task<List<User>> GetUsersWithoutRole()
         {
-            return await _context.Users.Where(user => user.Role == null).ToListAsync();
+            return await _context.Users.ToListAsync();
         }
 
         [HttpPut("assignrole")]
@@ -329,6 +303,14 @@ namespace BlazingChat.WebAPI.Controllers
             int result = await _context.SaveChangesAsync();
 
             return result;
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpDelete("deleteuser/{userId}")]
+        public async Task<int> DeleteUser(long userId)
+        {
+            _context.Users.Remove(new User() { UserId = userId });
+            return await _context.SaveChangesAsync();
         }
 
         //Helper methods
@@ -448,5 +430,34 @@ namespace BlazingChat.WebAPI.Controllers
             if (result > 0) return externalUser;
             else return null;
         }
+        protected string GenerateJwtToken(User user)
+        {
+            //getting the secret key
+            string secretKey = _configuration["JWTSettings:SecretKey"];
+            var key = Encoding.ASCII.GetBytes(secretKey);
+
+            //create claims
+            var claimEmail = new Claim(ClaimTypes.Email, user.EmailAddress);
+            var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString());
+            var claimNameRole = new Claim(ClaimTypes.Role, user.Role);
+
+            //create claimsIdentity
+            var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier, claimNameRole }, "serverAuth");
+
+            // generate token that is valid for 7 days
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = claimsIdentity,
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            //creating a token handler
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            //returning the token back
+            return tokenHandler.WriteToken(token);
+        }
+
     }
 }

@@ -1,8 +1,10 @@
 @page "/assignroles"
 @using BlazingChat.ViewModels
 @using BlazingChat.Shared.Models
+@using Microsoft.AspNetCore.Authorization
 @inject IAssignRolesViewModel _assignRolesViewModel
 @inject IToastService _toastService
+@attribute [Authorize(Roles = "admin, superuser")]
 
 <h2 class="white-text"><b>Assign Roles</b></h2>
 <hr class="white-horizontal-line" />
@@ -32,7 +34,7 @@
                     </select>
                 </div>
                 <div class="col-3">
-                    <button class="btn btn-danger" @onclick="DeleteUser">Delete</button>
+                    <button class="btn btn-danger" @onclick="@(() => DeleteUser(user.UserId))">Delete</button>
                 </div>
             </div>
         </div>
@@ -47,9 +49,9 @@
         await _assignRolesViewModel.LoadUsersWithoutRole();
     }
 
-    private void DeleteUser()
+    private void DeleteUser(long userId)
     {
-
+        _assignRolesViewModel.DeleteUser(userId);
     }
 
     private async Task AssignRole(ChangeEventArgs eventArgs)

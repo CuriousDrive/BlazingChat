@@ -36,5 +36,10 @@ namespace BlazingChat.ViewModels
             var user = new User { UserId = userId, Role = role };
             await _httpClient.PutAsJsonAsync("user/assignrole", user);
         }
+
+        public async Task DeleteUser(long userId)
+        {
+            await _httpClient.DeleteAsync("user/deleteuser/" + userId);
+        }
     }
 }

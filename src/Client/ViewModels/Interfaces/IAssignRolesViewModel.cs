@@ -12,5 +12,6 @@ namespace BlazingChat.ViewModels
 
         public Task LoadUsersWithoutRole();
         public Task AssignRole(long userId, string role);
+        public Task DeleteUser(long userId);
     }
 }
