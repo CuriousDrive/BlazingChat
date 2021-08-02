@@ -292,7 +292,7 @@ namespace BlazingChat.WebAPI.Controllers
         [HttpGet("getuserswithoutrole")]
         public async Task<List<User>> GetUsersWithoutRole()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users.Select(user => new User() { UserId = user.UserId ,EmailAddress = user.EmailAddress } ).ToListAsync();
         }
 
         [HttpPut("assignrole")]
@@ -404,7 +404,8 @@ namespace BlazingChat.WebAPI.Controllers
             {
                 UserId = user.UserId,
                 EmailAddress = user.EmailAddress,
-                Role = user.Role
+                Role = user.Role,
+                DarkTheme = user.DarkTheme
             }).Where(user => user.UserId == userId).FirstOrDefaultAsync();
         }
         protected async Task<User> GetUserByEmailAddress(string emailAddress)
@@ -439,7 +440,7 @@ namespace BlazingChat.WebAPI.Controllers
             //create claims
             var claimEmail = new Claim(ClaimTypes.Email, user.EmailAddress);
             var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString());
-            var claimNameRole = new Claim(ClaimTypes.Role, user.Role);
+            var claimNameRole = new Claim(ClaimTypes.Role, user.Role == null ? "" : user.Role);
 
             //create claimsIdentity
             var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier, claimNameRole }, "serverAuth");
