@@ -305,7 +305,6 @@ namespace BlazingChat.WebAPI.Controllers
             return result;
         }
 
-        [Authorize(Roles = "admin")]
         [HttpDelete("deleteuser/{userId}")]
         public async Task<int> DeleteUser(long userId)
         {
@@ -440,7 +439,6 @@ namespace BlazingChat.WebAPI.Controllers
             //create claims
             var claimEmail = new Claim(ClaimTypes.Email, user.EmailAddress);
             var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString());
-            var claimNameRole = new Claim(ClaimTypes.Role, user.Role == null ? "" : user.Role);
 
             //create claimsIdentity
             var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier, claimNameRole }, "serverAuth");
