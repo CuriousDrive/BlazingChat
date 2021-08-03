@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Authorization
 @inject IAssignRolesViewModel _assignRolesViewModel
 @inject IToastService _toastService
+@attribute [Authorize(Roles = "admin")]
 
 <h2 class="white-text"><b>Assign Roles</b></h2>
 <hr class="white-horizontal-line" />
