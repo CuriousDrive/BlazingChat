@@ -441,7 +441,7 @@ namespace BlazingChat.WebAPI.Controllers
             var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString());
 
             //create claimsIdentity
-            var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier, claimNameRole }, "serverAuth");
+            var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier }, "serverAuth");
 
             // generate token that is valid for 7 days
             var tokenDescriptor = new SecurityTokenDescriptor
