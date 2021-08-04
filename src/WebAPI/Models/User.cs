@@ -26,6 +26,7 @@ namespace BlazingChat.WebAPI.Models
         public long? DarkTheme { get; set; }
         public byte[] CreatedDate { get; set; }
         public string ProfilePicDataUrl { get; set; }
+        public string Role { get; set; }
 
         public virtual ICollection<ChatHistory> ChatHistoryFromUsers { get; set; }
         public virtual ICollection<ChatHistory> ChatHistoryToUsers { get; set; }

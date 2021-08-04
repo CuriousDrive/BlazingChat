@@ -90,7 +90,7 @@ namespace BlazingChat.WebAPI
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             var serviceProvider = app.ApplicationServices.CreateScope().ServiceProvider;
-            
+
             var appDBContext = serviceProvider.GetRequiredService<BlazingChatContext>();
             var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
 
@@ -105,9 +105,9 @@ namespace BlazingChat.WebAPI
 
             app.UseResponseCompression();
             app.UseHttpsRedirection();
-            
+
             app.UseRouting();
-            
+
             app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthentication();

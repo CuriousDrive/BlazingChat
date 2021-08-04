@@ -116,6 +116,8 @@ namespace BlazingChat.WebAPI.Models
 
                 entity.Property(e => e.ProfilePictureUrl).HasColumnName("profile_picture_url");
 
+                entity.Property(e => e.Role).HasColumnName("role");
+
                 entity.Property(e => e.Source)
                     .IsRequired()
                     .HasColumnName("source");

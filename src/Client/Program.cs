@@ -24,13 +24,14 @@ namespace BlazingChat.Client
             builder.Services.AddAuthorizationCore();
 
             AddHttpClients(builder);
-            
+
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             builder.Services.AddBlazoredLocalStorage();
-            
+
             builder.Services.AddTransient<CustomAuthorizationHandler>();
-            
-            builder.Services.AddLogging(logging => {
+
+            builder.Services.AddLogging(logging =>
+            {
                 var httpClient = builder.Services.BuildServiceProvider().GetRequiredService<HttpClient>();
                 var authenticationStateProvider = builder.Services.BuildServiceProvider().GetRequiredService<AuthenticationStateProvider>();
                 logging.SetMinimumLevel(LogLevel.Error);
@@ -54,7 +55,7 @@ namespace BlazingChat.Client
             //baseAddress = builder.HostEnvironment.BaseAddress;
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) });
-            
+
             //transactional named http clients
             builder.Services.AddHttpClient<IProfileViewModel, ProfileViewModel>
                 ("ProfileViewModelClient", client => client.BaseAddress = new Uri(baseAddress))
@@ -68,13 +69,17 @@ namespace BlazingChat.Client
                 ("SettingsViewModelClient", client => client.BaseAddress = new Uri(baseAddress))
                 .AddHttpMessageHandler<CustomAuthorizationHandler>();
 
+            builder.Services.AddHttpClient<IAssignRolesViewModel, AssignRolesViewModel>
+                ("AssignRolesViewModel", client => client.BaseAddress = new Uri(baseAddress))
+                .AddHttpMessageHandler<CustomAuthorizationHandler>();
+
             //authentication http clients
             builder.Services.AddHttpClient<ILoginViewModel, LoginViewModel>
                 ("LoginViewModelClient", client => client.BaseAddress = new Uri(baseAddress));
-            
+
             builder.Services.AddHttpClient<IRegisterViewModel, RegisterViewModel>
                 ("RegisterViewModelClient", client => client.BaseAddress = new Uri(baseAddress));
-            
+
         }
     }
 }

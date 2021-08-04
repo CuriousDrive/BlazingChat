@@ -37,10 +37,10 @@ namespace BlazingChat.ViewModels
             AuthenticationRequest authenticationRequest = new AuthenticationRequest();
             authenticationRequest.EmailAddress = this.EmailAddress;
             authenticationRequest.Password = this.Password;
-            
+
             //authenticating the request
             var httpMessageReponse = await _httpClient.PostAsJsonAsync<AuthenticationRequest>($"user/authenticatejwt", authenticationRequest);
-            
+
             //sending the token to the client to store
             return await httpMessageReponse.Content.ReadFromJsonAsync<AuthenticationResponse>();
         }
@@ -54,18 +54,18 @@ namespace BlazingChat.ViewModels
             //preparing the http request
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, "user/getuserbyjwt");
             requestMessage.Content = new StringContent(jwtToken);
-        
+
             requestMessage.Content.Headers.ContentType
                 = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-        
+
             //making the http request
             var response = await _httpClient.SendAsync(requestMessage);
-        
+
             var responseStatusCode = response.StatusCode;
             var returnedUser = await response.Content.ReadFromJsonAsync<User>();
-        
+
             //returning the user if found
-            if(returnedUser != null) return await Task.FromResult(returnedUser);
+            if (returnedUser != null) return await Task.FromResult(returnedUser);
             else return null;
         }
 

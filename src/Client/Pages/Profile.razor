@@ -32,7 +32,7 @@
                 <br/>
                 <textarea @bind="_profileViewModel.AboutMe" class="form-control dark-theme-textbox" placeholder="about me"></textarea>
                 <br/>
-                <button class="btn btn-primary" @onclick="_profileViewModel.UpdateProfile">Save</button>
+                <button class="btn btn-primary" disabled="@(!IsUserAuthorized)" @onclick="_profileViewModel.UpdateProfile">Save</button>
                 <button class="btn btn-primary" @onclick="DownloadProfilePicture">Download Picture</button>
                 @* <button class="btn btn-primary" @onclick="DownloadServerFile">Download a Document</button> *@
             </div>
@@ -48,6 +48,7 @@
     [CascadingParameter]
     public Task<AuthenticationState> authenticationState { get; set; }
     public bool IsLoading { get; set; } = true;
+    public bool IsUserAuthorized { get; set; } = false;
     
     protected override async Task OnInitializedAsync() 
     {
@@ -58,7 +59,7 @@
         {
             var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
             _profileViewModel.UserId = Convert.ToInt64(claim?.Value);
-
+            IsUserAuthorized = user.IsInRole("admin") || user.IsInRole("general");
             try
             {
                 await _profileViewModel.GetProfile();

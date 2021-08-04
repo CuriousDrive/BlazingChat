@@ -47,15 +47,30 @@ namespace BlazingChat.WebAPI.Controllers
 
         //loading actual contacts
         [HttpGet("getcontacts")]
-        public List<User> GetContacts()
+        public async Task<List<User>> GetContacts()
         {
-            return _context.Users.ToList();
+            return await _context.Users.Select(user => new User
+            {
+                UserId = user.UserId,
+                EmailAddress = user.EmailAddress,
+                FirstName = user.FirstName,
+                LastName = user.LastName
+            }).ToListAsync();
         }
 
         [HttpGet("getvisiblecontacts")]
         public async Task<List<User>> GetVisibleContacts(int startIndex, int count)
         {
-            return await _context.Users.Skip(startIndex).Take(count).ToListAsync();
+            return await _context.Users
+                                .Skip(startIndex)
+                                .Take(count)
+                                .Select(user => new User
+                                {
+                                    UserId = user.UserId,
+                                    EmailAddress = user.EmailAddress,
+                                    FirstName = user.FirstName,
+                                    LastName = user.LastName
+                                }).ToListAsync();
         }
 
         [HttpGet("getcontactscount")]
