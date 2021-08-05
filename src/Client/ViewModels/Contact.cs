@@ -7,6 +7,8 @@ namespace BlazingChat.ViewModels
         public int ContactId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string EmailAddress { get; set; }
+
 
         public Contact()
         {
@@ -32,7 +34,8 @@ namespace BlazingChat.ViewModels
             {
                 ContactId = (int)user.UserId,
                 FirstName = user.FirstName,
-                LastName = user.LastName
+                LastName = user.LastName,
+                EmailAddress = user.EmailAddress
             };
         }
         public static implicit operator User(Contact contact)
@@ -41,7 +44,8 @@ namespace BlazingChat.ViewModels
             {
                 UserId = contact.ContactId,
                 FirstName = contact.FirstName,
-                LastName = contact.LastName
+                LastName = contact.LastName,
+                EmailAddress = contact.EmailAddress
             };
         }
     }

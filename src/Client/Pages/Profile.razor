@@ -33,13 +33,14 @@
                 <textarea @bind="_profileViewModel.AboutMe" class="form-control dark-theme-textbox" placeholder="about me"></textarea>
                 <br/>
                 <button class="btn btn-primary" disabled="@(!IsUserAuthorized)" @onclick="_profileViewModel.UpdateProfile">Save</button>
-                <button class="btn btn-primary" @onclick="DownloadProfilePicture">Download Picture</button>
+                <button class="btn btn-primary" disabled="@(!IsUserAuthorized)" @onclick="DownloadProfilePicture">Download Picture</button>
                 @* <button class="btn btn-primary" @onclick="DownloadServerFile">Download a Document</button> *@
             </div>
         </div>
     </ContentTemplate>
 </SpinLoader>
 
+<ActivateMessage></ActivateMessage>
 
 <br />
 
