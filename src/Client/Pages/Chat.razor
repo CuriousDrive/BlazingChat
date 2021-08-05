@@ -5,6 +5,7 @@
 @using Microsoft.AspNetCore.SignalR.Client
 @using BlazingChat.ViewModels
 @using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@using Microsoft.AspNetCore.Authorization
 @inject NavigationManager _navigationManager
 @inject IJSRuntime _jsRuntime
 @inject HttpClient _httpClient
@@ -12,9 +13,10 @@
 @inject ILoginViewModel _loginViewModel
 @inject IProfileViewModel _prolfileViewModel
 @inject IWebAssemblyHostEnvironment _webAssemblyHostEnvironment
+@attribute [Authorize(Roles = "admin, general")]
 
 <div style="border:0px;height:90vh;">
-    <div class="panel panel-primary" style="height: 100%;">
+    <div class="panel panel-primary" style="height: 85%;">
         <div class="panel-heading top-bar">
             <div class="col-md-8 col-xs-8">
                 <h3 class="panel-title">
@@ -63,9 +65,12 @@
         <!--CHAT USER BOX-->
         <div class="panel-footer">
             <div class="input-group" id="myForm">
-                <input id="txtMessageInput" @bind="MessageText" type="text" class="form-control input-sm chat_input"
-                       placeholder="Write your message here...">
-                <button class="btn btn-primary" @onclick="Send">Send</button>
+                <input id="txtMessageInput" 
+                        @bind="MessageText" 
+                        type="text" 
+                        class="form-control input-sm chat_input"
+                        placeholder="Write your message here..."
+                        @onkeydown="OnKeyDownEvent">
             </div>
         </div>
     </div>
@@ -131,9 +136,19 @@
         await hubConnection.StartAsync();
     }
 
-    public async Task Send()
+    public async Task OnKeyDownEvent(KeyboardEventArgs eventArgs)
     {
-        if (MessageText.Length > 0)
+        if (eventArgs.Code == "Enter" || eventArgs.Code == "NumpadEnter")
+        {
+            var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
+            string messsageToBeSent = await module.InvokeAsync<string>("getMessageInput");
+            await Send(messsageToBeSent);
+        }
+    }
+
+    public async Task Send(string messageText)
+    {
+        if (messageText.Length > 0)
         {
             Message message = new Message();
             message.ToUserId = ToUserId;

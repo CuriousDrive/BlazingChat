@@ -28,7 +28,7 @@
                             name="roles" 
                             id="roles" 
                             @onchange = "@AssignRole">
-                        <option value="">None</option>
+                        <option value=@("#"+ user.UserId)>None</option>
                         <option value=@("admin#"+ user.UserId)>Admin</option>
                         <option value=@("general#"+ user.UserId)>General</option>
                     </select>

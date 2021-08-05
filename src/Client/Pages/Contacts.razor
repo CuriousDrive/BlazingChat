@@ -3,6 +3,8 @@
 @inject IContactsViewModel _contactsViewModel
 @inject NavigationManager _navigationManager
 
+<ActivateMessage></ActivateMessage>
+
 <h2 class="white-text"><b>Contacts</b></h2> 
 <hr class="white-horizontal-line"/>
 
@@ -10,25 +12,21 @@
     <input type="text" class="col-12 form-control dark-theme-textbox" placeholder="search" />
 </div>
 <br />
-
 @if (_contactsViewModel.ContactsCount > 0)
 {
-    @* foreach(var contact in _contactsViewModel.Contacts)
-    {
-        <div style="height: 50px">
-                <a href="/chat/@contact.ContactId"
-                class="list-group-item list-group-item-action flex-column align-items-start contact-list-item">
-                    @contact.FirstName <span> </span> @contact.LastName
-                </a>
-        </div>
-    } *@
-
     <Virtualize ItemsProvider="LoadOnlyVisibleContacts" Context="contact">
         <ItemContent>
             <div style="height: 50px">
                 <a href="/chat/@contact.ContactId"
                 class="list-group-item list-group-item-action flex-column align-items-start contact-list-item">
-                    @contact.FirstName <span> </span> @contact.LastName
+                    @if(contact.FirstName != null)
+                    {
+                        @contact.FirstName <span> </span> @contact.LastName
+                    }
+                    else
+                    {
+                        @contact.EmailAddress
+                    }
                 </a>
             </div>
         </ItemContent>
@@ -50,12 +48,7 @@
  
     private async ValueTask<ItemsProviderResult<Contact>> LoadOnlyVisibleContacts(ItemsProviderRequest itemsProviderRequest)
     {
-        Console.WriteLine($"Start Index : {itemsProviderRequest.StartIndex}");
-        Console.WriteLine($"Count : {itemsProviderRequest.Count}");
-        
-        //await Task.Delay(2000);
         await _contactsViewModel.LoadOnlyVisibleContactsDB(itemsProviderRequest.StartIndex,itemsProviderRequest.Count);
-
         return new ItemsProviderResult<Contact>(_contactsViewModel.Contacts, _contactsViewModel.ContactsCount);
     }
 

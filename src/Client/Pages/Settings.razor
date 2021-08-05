@@ -10,18 +10,17 @@
 
 <div class="col-12">
     <div class="row">
-        <RadzenSwitch @bind-Value="@_settingsViewModel.Notifications" Style="margin-bottom: 20px" Change="UpdateNotifications" />
+        <RadzenSwitch Disabled="@(!IsUserAuthorized)" @bind-Value="@_settingsViewModel.Notifications" Style="margin-bottom: 20px" Change="UpdateNotifications" />
         <span>&nbsp; &nbsp;</span>
         <label class="white-text"> Notifications </label>  
     </div>
     <div class="row">
-        <RadzenSwitch @bind-Value="@_settingsViewModel.DarkTheme" Style="margin-bottom: 20px" Change="UpdateTheme" />
+        <RadzenSwitch Disabled="@(!IsUserAuthorized)" @bind-Value="@_settingsViewModel.DarkTheme" Style="margin-bottom: 20px" Change="UpdateTheme" />
         <span>&nbsp; &nbsp;</span>
         <label class="white-text"> Dark Theme </label>    
     </div>
 </div>
-<br />
-
+<ActivateMessage></ActivateMessage>
 @code {
 
     [CascadingParameter]
@@ -29,6 +28,7 @@
     
     [CascadingParameter]
     public Error Error { get; set; }
+    public bool IsUserAuthorized { get; set; } = false;
 
     protected override async Task OnInitializedAsync() 
     {
@@ -41,6 +41,7 @@
             {
                 var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
                 _settingsViewModel.UserId = Convert.ToInt64(claim?.Value);
+                IsUserAuthorized = user.IsInRole("admin") || user.IsInRole("general");
                 
                 //throw new NullReferenceException();
                 await _settingsViewModel.GetProfile();
