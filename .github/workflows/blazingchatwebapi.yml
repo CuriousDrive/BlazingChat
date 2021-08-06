@@ -5,11 +5,11 @@ on:
     - main
 env:
   AZURE_WEBAPP_NAME: blazingchatwebapi
-  AZURE_WEBAPP_PACKAGE_PATH: WebAPI/publish
+  AZURE_WEBAPP_PACKAGE_PATH: src/WebAPI/publish
   AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.blazingchatwebapi_447b }}
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 5.0.x
-  WORKING_DIRECTORY: WebAPI
+  WORKING_DIRECTORY: src/WebAPI
 jobs:
   build-and-deploy:
     runs-on: windows-latest
