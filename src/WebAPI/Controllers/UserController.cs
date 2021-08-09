@@ -141,14 +141,7 @@ namespace BlazingChat.WebAPI.Controllers
         [HttpGet("getfacebookappidandredirecturi")]
         public ActionResult<string> GetFacebookAppIDAndRedirectUri()
         {
-            var redirectUri = string.Empty;
-
-            if (_webHostEnvironment.IsDevelopment())
-                redirectUri = _configuration["Authentication:Facebook:RedirectUriDev"];
-            else
-                redirectUri = _configuration["Authentication:Facebook:RedirectUriProd"];
-
-            return _configuration["Authentication:Facebook:AppId"] + "&" + redirectUri;
+            return _configuration["Authentication:Facebook:AppId"] + "&" + _configuration["Authentication:Facebook:RedirectUri"];
         }
 
         [HttpPost("getfacebookjwt")]
@@ -203,12 +196,7 @@ namespace BlazingChat.WebAPI.Controllers
         {
             var consumerKey = _configuration["Authentication:Twitter:ConsumerKey"];
             var consumerSecrete = _configuration["Authentication:Twitter:ConsumerSecrete"];
-            var callbackUrl = string.Empty;
-
-            if (_webHostEnvironment.IsDevelopment())
-                callbackUrl = _configuration["Authentication:Twitter:CallbackUrlDev"];
-            else
-                callbackUrl = _configuration["Authentication:Twitter:CallbackUrlProd"];
+            var callbackUrl = _configuration["Authentication:Twitter:CallbackUrl"];
 
             var client = new RestClient("https://api.twitter.com"); // Note NO /1
 
@@ -240,12 +228,6 @@ namespace BlazingChat.WebAPI.Controllers
             // Step 2 : getting keys from appsettings.json
             var consumerKey = _configuration["Authentication:Twitter:ConsumerKey"];
             var consumerSecrete = _configuration["Authentication:Twitter:ConsumerSecrete"];
-            var callbackUrl = string.Empty;
-
-            if (_webHostEnvironment.IsDevelopment())
-                callbackUrl = _configuration["Authentication:Twitter:CallbackUrlDev"];
-            else
-                callbackUrl = _configuration["Authentication:Twitter:CallbackUrlProd"];
 
             // Step 3 : requesting oauth_token & oauth_token_secrete
             var client = new RestClient("https://api.twitter.com"); // Note NO /1
@@ -325,7 +307,7 @@ namespace BlazingChat.WebAPI.Controllers
             // Step 2 : getting keys from appsettings.json
             var consumerKey = _configuration["Authentication:Twitter:ConsumerKey"];
             var consumerSecrete = _configuration["Authentication:Twitter:ConsumerSecrete"];
-            var callbackUrl = "https://localhost:5001/TwitterAuth";
+            var callbackUrl = _configuration["Authentication:Twitter:CallbackUrl"];
 
             // Step 3 : colleting parameters
             var parameters = $"include_email=true";

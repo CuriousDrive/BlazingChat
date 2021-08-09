@@ -40,7 +40,8 @@ namespace BlazingChat.WebAPI
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                         builder =>  {
-                                      builder.WithOrigins("https://www.blazingchat.com")
+                                      builder.WithOrigins("https://localhost:5001",
+                                                "https://www.blazingchat.com")
                                                 .AllowAnyHeader()
                                                 .AllowAnyMethod();
                                     });
