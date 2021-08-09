@@ -39,14 +39,11 @@ namespace BlazingChat.WebAPI
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
-                                  builder =>
-                                  {
-                                      builder.WithOrigins("https://localhost:5001",
-                                                          "https://www.blazingchat.com",
-                                                          "https://blazingchatwebapi.azurewebsites.net/")
-                                                           .AllowAnyHeader()
-                                                           .AllowAnyMethod();
-                                  });
+                        builder =>  {
+                                      builder.WithOrigins("https://www.blazingchat.com")
+                                                .AllowAnyHeader()
+                                                .AllowAnyMethod();
+                                    });
             });
             services.AddControllers();
             services.AddSwaggerGen(c =>

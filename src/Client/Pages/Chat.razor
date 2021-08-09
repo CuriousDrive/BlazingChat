@@ -6,6 +6,7 @@
 @using BlazingChat.ViewModels
 @using Microsoft.AspNetCore.Components.WebAssembly.Hosting
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Configuration
 @inject NavigationManager _navigationManager
 @inject IJSRuntime _jsRuntime
 @inject HttpClient _httpClient
@@ -13,6 +14,7 @@
 @inject ILoginViewModel _loginViewModel
 @inject IProfileViewModel _prolfileViewModel
 @inject IWebAssemblyHostEnvironment _webAssemblyHostEnvironment
+@inject IConfiguration _configuration
 @attribute [Authorize(Roles = "admin, general")]
 
 <div style="border:0px;height:90vh;">
@@ -103,21 +105,14 @@
         if (Convert.ToInt32(ToUserId) > 0)
         {
             _prolfileViewModel.UserId = Convert.ToInt64(ToUserId);
-            await _prolfileViewModel.GetProfile(); //_httpClient.GetFromJsonAsync<User>("profile/getprofile/" + ToUserId);
+            await _prolfileViewModel.GetProfile();
             ToUser = new User();
 
             ToUser.FirstName = _prolfileViewModel.FirstName;
             ToUser.LastName = _prolfileViewModel.LastName;
             ToUser.EmailAddress = _prolfileViewModel.EmailAddress;
         }
-        string baseAddress = string.Empty;
-
-        if (_webAssemblyHostEnvironment.IsDevelopment())
-            baseAddress = AppSettings.BASE_ADDRESS_DEV;
-        else
-            baseAddress = AppSettings.BASE_ADDRESS_PRD;
-
-        //baseAddress = _webAssemblyHostEnvironment.BaseAddress;
+        string baseAddress = _configuration["BaseAddress"];
 
         hubConnection = new HubConnectionBuilder()
                             .WithUrl(baseAddress + "chathub")

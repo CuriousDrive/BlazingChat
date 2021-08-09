@@ -10,6 +10,7 @@ using BlazingChat.Client.Logging;
 using Blazored.Toast;
 using Blazored.LocalStorage;
 using BlazingChat.Client.Handlers;
+using Microsoft.Extensions.Configuration;
 
 namespace BlazingChat.Client
 {
@@ -23,7 +24,7 @@ namespace BlazingChat.Client
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
 
-            AddHttpClients(builder);
+            AddHttpClients(builder, builder.Configuration);
 
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             builder.Services.AddBlazoredLocalStorage();
@@ -43,16 +44,9 @@ namespace BlazingChat.Client
             await builder.Build().RunAsync();
         }
 
-        public static void AddHttpClients(WebAssemblyHostBuilder builder)
+        public static void AddHttpClients(WebAssemblyHostBuilder builder, IConfiguration configuration)
         {
-            string baseAddress = string.Empty;
-
-            if (builder.HostEnvironment.IsDevelopment())
-                baseAddress = AppSettings.BASE_ADDRESS_DEV;
-            else
-                baseAddress = AppSettings.BASE_ADDRESS_PRD;
-
-            //baseAddress = builder.HostEnvironment.BaseAddress;
+            string baseAddress = configuration["BaseAddress"];
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) });
 
