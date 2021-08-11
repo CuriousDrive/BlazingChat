@@ -7,70 +7,74 @@
 @inject ILocalStorageService _localStorageService
 
 <div class="page">
-    <div class="sidebar">
-        <AuthorizeView>
-            <Authorized>
-                <NavMenu />
-            </Authorized>
-            <Authorizing>
-                <p style="font-size: large; font-weight: bolder; color: white;">
-                    The app is getting authorized...
-                </p> 
-            </Authorizing>
-        </AuthorizeView>
-    </div>
-    <BlazoredToasts Position="ToastPosition.BottomRight"
-                Timeout="3"
-                IconType="IconType.FontAwesome"
-                SuccessClass="success-toast-override"
-                SuccessIcon="fa fa-thumbs-up"
-                ErrorIcon="fa fa-bug" />
-    <div class="main">
-        <AuthorizeView>
-            <Authorized>
-                <div class="top-row px-4">
-                    <h4><b>Hello, @context.User.Identity.Name</b></h4> &nbsp; &nbsp;
-                    <button class="btn btn-danger" @onclick="LogoutUser">Logout</button>
-                </div>
-            </Authorized>
-        </AuthorizeView>  
-        <div class="content px-4">
-            @Body
-        </div>
-    </div>
+	<div class="sidebar">
+		<AuthorizeView>
+			<Authorized>
+				<NavMenu />
+			</Authorized>
+			<Authorizing>
+				<p style="font-size: large; font-weight: bolder; color: white;">
+					The app is getting authorized...
+				</p>
+			</Authorizing>
+		</AuthorizeView>
+	</div>
+	<BlazoredToasts Position="ToastPosition.BottomRight"
+					Timeout="3"
+					IconType="IconType.FontAwesome"
+					SuccessClass="success-toast-override"
+					SuccessIcon="fa fa-thumbs-up"
+					ErrorIcon="fa fa-bug" />
+	<div class="main">
+		<div class="top-row px-4">
+			<AuthorizeView>
+				<Authorized>
+					<h4><b>Hello, @context.User.Identity.Name</b></h4> &nbsp; &nbsp;
+					<button class="btn btn-danger" @onclick="LogoutUser">Logout</button>
+				</Authorized>
+			</AuthorizeView>
+			<a href="https://github.com/CuriousDrive/BlazingChat">
+				<!-- icon by feathericons.com -->
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+			</a>
+		</div>
+		<div class="content px-4">
+			@Body
+		</div>
+	</div>
 </div>
 
-@code{
+@code {
 
-    protected override async Task OnInitializedAsync()
-    {
-        //getting the current authenticated user for the app
-        var jwtToken = await _localStorageService.GetItemAsStringAsync("jwt_token");
-        if(jwtToken == null) return;
+	protected override async Task OnInitializedAsync()
+	{
+		//getting the current authenticated user for the app
+		var jwtToken = await _localStorageService.GetItemAsStringAsync("jwt_token");
+		if (jwtToken == null) return;
 
-        User currentUser = await _loginViewModel.GetUserByJWTAsync(jwtToken);
+		User currentUser = await _loginViewModel.GetUserByJWTAsync(jwtToken);
 
-        if(currentUser != null)
-        {
-            //setting the themeName parameter for JS function
-            var themeName = currentUser.DarkTheme == 1 ? "dark" : "light";
-            //calling the JS function
-            var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
-            await module.InvokeVoidAsync("setTheme", themeName);
-        }
-        await base.OnInitializedAsync();
-    }
+		if (currentUser != null)
+		{
+			//setting the themeName parameter for JS function
+			var themeName = currentUser.DarkTheme == 1 ? "dark" : "light";
+			//calling the JS function
+			var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/site.js");
+			await module.InvokeVoidAsync("setTheme", themeName);
+		}
+		await base.OnInitializedAsync();
+	}
 
-    private async Task LogoutUser()
-    {
-        //await _httpClient.GetAsync("user/logoutuser");
-        await _localStorageService.RemoveItemAsync("jwt_token");
-        _navigationManager.NavigateTo("/", true);
-    }
+	private async Task LogoutUser()
+	{
+		//await _httpClient.GetAsync("user/logoutuser");
+		await _localStorageService.RemoveItemAsync("jwt_token");
+		_navigationManager.NavigateTo("/", true);
+	}
 
-    private void LoginUser()
-    {
-        _navigationManager.NavigateTo("/", true);
-    }
+	private void LoginUser()
+	{
+		_navigationManager.NavigateTo("/", true);
+	}
 
 }
