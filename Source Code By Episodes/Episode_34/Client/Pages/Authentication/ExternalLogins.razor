@@ -1,0 +1,83 @@
+@using BlazingChat.ViewModels
+@using Microsoft.AspNetCore.WebUtilities
+@using BlazingChat.Shared
+@inject ILoginViewModel _loginViewModel
+@inject NavigationManager _navigationManager
+@inject ILocalStorageService _localStorageService
+
+<div class="col-xl-6 col-md-8 col-12">
+    <a class="btn btn-block btn-social btn-twitter" @onclick="TwitterJWT" href="">
+        <span class="fa fa-twitter"></span> <b>Sign in with Twitter</b>
+    </a>
+</div>
+<br />
+<div class="col-xl-6 col-md-8 col-12">
+    <a class="btn btn-block btn-social btn-facebook" @onclick="FacebookJWT" href="">
+        <span class="fa fa-facebook"></span> <b>Sign in with Facebook</b>
+    </a>
+</div>
+<hr class="white-horizontal-line"/>
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (QueryHelpers.ParseQuery(_navigationManager.Uri).TryGetValue("oauth_verifier", out var _oAuthVerifier))
+        {
+            var twitterRequestTokenResponse = await _localStorageService.GetItemAsync<TwitterRequestTokenResponse>("twitterRequestTokenResponse");
+            twitterRequestTokenResponse.OAuthVerifier = _oAuthVerifier;
+
+            string token = await _loginViewModel.GetTwitterJWTAsync(twitterRequestTokenResponse);
+            await _localStorageService.SetItemAsync<string>("jwt_token", token);
+
+            await _localStorageService.RemoveItemAsync("twitterRequestTokenResponse");
+
+            _navigationManager.NavigateTo("/", true);
+        }
+
+        var facebookUri = _navigationManager.Uri.Split('#');
+        if (facebookUri.Length > 1 && QueryHelpers.ParseQuery(facebookUri[1]).TryGetValue("access_token", out var _accessToken))
+        {
+            string token = await _loginViewModel.GetFacebookJWTAsync(_accessToken);
+            await _localStorageService.SetItemAsync<string>("jwt_token", token);
+
+            _navigationManager.NavigateTo("/", true);
+        }
+    }
+
+    public async Task FacebookJWT()
+    {
+        var appIdAndRedirectUri = (await _loginViewModel.GetFacebookAppIDAndRedirectUriAsync()).Split('&');
+
+        var accessTokenRequest = $"https://www.facebook.com/v11.0/dialog/oauth";
+        accessTokenRequest += "?response_type=token";
+        accessTokenRequest += $"&client_id={appIdAndRedirectUri[0]}";
+        accessTokenRequest += $"&redirect_uri={appIdAndRedirectUri[1]}";
+
+        _navigationManager.NavigateTo(accessTokenRequest, true);
+    }
+
+    public async Task TwitterJWT()
+    {
+        var twitterRequestTokenResponse = await _loginViewModel.GetTwitterOAuthTokenAsync();
+        await _localStorageService.SetItemAsync("twitterRequestTokenResponse", twitterRequestTokenResponse);
+
+        _navigationManager.NavigateTo("https://api.twitter.com/oauth/authorize?oauth_token=" + twitterRequestTokenResponse.OAuthToken);
+    }
+
+    public async Task GoogleJWT()
+    {
+        var appIdAndRedirectUri = (await _loginViewModel.GetGoogleClientIDAndRedirectUriAsync()).Split('&');
+
+        var accessTokenRequest = "https://accounts.google.com/o/oauth2/v2/auth?";
+        accessTokenRequest += $"scope=https%3A//www.googleapis.com/auth/drive.metadata.readonly&";
+        accessTokenRequest += $"access_type=offline&";
+        accessTokenRequest += $"include_granted_scopes=true&";
+        accessTokenRequest += $"response_type=code&";
+        accessTokenRequest += $"state=state_parameter_passthrough_value&";
+        accessTokenRequest += $"client_id={appIdAndRedirectUri[0]}&";
+        accessTokenRequest += $"redirect_uri={appIdAndRedirectUri[1]}";
+
+        _navigationManager.NavigateTo(accessTokenRequest, true);
+    }
+}

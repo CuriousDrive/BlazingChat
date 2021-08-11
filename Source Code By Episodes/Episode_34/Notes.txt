@@ -1,0 +1,15 @@
+User Story :
+    We will add an "Activate" Screen which will be only visible to "Admin" role.
+    This role value will come from User's table with Column 'Role'
+    When the user is created then this value is empty 
+    This value could be updated from Activate page.
+    The page will show all the users which do not have any role
+    And all those users will have dropdown control with below values
+    "General" & "Admin"
+    Once one of these these roles are assigned then user can do normal activities
+
+The arguement is what about storing this in JWT?
+    It makes sense to use JWT because it will be faster
+    Currently I am pulling the user creating the JWT 
+    sending the JWT to the client 
+    I need to read more about this

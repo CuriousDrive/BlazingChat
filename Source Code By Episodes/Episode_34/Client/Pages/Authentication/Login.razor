@@ -1,0 +1,76 @@
+@page "/"
+@using BlazingChat.ViewModels
+@using BlazingChat.Shared
+@using Microsoft.AspNetCore.WebUtilities
+@inject ILoginViewModel _loginViewModel
+@inject NavigationManager _navigationManager
+@inject ILocalStorageService _localStorageService
+@inject IToastService _toastService
+@inject IJSRuntime _jsRuntime
+
+<hr class="white-horizontal-line" />
+<div class="col-12">
+    <h2 class="white-text">
+        <b>Login</b>
+    </h2>
+</div>
+<hr class="white-horizontal-line" />
+<div class="col-xl-6 col-md-8 col-12">
+    <input type="text" @bind="_loginViewModel.EmailAddress" class="form-control dark-theme-textbox" placeholder="email address">
+</div>
+<br />
+<div class="col-xl-6 col-md-8 col-12">
+    <input type="password" @bind="_loginViewModel.Password" class="form-control dark-theme-textbox" placeholder="password">
+</div>
+<br />
+<div class="col-xl-6 col-md-8 col-12 row">
+    <div class="col-xl-2 col-lg-2 col-md-6 col-sm-3 col-3">
+        <button class="btn btn-danger" @onclick="AuthenticateJWT">Login</button>
+    </div>
+    <div class="col-xl-5 col-lg-5 col-md-6 col-sm-9 col-9">
+        <a style="font-weight: bold;" href="/createaccount">Create an account</a>
+    </div>
+</div>
+<hr class="white-horizontal-line" />
+<ExternalLogins />
+<div class="col-12">
+    <p style="font-size: larger;" class="white-text">
+        BlazingChat is a sample Blazor WebAssembly app made for the community
+    </p>
+</div>
+
+@code {
+
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //Initializing the login details for John Smith
+
+        _loginViewModel.EmailAddress = "john.smith@gmail.com";
+        _loginViewModel.Password = "john.smith";
+
+        var authState = await authenticationState;
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            _navigationManager.NavigateTo("/profile");
+        }
+    }
+
+    public async Task AuthenticateJWT()
+    {
+        AuthenticationResponse authenticationResponse = await _loginViewModel.AuthenticateJWT();
+        if (authenticationResponse.Token != string.Empty)
+        {
+            await _localStorageService.SetItemAsync("jwt_token", authenticationResponse.Token);
+            _navigationManager.NavigateTo("/", true);
+        }
+        else
+        {
+            _toastService.ShowError("Invalid username or password");
+        }
+    }
+}
