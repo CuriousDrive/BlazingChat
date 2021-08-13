@@ -11,7 +11,7 @@ Check it out here [https://www.blazingchat.com](https://www.blazingchat.com)
 
 ## How to run it?
 
-- Make sure you have .NET 5 is installed on your machine.
+- Make sure that you have .NET 5 installed on your machine.
 - Clone repo `https://github.com/CuriousDrive/BlazingChat.git` on your machine.
 - Open folder `/src/WebAPI` in terminal. And run command `dotnet run`.
 - Open folder `/src/Client` in terminal. And run command `dotnet run`.
