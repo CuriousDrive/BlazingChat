@@ -7,23 +7,32 @@
 <h2 class="white-text"><b>Create an account</b></h2>
 <hr class="white-horizontal-line">
 
-<div class="col-xl-6 col-md-8 col-12">
-    <input type="text" @bind="_registerViewModel.EmailAddress" placeholder="email address" class="form-control dark-theme-textbox" autocomplete="new-emailaddress">
-</div>
-<br />
-<div class="col-xl-6 col-md-8 col-12">
-    <input type="password" @bind="_registerViewModel.Password" placeholder="password" class="form-control dark-theme-textbox" autocomplete="new-password">
-</div>
-<br />
-<div class="col-xl-6 col-md-8 col-12">
-    <input type="password" @bind="_registerViewModel.ReenterPassword" class="form-control dark-theme-textbox" placeholder="reenter password">
-</div>
-<br />
-<div class="col-xl-6 col-md-8 col-12">
-    <button class="btn btn-danger" @onclick="RegisterUser">Register</button>
-    &nbsp;
-    <a style="font-weight: bold;" href="">Already have an account?</a>
-</div>
+<EditForm Model="@_registerViewModel" OnValidSubmit="@RegisterUser">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="col-xl-6 col-md-8 col-12">
+        <input type="text" @bind="_registerViewModel.FirstName" placeholder="first name" class="form-control dark-theme-textbox" autocomplete="new-emailaddress">
+    </div>
+    <br />
+    <div class="col-xl-6 col-md-8 col-12">
+        <input type="password" @bind="_registerViewModel.LastName" placeholder="last name" class="form-control dark-theme-textbox" autocomplete="new-password">
+    </div>
+    <br />
+    <div class="col-xl-6 col-md-8 col-12">
+        <input type="text" @bind="_registerViewModel.EmailAddress" placeholder="email address" class="form-control dark-theme-textbox" autocomplete="new-emailaddress">
+    </div>
+    <br />
+    <div class="col-xl-6 col-md-8 col-12">
+        <input type="password" @bind="_registerViewModel.Password" placeholder="password" class="form-control dark-theme-textbox" autocomplete="new-password">
+    </div>
+    <br />
+    <div class="col-xl-6 col-md-8 col-12">
+        <button type="submit" class="btn btn-danger">Register</button>
+        &nbsp;
+        <a style="font-weight: bold;" href="">Already have an account?</a>
+    </div>
+</EditForm>
+    
 <hr class="white-horizontal-line"/>
 <ExternalLogins />
 

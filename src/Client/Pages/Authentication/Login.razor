@@ -15,22 +15,26 @@
 	</h2>
 </div>
 <hr class="white-horizontal-line" />
-<div class="col-xl-6 col-md-8 col-12">
-	<input @onkeypress="OnKeyPress" type="text" @bind="_loginViewModel.EmailAddress" class="form-control dark-theme-textbox" placeholder="email address">
-</div>
-<br />
-<div class="col-xl-6 col-md-8 col-12">
-	<input @onkeypress="OnKeyPress" type="password" @bind="_loginViewModel.Password" class="form-control dark-theme-textbox" placeholder="password">
-</div>
-<br />
-<div class="col-xl-6 col-md-8 col-12 row">
-	<div class="col-xl-2 col-lg-2 col-md-6 col-sm-3 col-3">
-		<button class="btn btn-danger" @onclick="AuthenticateJWT">Login</button>
+<EditForm Model="@_loginViewModel" OnValidSubmit="@AuthenticateJWT">
+	<DataAnnotationsValidator />
+    <ValidationSummary />
+	<div class="col-xl-6 col-md-8 col-12">
+		<input @onkeypress="OnKeyPress" type="text" @bind="_loginViewModel.EmailAddress" class="form-control dark-theme-textbox" placeholder="email address">
 	</div>
-	<div class="col-xl-5 col-lg-5 col-md-6 col-sm-9 col-9">
-		<a style="font-weight: bold;" href="/createaccount">Create an account</a>
+	<br />
+	<div class="col-xl-6 col-md-8 col-12">
+		<input @onkeypress="OnKeyPress" type="password" @bind="_loginViewModel.Password" class="form-control dark-theme-textbox" placeholder="password">
 	</div>
-</div>
+	<br />
+	<div class="col-xl-6 col-md-8 col-12 row">
+		<div class="col-xl-2 col-lg-2 col-md-6 col-sm-3 col-3">
+			<button type="submit" class="btn btn-danger">Login</button>
+		</div>
+		<div class="col-xl-5 col-lg-5 col-md-6 col-sm-9 col-9">
+			<a style="font-weight: bold;" href="/createaccount">Create an account</a>
+		</div>
+	</div>
+</EditForm>
 <hr class="white-horizontal-line" />
 <ExternalLogins />
 <div class="col-12">
