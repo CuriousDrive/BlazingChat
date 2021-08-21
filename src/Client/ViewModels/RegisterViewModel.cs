@@ -6,14 +6,24 @@ using System.Text;
 using System.Threading.Tasks;
 using BlazingChat.Client;
 using BlazingChat.Shared.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlazingChat.ViewModels
 {
     public class RegisterViewModel : IRegisterViewModel
     {
+        [Required]
+        public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
+        [Required]
+        [EmailAddress]
         public string EmailAddress { get; set; }
+        [Required]
+        [StringLength(100, MinimumLength = 8)]
         public string Password { get; set; }
         public string ReenterPassword { get; set; }
+        public int PasswordLength => Password.Length;
 
         private HttpClient _httpClient;
         public RegisterViewModel()
@@ -27,8 +37,6 @@ namespace BlazingChat.ViewModels
 
         public async Task RegisterUser()
         {
-            Console.WriteLine(this.EmailAddress);
-            Console.WriteLine(this.Password);
             await _httpClient.PostAsJsonAsync<User>("user/registeruser", this);
         }
 
@@ -36,6 +44,8 @@ namespace BlazingChat.ViewModels
         {
             return new RegisterViewModel
             {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 EmailAddress = user.EmailAddress,
                 Password = user.Password
             };
@@ -45,6 +55,8 @@ namespace BlazingChat.ViewModels
         {
             return new User
             {
+                FirstName = registerViewModel.FirstName,
+                LastName = registerViewModel.LastName,
                 EmailAddress = registerViewModel.EmailAddress,
                 Password = registerViewModel.Password
             };

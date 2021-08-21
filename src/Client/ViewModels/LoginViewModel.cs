@@ -7,12 +7,16 @@ using System.Threading.Tasks;
 using BlazingChat.Client;
 using BlazingChat.Shared;
 using BlazingChat.Shared.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlazingChat.ViewModels
 {
     public class LoginViewModel : ILoginViewModel
     {
+        [Required]
+        [EmailAddress]
         public string EmailAddress { get; set; }
+        [Required]
         public string Password { get; set; }
         public bool RememberMe { get; set; }
 
