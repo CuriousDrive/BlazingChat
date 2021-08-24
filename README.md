@@ -29,9 +29,42 @@ The front-end is made using Blazor WebAssembly and the back-end is made using AS
 The best part about BlazingChat app is that it's been documented while it was getting built. 
 
 Please check out the videos below, if you want to learn how to build your own Blazor WebAssembly app from scratch.
-| Video Series | Topics |
+| Topic | Video Recording |
 | ----- | ---- |
-| [Start Watching](https://www.youtube.com/playlist?list=PL4WEkbdagHIRjjBJvK_TSfddJSvEEAtnt) | Blazor WebAssembly |
+| Introduction/Full Course/Workshop - EP01 | https://youtu.be/v6Mt8HKAWa0 |
+| Hello World from Windows/Linux - EP02 | https://youtu.be/BajljUky-KA |
+| Project Structure/Template - EP03 | https://youtu.be/S-skkhzcMmo |
+| Routing, NavigationManager & AdditionalAssemblies : EP04 | https://youtu.be/86vyb4vDGTk |
+| Debugging in VS Code, Chrome and Visual Studio : EP05 | https://youtu.be/4c2vli5567A |
+| Entity Framework Core - EP06 | https://youtu.be/rACHqnkaORA |
+| MVVM Architecture - EP07 | https://youtu.be/dvgReCfPsvg |
+| Dependency Injection in MVVM - EP08 | https://youtu.be/bxpSa0ZmwtY |
+| Using HttpClient in MVVM - EP09 | https://youtu.be/To-GSKOac10 |
+| Open-source Project - EP10 | https://youtu.be/6T-l-lt28rs |
+| Custom Authentication - EP11 | https://youtu.be/B9jKf-Dn0Yg |
+| AuthenticationState - EP12 | https://youtu.be/N8YoJRV19rw |
+| Twitter Authentication/Login - EP13 | https://youtu.be/TZSwbey58CM |
+| Facebook Authentication - EP14 | https://youtu.be/AoN-CzWJwa4 |
+| Google Authentication - EP15 | https://youtu.be/4lYPhionIEo |
+| Migrating from 3.1 to .NET 5 - EP16 | https://youtu.be/kcihC-h69fE |
+| CSS Isolation - EP17 | https://youtu.be/0EqMxSm_49k |
+| Uploading Files - EP18 | https://youtu.be/sF6yhn2UJNs |
+| Downloading Files : EP19 | https://youtu.be/qUbbtcZZqaI |
+| Virtualize Component - EP20 | https://youtu.be/UtmAlX6U29k |
+| JavaScript Isolation - EP21 | https://youtu.be/tbNgLNZnNWM |
+| Lazy-loading Assemblies - EP22 | https://youtu.be/e_22VhPQJj0 |
+| Deploy to IIS(Internet Information System) - EP23 | https://youtu.be/vV0zn91OZfc |
+| Creating Chat Application Using SignalR - EP24 | https://youtu.be/5VSUX6w5P8g |
+| SignalR - Sending Messages to Specific Clients - EP25 | https://youtu.be/SeQvP8_dVng |
+| Cookie Expiration & API Authorization - EP26 | https://youtu.be/QOFwpmjEW7g |
+| Logging to Database using Custom Logger Provider - EP27 | https://youtu.be/SmFsQJBbsO0 |
+| Global Exception Handling using CascadingValue - EP28 | https://youtu.be/mxOYvu2MWFo |
+| "Remember me" using Cookie Authentication - EP30 | https://youtu.be/220FQbMKyrg |
+| Dark/Light Theme Switch - EP31 | https://youtu.be/5qRaUviEYIw |
+| JWT Authorization - EP32 | https://youtu.be/bu6F4oeYdzA |
+| JWT For Facebook Authentication - EP33 | https://youtu.be/bBvDQ9z1Xdw |
+| Authorization using CascadingAuthenticationState & JWT - EP34 | https://youtu.be/uthjcpJHzKo |
+| Deploying Blazor WebAssembly app with WebAPI using GitHub Actions(CI/CD) for FREE - EP35 | https://youtu.be/m7DqtL0WIV0 |
 
 ## Have any other questions?
 
