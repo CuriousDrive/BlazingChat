@@ -64,7 +64,7 @@ Please check out the videos below, if you want to learn how to build your own Bl
 | JWT Authorization - EP32 | https://youtu.be/bu6F4oeYdzA |
 | JWT For Facebook Authentication - EP33 | https://youtu.be/bBvDQ9z1Xdw |
 | Authorization using CascadingAuthenticationState & JWT - EP34 | https://youtu.be/uthjcpJHzKo |
-| Deploying Blazor WebAssembly app with WebAPI using GitHub Actions(CI/CD) for FREE - EP35 | https://youtu.be/m7DqtL0WIV0 |
+| Deploying the app with WebAPI using GitHub Actions(CI/CD) for FREE - EP35 | https://youtu.be/m7DqtL0WIV0 |
 
 ## Have any other questions?
 
