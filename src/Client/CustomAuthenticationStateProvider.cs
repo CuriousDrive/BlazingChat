@@ -37,7 +37,10 @@ namespace BlazingChat.Client
                 return new AuthenticationState(claimsPrincipal);
             }
             else
+            {
+                await _localStorageService.RemoveItemAsync("jwt_token");
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+            }
         }
 
         public async Task<User> GetUserByJWTAsync()
