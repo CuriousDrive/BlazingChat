@@ -55,22 +55,30 @@ namespace BlazingChat.ViewModels
 
         public async Task<User> GetUserByJWTAsync(string jwtToken)
         {
-            //preparing the http request
-            var requestMessage = new HttpRequestMessage(HttpMethod.Post, "user/getuserbyjwt");
-            requestMessage.Content = new StringContent(jwtToken);
+            try
+            {
+                //preparing the http request
+                var requestMessage = new HttpRequestMessage(HttpMethod.Post, "user/getuserbyjwt");
+                requestMessage.Content = new StringContent(jwtToken);
 
-            requestMessage.Content.Headers.ContentType
-                = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+                requestMessage.Content.Headers.ContentType
+                    = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
-            //making the http request
-            var response = await _httpClient.SendAsync(requestMessage);
+                //making the http request
+                var response = await _httpClient.SendAsync(requestMessage);
 
-            var responseStatusCode = response.StatusCode;
-            var returnedUser = await response.Content.ReadFromJsonAsync<User>();
+                var responseStatusCode = response.StatusCode;
+                var returnedUser = await response.Content.ReadFromJsonAsync<User>();
 
-            //returning the user if found
-            if (returnedUser != null) return await Task.FromResult(returnedUser);
-            else return null;
+                //returning the user if found
+                if (returnedUser != null) return await Task.FromResult(returnedUser);
+                else return null;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.GetType());
+                return null;
+            }            
         }
 
         public async Task<TwitterRequestTokenResponse> GetTwitterOAuthTokenAsync()
