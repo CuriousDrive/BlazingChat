@@ -4,10 +4,14 @@ on:
   push:
     branches:
       - main
+    paths:
+      - src/Client/**
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
+    paths:
+      - src/Client/**
 
 jobs:
   build_and_deploy_job:
