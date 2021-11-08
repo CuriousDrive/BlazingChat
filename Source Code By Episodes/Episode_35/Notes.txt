@@ -1,0 +1,27 @@
+WebAPI => 
+
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 6.0.0-rc.2.21480.10
+dotnet add package Microsoft.AspNetCore.Components.WebAssembly.Server --version 6.0.0-rc.2.21480.10
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 6.0.0-rc.2.21480.5
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite --version 6.0.0-rc.2.21480.5
+dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design --version 6.0.0-rc.2.21511.1
+dotnet add package Swashbuckle.AspNetCore
+dotnet add package Bricelam.EntityFrameworkCore.Pluralizer
+dotnet add package RestSharp
+
+Client => 
+
+dotnet add package Microsoft.AspNetCore.Components.WebAssembly --version 6.0.0-rc.2.21480.10
+dotnet add package Microsoft.AspNetCore.Components.WebAssembly.Authentication --version 6.0.0-rc.2.21480.10
+dotnet add package Microsoft.AspNetCore.Components.WebAssembly.DevServer --version 6.0.0-rc.2.21480.10
+dotnet add package Microsoft.Extensions.Http --version 6.0.0-rc.2.21480.5
+dotnet add package Microsoft.Extensions.Http.Polly --version 6.0.0-rc.2.21480.10
+dotnet add package Microsoft.AspNetCore.Components.Authorization --version 6.0.0-rc.2.21480.10
+
+dotnet add package Microsoft.AspNetCore.WebUtilities
+dotnet add package Blazored.LocalStorage
+dotnet add package Blazored.Toast
+dotnet add package BlazorPro.Spinkit
+dotnet add package Radzen.Blazor
+dotnet add package System.Net.Http.Json
+

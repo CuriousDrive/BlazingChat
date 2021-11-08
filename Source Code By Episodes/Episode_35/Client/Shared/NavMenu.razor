@@ -1,0 +1,70 @@
+﻿@inject HttpClient _httpClient
+@inject NavigationManager _navigationManager
+@inject ILocalStorageService _localStorageService
+
+<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand bold-text" href="">BlazingChat</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="profile" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Profile
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="contacts">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Contacts
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="settings">
+                <span class="oi oi-plus" aria-hidden="true"></span> Settings
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="https://www.patreon.com/curiousdrive">
+                <span class="oi oi-heart" aria-hidden="true"></span> Donate
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="https://github.com/CuriousDrive/BlazingChat">
+                <span class="oi oi-bug" aria-hidden="true"></span> Source Code
+            </NavLink>
+        </li>
+        <AuthorizeView Roles="admin">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="assignroles">
+                    <span class="oi oi-key" aria-hidden="true"></span> Assign Roles
+                </NavLink>
+            </li>
+        </AuthorizeView>
+        <li class="nav-item px-3">
+            <a class="nav-link" href="" @onclick="Logout">
+                <span class="oi oi-lock-locked" aria-hidden="true"></span> Logout
+            </a>
+        </li>
+    </ul>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private async Task Logout()
+    {
+        //await _httpClient.GetAsync("user/logoutuser");
+        await _localStorageService.RemoveItemAsync("jwt_token");
+        _navigationManager.NavigateTo("/", true);
+    }
+}
