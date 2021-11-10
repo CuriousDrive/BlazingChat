@@ -1,0 +1,63 @@
+@page "/createaccount"
+@using BlazingChat.ViewModels
+@inject IRegisterViewModel _registerViewModel
+@inject NavigationManager _navigationManager
+@inject IToastService _toastService
+
+<p class="alert alert-primary">
+    <b>Note : </b>To activate your account, you are going to need to send an email. Please use correct email address.
+</p>
+<hr class="white-horizontal-line">
+<h2 class="white-text"><b>Create an account</b></h2>
+<hr class="white-horizontal-line">
+<SpinLoader IsLoading="IsLoading">
+    <LoadingTemplate>
+        <div class="col-12" style="background-color: lightgray; height:400px; vertical-align:middle">
+            <br /><br />
+            <Chase Center="true" Color="blue" Size="70px"></Chase>
+        </div>
+    </LoadingTemplate>
+    <ContentTemplate>
+        <EditForm Model="@_registerViewModel" OnValidSubmit="@RegisterUser">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="col-xl-6 col-md-8 col-12">
+                <input type="text" @bind="_registerViewModel.FirstName" placeholder="first name" class="form-control dark-theme-textbox" >
+            </div>
+            <br />
+            <div class="col-xl-6 col-md-8 col-12">
+                <input type="text" @bind="_registerViewModel.LastName" placeholder="last name" class="form-control dark-theme-textbox">
+            </div>
+            <br />
+            <div class="col-xl-6 col-md-8 col-12">
+                <input type="text" @bind="_registerViewModel.EmailAddress" placeholder="email address" class="form-control dark-theme-textbox" autocomplete="new-emailaddress">
+            </div>
+            <br />
+            <div class="col-xl-6 col-md-8 col-12">
+                <input type="password" @bind="_registerViewModel.Password" placeholder="password" class="form-control dark-theme-textbox" autocomplete="new-password">
+            </div>
+            <br />
+            <div class="col-xl-6 col-md-8 col-12">
+                <button type="submit" class="btn btn-danger">Register</button>
+                &nbsp;
+                <a style="font-weight: bold;" href="">Already have an account?</a>
+            </div>
+        </EditForm>
+        <hr class="white-horizontal-line"/>
+        <ExternalLogins />
+    </ContentTemplate>
+</SpinLoader>
+
+@code {
+	public bool IsLoading {get; set;} = false;
+
+    public async Task RegisterUser()
+    {
+		IsLoading = true;
+        await _registerViewModel.RegisterUser();
+		IsLoading = false;
+
+        _toastService.ShowInfo("Your user has been created in the system. Please login with your credentials");
+        _navigationManager.NavigateTo($"/{true}");
+    }
+}
