@@ -11,6 +11,7 @@ using Blazored.Toast;
 using Blazored.LocalStorage;
 using BlazingChat.Client.Handlers;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Http;
 
 namespace BlazingChat.Client
 {
@@ -50,22 +51,23 @@ namespace BlazingChat.Client
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) });
 
+            builder.Services.ConfigureAll<HttpClientFactoryOptions>(options =>
+                options.HttpMessageHandlerBuilderActions.Add(handlerBuilder =>
+                    handlerBuilder.AdditionalHandlers.Add(
+                        handlerBuilder.Services.GetRequiredService<CustomAuthorizationHandler>())));
+
             //transactional named http clients
             builder.Services.AddHttpClient<IProfileViewModel, ProfileViewModel>
-                ("ProfileViewModelClient", client => client.BaseAddress = new Uri(baseAddress))
-                .AddHttpMessageHandler<CustomAuthorizationHandler>();
+                ("ProfileViewModelClient", client => client.BaseAddress = new Uri(baseAddress));
 
             builder.Services.AddHttpClient<IContactsViewModel, ContactsViewModel>
-                ("ContactsViewModelClient", client => client.BaseAddress = new Uri(baseAddress))
-                .AddHttpMessageHandler<CustomAuthorizationHandler>();
+                ("ContactsViewModelClient", client => client.BaseAddress = new Uri(baseAddress));
 
             builder.Services.AddHttpClient<ISettingsViewModel, SettingsViewModel>
-                ("SettingsViewModelClient", client => client.BaseAddress = new Uri(baseAddress))
-                .AddHttpMessageHandler<CustomAuthorizationHandler>();
+                ("SettingsViewModelClient", client => client.BaseAddress = new Uri(baseAddress));
 
             builder.Services.AddHttpClient<IAssignRolesViewModel, AssignRolesViewModel>
-                ("AssignRolesViewModel", client => client.BaseAddress = new Uri(baseAddress))
-                .AddHttpMessageHandler<CustomAuthorizationHandler>();
+                ("AssignRolesViewModel", client => client.BaseAddress = new Uri(baseAddress));
 
             //authentication http clients
             builder.Services.AddHttpClient<ILoginViewModel, LoginViewModel>
