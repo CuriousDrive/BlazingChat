@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,10 +13,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BlazingChat.WebAPI
 {
@@ -46,23 +42,25 @@ namespace BlazingChat.WebAPI
                                                 .AllowAnyMethod();
                                     });
             });
+            
             services.AddControllers();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BlazingChat.WebAPI", Version = "v1" });
             });
-
-            // services from BlazingChat.Server
+            
             services.AddSignalR();
+            
             services.AddDbContext<BlazingChatContext>();
-
+            
             services.AddAuthentication(options =>
             {
                 //options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(jwtBearerOptions =>
+                    .AddJwtBearer(jwtBearerOptions =>
             {
                 jwtBearerOptions.RequireHttpsMetadata = true;
                 jwtBearerOptions.SaveToken = true;
@@ -75,12 +73,15 @@ namespace BlazingChat.WebAPI
                     ClockSkew = TimeSpan.Zero
                 };
             });
+            
             services.AddResponseCompression(opts =>
             {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
+            
             services.AddHttpContextAccessor();
+            
             services.AddHttpClient();
         }
 
@@ -88,7 +89,6 @@ namespace BlazingChat.WebAPI
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             var serviceProvider = app.ApplicationServices.CreateScope().ServiceProvider;
-
             var appDBContext = serviceProvider.GetRequiredService<BlazingChatContext>();
             var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
 
@@ -102,15 +102,17 @@ namespace BlazingChat.WebAPI
             }
 
             app.UseResponseCompression();
+            
             app.UseHttpsRedirection();
-
+            
             app.UseRouting();
-
+            
             app.UseCors(MyAllowSpecificOrigins);
-
+            
             app.UseAuthentication();
+            
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

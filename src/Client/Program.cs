@@ -1,17 +1,16 @@
+using BlazingChat.Client.Handlers;
+using BlazingChat.Client.Logging;
+using BlazingChat.ViewModels;
+using Blazored.LocalStorage;
+using Blazored.Toast;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using BlazingChat.ViewModels;
-using Microsoft.AspNetCore.Components.Authorization;
-using BlazingChat.Client.Logging;
-using Blazored.Toast;
-using Blazored.LocalStorage;
-using BlazingChat.Client.Handlers;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Http;
 
 namespace BlazingChat.Client
 {
@@ -22,33 +21,12 @@ namespace BlazingChat.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
+            #region ConfigureServices
+
+            string baseAddress = builder.Configuration["BaseAddress"];
+
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
-
-            AddHttpClients(builder, builder.Configuration);
-
-            builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
-            builder.Services.AddBlazoredLocalStorage();
-
-            builder.Services.AddTransient<CustomAuthorizationHandler>();
-
-            builder.Services.AddLogging(logging =>
-            {
-                var httpClient = builder.Services.BuildServiceProvider().GetRequiredService<HttpClient>();
-                var authenticationStateProvider = builder.Services.BuildServiceProvider().GetRequiredService<AuthenticationStateProvider>();
-                logging.SetMinimumLevel(LogLevel.Error);
-                logging.AddProvider(new ApplicationLoggerProvider(httpClient, authenticationStateProvider));
-            });
-
-            builder.Services.AddBlazoredToast();
-
-            await builder.Build().RunAsync();
-        }
-
-        public static void AddHttpClients(WebAssemblyHostBuilder builder, IConfiguration configuration)
-        {
-            string baseAddress = configuration["BaseAddress"];
-
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) });
 
             builder.Services.ConfigureAll<HttpClientFactoryOptions>(options =>
@@ -76,6 +54,21 @@ namespace BlazingChat.Client
             builder.Services.AddHttpClient<IRegisterViewModel, RegisterViewModel>
                 ("RegisterViewModelClient", client => client.BaseAddress = new Uri(baseAddress));
 
+            builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+            builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddTransient<CustomAuthorizationHandler>();
+            builder.Services.AddLogging(logging =>
+            {
+                var httpClient = builder.Services.BuildServiceProvider().GetRequiredService<HttpClient>();
+                var authenticationStateProvider = builder.Services.BuildServiceProvider().GetRequiredService<AuthenticationStateProvider>();
+                logging.SetMinimumLevel(LogLevel.Error);
+                logging.AddProvider(new ApplicationLoggerProvider(httpClient, authenticationStateProvider));
+            });
+            builder.Services.AddBlazoredToast();
+
+            #endregion
+            
+            await builder.Build().RunAsync();
         }
     }
 }
