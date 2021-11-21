@@ -8,7 +8,8 @@ namespace BlazingChat.Client.Handlers
 {
     public class CustomAuthorizationHandler : DelegatingHandler
     {
-        public ILocalStorageService _localStorageService { get; set; }
+        private readonly ILocalStorageService _localStorageService;
+
         public CustomAuthorizationHandler(ILocalStorageService localStorageService)
         {
             //injecting local storage service
