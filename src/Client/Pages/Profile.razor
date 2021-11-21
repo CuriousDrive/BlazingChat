@@ -1,6 +1,7 @@
 ﻿@page "/profile"
-@using BlazingChat.ViewModels
+
 @using System.Security.Claims
+
 @inject IProfileViewModel _profileViewModel
 @inject NavigationManager _navigationManager
 @inject IJSRuntime _jsRuntime
@@ -12,10 +13,10 @@
 
 <SpinLoader IsLoading="IsLoading">
     <LoadingTemplate>
-            <div class="col-12" style="background-color: lightgray; height:400px; vertical-align:middle">
-                <br /><br />
-                <Chase Center="true" Color="blue" Size="70px"></Chase>
-            </div>
+        <div class="col-12" style="background-color: lightgray; height:400px; vertical-align:middle">
+            <br /><br />
+            <Chase Center="true" Color="blue" Size="70px"></Chase>
+        </div>
     </LoadingTemplate>
     <ContentTemplate>
         <div class="row">
@@ -34,7 +35,6 @@
                 <br/>
                 <button class="btn btn-primary" disabled="@(!IsUserAuthorized)" @onclick="_profileViewModel.UpdateProfile">Save</button>
                 <button class="btn btn-primary" disabled="@(!IsUserAuthorized)" @onclick="DownloadProfilePicture">Download Picture</button>
-                @* <button class="btn btn-primary" @onclick="DownloadServerFile">Download a Document</button> *@
             </div>
         </div>
     </ContentTemplate>
@@ -45,22 +45,23 @@
 <br />
 
 @code {
-
     [CascadingParameter]
-    public Task<AuthenticationState> authenticationState { get; set; }
-    public bool IsLoading { get; set; } = true;
-    public bool IsUserAuthorized { get; set; } = false;
+    public Task<AuthenticationState> AuthenticationState { get; set; }
+
+    private bool IsLoading { get; set; } = true;
+    private bool IsUserAuthorized { get; set; }
     
     protected override async Task OnInitializedAsync() 
     {
-        var authState = await authenticationState;
+        var authState = await AuthenticationState;
         var user = authState.User;
-        
-        if(user.Identity.IsAuthenticated)
+
+        if(user.Identity is { IsAuthenticated: true })
         {
             var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
             _profileViewModel.UserId = Convert.ToInt64(claim?.Value);
             IsUserAuthorized = user.IsInRole("admin") || user.IsInRole("general");
+
             try
             {
                 await _profileViewModel.GetProfile();
@@ -72,12 +73,9 @@
                 }
                 IsLoading = false;
             }
-            catch (System.Net.Http.HttpRequestException ex)
+            catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
-                if(ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                {
-                    //_navigationManager.NavigateTo("/", true);
-                }
+                //_navigationManager.NavigateTo("/", true);
             }
         }
         else
@@ -100,21 +98,23 @@
 
     private async Task DownloadProfilePicture()
     {
-        string[] base64String = _profileViewModel.ProfilePicDataUrl.Split(',');
+        var base64String = _profileViewModel.ProfilePicDataUrl.Split(',')[1];
         
-        //await _jsRuntime.InvokeVoidAsync("downloadFile","image/png",base64String[1],"profile.png");
-
         var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
-        await module.InvokeVoidAsync("downloadFile","image/png",base64String[1],"profile.png");
+        await module.InvokeVoidAsync("downloadFile","image/png",base64String,"profile.png");
     }
 
     private async Task DownloadServerFile()
     {
         //get base64 string from web api call
         var httpResponseMessage = await _httpClient.GetAsync("user/DownloadServerFile");
-        var base64String = httpResponseMessage.Content.ReadAsStringAsync().Result;
+        var base64String = await httpResponseMessage.Content.ReadAsStringAsync();
 
         //call javascript function to download the file
-        await _jsRuntime.InvokeVoidAsync("downloadFile","application/vnd.openxmlformats-officedocument.wordprocessingml.document",base64String, "document.docx");
+        await _jsRuntime.InvokeVoidAsync(
+            "downloadFile",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            base64String,
+            "document.docx");
     }
 }

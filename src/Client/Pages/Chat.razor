@@ -1,12 +1,10 @@
 @page "/chat"
 @page "/chat/{ToUserId}"
-@using BlazingChat.Shared.Models
-@using Microsoft.AspNetCore.Components.Authorization
+
 @using Microsoft.AspNetCore.SignalR.Client
-@using BlazingChat.ViewModels
 @using Microsoft.AspNetCore.Components.WebAssembly.Hosting
-@using Microsoft.AspNetCore.Authorization
 @using Microsoft.Extensions.Configuration
+
 @inject NavigationManager _navigationManager
 @inject IJSRuntime _jsRuntime
 @inject HttpClient _httpClient
@@ -15,6 +13,7 @@
 @inject IProfileViewModel _prolfileViewModel
 @inject IWebAssemblyHostEnvironment _webAssemblyHostEnvironment
 @inject IConfiguration _configuration
+
 @attribute [Authorize(Roles = "admin, general")]
 
 <div style="border:0px;height:90vh;">
@@ -37,7 +36,7 @@
             </div>
         </div>
         <div id="divMessageContainerBase" class="panel-body msg_container_base">
-            @if (Messages != null && Messages.Count() > 0)
+            @if (Messages?.Any() ?? false)
             {
                 @foreach (var message in Messages)
                 {
@@ -81,20 +80,22 @@
 @code {
     [Parameter]
     public string ToUserId { get; set; }
-    public User ToUser { get; set; } = new User();
-    public string FromUserId { get; set; }
-    public string MessageText { get; set; }
-    public List<Message> Messages { get; set; } = new List<Message>();
+
+    private User ToUser { get; set; } = new();
+    private string FromUserId { get; set; }
+    private string MessageText { get; set; }
+    private List<Message> Messages { get; } = new();
 
     [CascadingParameter]
-    public Task<AuthenticationState> authenticationStateTask { get; set; }
-    private HubConnection hubConnection;
+    public Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    private HubConnection _hubConnection;
 
     protected override async Task OnInitializedAsync()
     {
-        var claimsPrincipal = (await authenticationStateTask).User;
+        var claimsPrincipal = (await AuthenticationStateTask).User;
 
-        if (!claimsPrincipal.Identity.IsAuthenticated)
+        if (claimsPrincipal.Identity is not { IsAuthenticated: true })
             _navigationManager.NavigateTo("/");
 
         var jwtToken = await _localStorageService.GetItemAsStringAsync("jwt_token");
@@ -106,19 +107,21 @@
         {
             _prolfileViewModel.UserId = Convert.ToInt64(ToUserId);
             await _prolfileViewModel.GetProfile();
-            ToUser = new User();
-
-            ToUser.FirstName = _prolfileViewModel.FirstName;
-            ToUser.LastName = _prolfileViewModel.LastName;
-            ToUser.EmailAddress = _prolfileViewModel.EmailAddress;
+            ToUser = new User
+            {
+                FirstName = _prolfileViewModel.FirstName,
+                LastName = _prolfileViewModel.LastName,
+                EmailAddress = _prolfileViewModel.EmailAddress,
+            };
         }
-        string baseAddress = _configuration["BaseAddress"];
 
-        hubConnection = new HubConnectionBuilder()
-                            .WithUrl(baseAddress + "chathub")
+        var baseAddress = _configuration["BaseAddress"];
+
+        _hubConnection = new HubConnectionBuilder()
+                            .WithUrl($"{baseAddress}chathub")
                             .Build();
 
-        hubConnection.On<Message>("ReceiveMessage", (message) =>
+        _hubConnection.On<Message>("ReceiveMessage", message =>
         {
             if (message.FromUserId == FromUserId ||
             (message.ToUserId == FromUserId && message.FromUserId == ToUserId))
@@ -128,16 +131,16 @@
             }
         });
 
-        await hubConnection.StartAsync();
+        await _hubConnection.StartAsync();
     }
 
-    public async Task OnKeyDownEvent(KeyboardEventArgs eventArgs)
+    private async Task OnKeyDownEvent(KeyboardEventArgs eventArgs)
     {
         if (eventArgs.Code == "Enter" || eventArgs.Code == "NumpadEnter")
         {
             var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
-            string messsageToBeSent = await module.InvokeAsync<string>("getMessageInput");
-            await Send(messsageToBeSent);
+            var messageToBeSent = await module.InvokeAsync<string>("getMessageInput");
+            await Send(messageToBeSent);
         }
     }
 
@@ -150,7 +153,7 @@
             message.FromUserId = FromUserId;
             message.MessageText = MessageText;
 
-            await hubConnection.SendAsync("SendMessage", message);
+            await _hubConnection.SendAsync("SendMessage", message);
             MessageText = "";
         }
     }

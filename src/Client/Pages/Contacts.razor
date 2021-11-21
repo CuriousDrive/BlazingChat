@@ -1,5 +1,5 @@
 @page "/contacts"
-@using BlazingChat.ViewModels
+
 @inject IContactsViewModel _contactsViewModel
 @inject NavigationManager _navigationManager
 
@@ -41,7 +41,7 @@
 
 @code {
     [CascadingParameter]
-    public Task<AuthenticationState> authenticationState { get; set; }
+    public Task<AuthenticationState> AuthenticationState { get; set; }
 
     [CascadingParameter]
     public Error Error { get; set; }
@@ -56,19 +56,15 @@
     {
         try
         {
-            var authState = await authenticationState;
-            var user = authState.User;
+            var authState = await AuthenticationState;
 
-            if (user.Identity.IsAuthenticated)
+            if (authState.User.Identity is { IsAuthenticated: true })
             {
-                //await _contactsViewModel.LoadAllContactsDemo();
-                
-                //throw new IndexOutOfRangeException();
                 await _contactsViewModel.LoadContactsCountDB();
             }
             else _navigationManager.NavigateTo("/");
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             Error.ProcessError(ex);
         }

@@ -1,6 +1,7 @@
 ﻿@page "/settings"
-@using BlazingChat.ViewModels
+
 @using System.Security.Claims
+
 @inject ISettingsViewModel _settingsViewModel
 @inject NavigationManager _navigationManager
 @inject IJSRuntime _jsRuntime
@@ -22,28 +23,27 @@
 </div>
 <ActivateMessage></ActivateMessage>
 @code {
-
     [CascadingParameter]
-    public Task<AuthenticationState> authenticationState { get; set; }
+    public Task<AuthenticationState> AuthenticationState { get; set; }
     
     [CascadingParameter]
     public Error Error { get; set; }
-    public bool IsUserAuthorized { get; set; } = false;
+
+    private bool IsUserAuthorized { get; set; }
 
     protected override async Task OnInitializedAsync() 
     {
         try
         {
-            var authState = await authenticationState;//_authenticationStateProvider.GetAuthenticationStateAsync();
+            var authState = await AuthenticationState;//_authenticationStateProvider.GetAuthenticationStateAsync();
             var user = authState.User;
 
-            if(user.Identity.IsAuthenticated)
+            if(user.Identity is { IsAuthenticated: true })
             {
                 var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
                 _settingsViewModel.UserId = Convert.ToInt64(claim?.Value);
                 IsUserAuthorized = user.IsInRole("admin") || user.IsInRole("general");
                 
-                //throw new NullReferenceException();
                 await _settingsViewModel.GetProfile();
             }
             else
@@ -51,7 +51,7 @@
                 _navigationManager.NavigateTo("/");
             }
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             Error.ProcessError(ex);
         }
@@ -63,7 +63,7 @@
         var themeName = _settingsViewModel.DarkTheme ? "dark" : "light";
 
         //calling JS function
-        var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
+        var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/site.js");
         await module.InvokeVoidAsync("setTheme", themeName);
 
         //persisting the settings in DB
