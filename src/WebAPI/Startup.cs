@@ -83,6 +83,7 @@ namespace BlazingChat.WebAPI
             services.AddHttpContextAccessor();
             
             services.AddHttpClient();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,9 +91,8 @@ namespace BlazingChat.WebAPI
         {
             var serviceProvider = app.ApplicationServices.CreateScope().ServiceProvider;
             var appDBContext = serviceProvider.GetRequiredService<BlazingChatContext>();
-            var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
 
-            loggerFactory.AddProvider(new ApplicationLoggerProvider(appDBContext, httpContextAccessor));
+            loggerFactory.AddProvider(new ApplicationLoggerProvider(appDBContext));
 
             if (env.IsDevelopment())
             {

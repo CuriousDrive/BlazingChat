@@ -12,10 +12,9 @@ namespace BlazingChat.WebAPI.Logging
 
         public IHttpContextAccessor _httpContextAccessor { get; }
 
-        public DatabaseLogger(BlazingChatContext context, IHttpContextAccessor httpContextAccessor)
+        public DatabaseLogger(BlazingChatContext context)
         {
             _context = context;
-            _httpContextAccessor = httpContextAccessor;
         }
         public IDisposable BeginScope<TState>(TState state)
         {
@@ -29,7 +28,7 @@ namespace BlazingChat.WebAPI.Logging
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            //Need to figure out how can we get userid for the logger when using JWT authorization
+            //No need to log UserId as the userId is already coming from the client error log
             long userId = 0;
 
             Log log = new();
