@@ -84,16 +84,17 @@ namespace BlazingChat.WebAPI
             
             services.AddHttpClient();
 
+            services.AddLogging(logging =>
+            {
+                var serviceProvider = services.BuildServiceProvider();
+                var appDBContext = serviceProvider.GetRequiredService<BlazingChatContext>();
+                logging.AddProvider(new ApplicationLoggerProvider(appDBContext));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var serviceProvider = app.ApplicationServices.CreateScope().ServiceProvider;
-            var appDBContext = serviceProvider.GetRequiredService<BlazingChatContext>();
-
-            loggerFactory.AddProvider(new ApplicationLoggerProvider(appDBContext));
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
