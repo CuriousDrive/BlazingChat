@@ -34,31 +34,31 @@ namespace BlazingChat.WebAPI
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
-                        builder =>  {
-                                      builder.WithOrigins("https://localhost:5001",
-                                                "https://www.blazingchat.com")
-                                                .AllowAnyHeader()
-                                                .AllowAnyMethod();
-                                    });
+                        builder =>
+                        {
+                            builder.WithOrigins("https://localhost:5001",
+                                      "https://www.blazingchat.com")
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod();
+                        });
             });
-            
+
             services.AddControllers();
-            
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BlazingChat.WebAPI", Version = "v1" });
             });
-            
+
             services.AddSignalR();
-            
+
             services.AddDbContext<BlazingChatContext>();
-            
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                    .AddJwtBearer(jwtBearerOptions =>
+            }).AddJwtBearer(jwtBearerOptions =>
             {
                 jwtBearerOptions.RequireHttpsMetadata = true;
                 jwtBearerOptions.SaveToken = true;
@@ -71,15 +71,13 @@ namespace BlazingChat.WebAPI
                     ClockSkew = TimeSpan.Zero
                 };
             });
-            
+
             services.AddResponseCompression(opts =>
             {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
-            
-            services.AddHttpContextAccessor();
-            
+
             services.AddHttpClient();
 
             services.AddLogging(logging =>
@@ -101,17 +99,17 @@ namespace BlazingChat.WebAPI
             }
 
             app.UseResponseCompression();
-            
+
             app.UseHttpsRedirection();
-            
+
             app.UseRouting();
-            
+
             app.UseCors(MyAllowSpecificOrigins);
-            
+
             app.UseAuthentication();
-            
+
             app.UseAuthorization();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
