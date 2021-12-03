@@ -1,19 +1,18 @@
+using System;
+using System.Linq;
+using System.Text;
 using BlazingChat.WebAPI.Hubs;
 using BlazingChat.WebAPI.Logging;
 using BlazingChat.WebAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Linq;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -40,7 +39,8 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddSignalR();
 
-builder.Services.AddDbContext<BlazingChatContext>();
+builder.Services.AddDbContext<BlazingChatContext>(options => options.UseSqlite("Name=BlazingChat"));
+builder.Services.AddDbContextFactory<LoggingBlazingChatContext>(options => options.UseSqlite("Name=BlazingChat"));
 
 builder.Services.AddAuthentication(options =>
 {
@@ -68,12 +68,7 @@ builder.Services.AddResponseCompression(opts =>
 
 builder.Services.AddHttpClient();
 
-builder.Services.AddLogging(logging =>
-{
-    var serviceProvider = builder.Services.BuildServiceProvider();
-    var appDBContext = serviceProvider.GetRequiredService<BlazingChatContext>();
-    logging.AddProvider(new ApplicationLoggerProvider(appDBContext));
-});
+builder.Services.AddSingleton<ILoggerProvider, ApplicationLoggerProvider>();
 #endregion
 
 var app = builder.Build();

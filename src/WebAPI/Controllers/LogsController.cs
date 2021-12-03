@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BlazingChat.WebAPI.Models;
@@ -13,9 +11,9 @@ namespace BlazingChat.WebAPI.Controllers
     [Route("[controller]")]
     public class LogsController : ControllerBase
     {
-        private readonly BlazingChatContext _context;
+        private readonly LoggingBlazingChatContext _context;
 
-        public LogsController(BlazingChatContext context)
+        public LogsController(LoggingBlazingChatContext context)
         {
             _context = context;
         }

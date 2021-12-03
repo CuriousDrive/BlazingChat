@@ -1,20 +1,17 @@
 using System;
-using System.Security.Claims;
 using BlazingChat.WebAPI.Models;
-using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace BlazingChat.WebAPI.Logging
 {
     public class DatabaseLogger : ILogger
     {
-        private readonly BlazingChatContext _context;
+        private readonly IDbContextFactory<LoggingBlazingChatContext> _contextFactory;
 
-        public IHttpContextAccessor _httpContextAccessor { get; }
-
-        public DatabaseLogger(BlazingChatContext context)
+        public DatabaseLogger(IDbContextFactory<LoggingBlazingChatContext> contextFactory)
         {
-            _context = context;
+            _contextFactory = contextFactory;
         }
         public IDisposable BeginScope<TState>(TState state)
         {
@@ -39,8 +36,9 @@ namespace BlazingChat.WebAPI.Logging
             log.Source = "Server";
             log.CreatedDate = DateTime.Now.ToString();
 
-            _context.Logs.Add(log);
-            _context.SaveChanges();
+            using var context = _contextFactory.CreateDbContext();
+            context.Logs.Add(log);
+            context.SaveChanges();
         }
     }
 }
