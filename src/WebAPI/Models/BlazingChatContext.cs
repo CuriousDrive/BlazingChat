@@ -1,6 +1,4 @@
-﻿using System;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
@@ -18,16 +16,7 @@ namespace BlazingChat.WebAPI.Models
         }
 
         public virtual DbSet<ChatHistory> ChatHistories { get; set; }
-        public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<User> Users { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlite("Name=BlazingChat");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -63,23 +52,6 @@ namespace BlazingChat.WebAPI.Models
                     .WithMany(p => p.ChatHistoryToUsers)
                     .HasForeignKey(d => d.ToUserId)
                     .OnDelete(DeleteBehavior.ClientSetNull);
-            });
-
-            modelBuilder.Entity<Log>(entity =>
-            {
-                entity.Property(e => e.LogId).HasColumnName("log_id");
-
-                entity.Property(e => e.CreatedDate).HasColumnName("created_date");
-
-                entity.Property(e => e.ExceptionMessage).HasColumnName("exception_message");
-
-                entity.Property(e => e.LogLevel).HasColumnName("log_level");
-
-                entity.Property(e => e.Source).HasColumnName("source");
-
-                entity.Property(e => e.StackTrace).HasColumnName("stack_trace");
-
-                entity.Property(e => e.UserId).HasColumnName("user_id");
             });
 
             modelBuilder.Entity<User>(entity =>

@@ -1,20 +1,20 @@
 using BlazingChat.WebAPI.Models;
-using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace BlazingChat.WebAPI.Logging
 {
     public class ApplicationLoggerProvider : ILoggerProvider
     {
-        private readonly BlazingChatContext _context;
+        private readonly IDbContextFactory<LoggingBlazingChatContext> _contextFactory;
 
-        public ApplicationLoggerProvider(BlazingChatContext context)
+        public ApplicationLoggerProvider(IDbContextFactory<LoggingBlazingChatContext> contextFactory)
         {
-            _context = context;
+            _contextFactory = contextFactory;
         }
         public ILogger CreateLogger(string categoryName)
         {
-            return new DatabaseLogger(_context);
+            return new DatabaseLogger(_contextFactory);
         }
 
         public void Dispose()
