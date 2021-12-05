@@ -1,7 +1,6 @@
 @page "/"
 @page "/{RegisterRedirect:bool}"
-@using BlazingChat.ViewModels
-@using BlazingChat.Shared
+
 @inject ILoginViewModel _loginViewModel
 @inject NavigationManager _navigationManager
 @inject ILocalStorageService _localStorageService
@@ -10,9 +9,9 @@
 
 <hr class="white-horizontal-line" />
 <div class="col-12">
-	<h2 class="white-text">
-		<b>Login</b>
-	</h2>
+    <h2 class="white-text">
+        <b>Login</b>
+    </h2>
 </div>
 <SpinLoader IsLoading="IsLoading">
     <LoadingTemplate>
@@ -22,84 +21,82 @@
         </div>
     </LoadingTemplate>
     <ContentTemplate>
-		<hr class="white-horizontal-line" />
-		<EditForm Model="@_loginViewModel" OnValidSubmit="@AuthenticateJWT">
-			<DataAnnotationsValidator />
-			<ValidationSummary />
-			<div class="col-xl-6 col-md-8 col-12">
-				<input @onkeypress="OnKeyPress" type="text" @bind="_loginViewModel.EmailAddress" class="form-control dark-theme-textbox" placeholder="email address">
-			</div>
-			<br />
-			<div class="col-xl-6 col-md-8 col-12">
-				<input @onkeypress="OnKeyPress" type="password" @bind="_loginViewModel.Password" class="form-control dark-theme-textbox" placeholder="password">
-			</div>
-			<br />
-			<div class="col-xl-6 col-md-8 col-12 row">
-				<div class="col-xl-2 col-lg-2 col-md-6 col-sm-3 col-3">
-					<button type="submit" class="btn btn-danger">Login</button>
-				</div>
-				<div class="col-xl-5 col-lg-5 col-md-6 col-sm-9 col-9">
-					<a style="font-weight: bold;" href="/createaccount">Create an account</a>
-				</div>
-			</div>
-		</EditForm>
-		<hr class="white-horizontal-line" />
-		<ExternalLogins />
-		<div class="col-12">
-			<p style="font-size: larger;" class="white-text">
-				BlazingChat is a sample Blazor WebAssembly app made for the community
-			</p>
-		</div>
-	</ContentTemplate>
+        <hr class="white-horizontal-line" />
+        <EditForm Model="@_loginViewModel" OnValidSubmit="@AuthenticateJWT">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="col-xl-6 col-md-8 col-12">
+                <input @onkeypress="OnKeyPress" type="text" @bind="_loginViewModel.EmailAddress" class="form-control dark-theme-textbox" placeholder="email address">
+            </div>
+            <br />
+            <div class="col-xl-6 col-md-8 col-12">
+                <input @onkeypress="OnKeyPress" type="password" @bind="_loginViewModel.Password" class="form-control dark-theme-textbox" placeholder="password">
+            </div>
+            <br />
+            <div class="col-xl-6 col-md-8 col-12 row">
+                <div class="col-xl-2 col-lg-2 col-md-6 col-sm-3 col-3">
+                    <button type="submit" class="btn btn-danger">Login</button>
+                </div>
+                <div class="col-xl-5 col-lg-5 col-md-6 col-sm-9 col-9">
+                    <a style="font-weight: bold;" href="/createaccount">Create an account</a>
+                </div>
+            </div>
+        </EditForm>
+        <hr class="white-horizontal-line" />
+        <ExternalLogins />
+        <div class="col-12">
+            <p style="font-size: larger;" class="white-text">
+                BlazingChat is a sample Blazor WebAssembly app made for the community
+            </p>
+        </div>
+    </ContentTemplate>
 </SpinLoader>
 
-
 @code {
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationState { get; set; }
+    
+    [Parameter]
+    public bool RegisterRedirect { get; set; }
+    
+    private bool IsLoading { get; set; }
 
-	[CascadingParameter]
-	public Task<AuthenticationState> authenticationState { get; set; }
-	[Parameter]
-	public bool RegisterRedirect {get; set;}
-	public bool IsLoading {get; set;} = false;
+    protected override async Task OnInitializedAsync()
+    {
+        //Initializing the login details for John Smith
+        if(!RegisterRedirect)
+        {
+            _loginViewModel.EmailAddress = "john.smith@gmail.com";
+            _loginViewModel.Password = "john.smith";
+        }
 
-	protected override async Task OnInitializedAsync()
-	{
-		//Initializing the login details for John Smith
+        var authState = await AuthenticationState;
 
-		if(!RegisterRedirect)
-		{
-			_loginViewModel.EmailAddress = "john.smith@gmail.com";
-			_loginViewModel.Password = "john.smith";
-		}
+        if (authState.User.Identity is { IsAuthenticated: true })
+        {
+            _navigationManager.NavigateTo("/profile");
+        }
+    }
 
-		var authState = await authenticationState;
-		var user = authState.User;
+    async Task OnKeyPress(KeyboardEventArgs args)
+    {
+        if (args.Key == "Enter")
+            await AuthenticateJWT();
+    }
 
-		if (user.Identity.IsAuthenticated)
-		{
-			_navigationManager.NavigateTo("/profile");
-		}
-	}
-
-	async Task OnKeyPress(KeyboardEventArgs args)
-	{
-		if (args.Key == "Enter")
-			await AuthenticateJWT();
-	}
-
-	public async Task AuthenticateJWT()
-	{
-		IsLoading = true;
-		AuthenticationResponse authenticationResponse = await _loginViewModel.AuthenticateJWT();
-		if (authenticationResponse.Token != string.Empty)
-		{
-			await _localStorageService.SetItemAsync("jwt_token", authenticationResponse.Token);
-			_navigationManager.NavigateTo("/", true);
-		}
-		else
-		{
-			_toastService.ShowError("Invalid username or password");
-		}
-		IsLoading = false;
-	}
+    private async Task AuthenticateJWT()
+    {
+        IsLoading = true;
+        AuthenticationResponse authenticationResponse = await _loginViewModel.AuthenticateJWT();
+        if (authenticationResponse.Token != string.Empty)
+        {
+            await _localStorageService.SetItemAsync("jwt_token", authenticationResponse.Token);
+            _navigationManager.NavigateTo("/", true);
+        }
+        else
+        {
+            _toastService.ShowError("Invalid username or password");
+        }
+        IsLoading = false;
+    }
 }

@@ -52,18 +52,17 @@
 </div>
 
 @code {
-    private bool collapseNavMenu = true;
+    private bool _collapseNavMenu = true;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {
-        collapseNavMenu = !collapseNavMenu;
+        _collapseNavMenu = !_collapseNavMenu;
     }
 
     private async Task Logout()
     {
-        //await _httpClient.GetAsync("user/logoutuser");
         await _localStorageService.RemoveItemAsync("jwt_token");
         _navigationManager.NavigateTo("/", true);
     }

@@ -1,9 +1,8 @@
 @page "/assignroles"
-@using BlazingChat.ViewModels
-@using BlazingChat.Shared.Models
-@using Microsoft.AspNetCore.Authorization
+
 @inject IAssignRolesViewModel _assignRolesViewModel
 @inject IToastService _toastService
+
 @attribute [Authorize(Roles = "admin")]
 
 <h2 class="white-text"><b>Assign Roles</b></h2>
@@ -14,9 +13,9 @@
 </div>
 <br />
 
-@if (_assignRolesViewModel.UsersWithoutRole != null && _assignRolesViewModel.UsersWithoutRole.Count() > 0)
+@if (_assignRolesViewModel.UsersWithoutRole?.Any() ?? false)
 {
-    foreach (User user in _assignRolesViewModel.UsersWithoutRole)
+    foreach (var user in _assignRolesViewModel.UsersWithoutRole)
     {
         <div class="list-group-item list-group-item-action flex-column align-items-start contact-list-item" style="height: 55px;">
             <div class="row col-12">
@@ -27,10 +26,10 @@
                     <select class="form-control" 
                             name="roles" 
                             id="roles" 
-                            @onchange = "@AssignRole">
-                        <option value=@("#"+ user.UserId)>None</option>
-                        <option value=@("admin#"+ user.UserId)>Admin</option>
-                        <option value=@("general#"+ user.UserId)>General</option>
+                            @onchange="@AssignRole">
+                        <option value=@($"#{user.UserId}")>None</option>
+                        <option value=@($"admin#{user.UserId}")>Admin</option>
+                        <option value=@($"general#{user.UserId}")>General</option>
                     </select>
                 </div>
                 <div class="col-3">
@@ -43,7 +42,6 @@
 <br />
 
 @code {
-    
     protected override async Task OnInitializedAsync()
     {
         await _assignRolesViewModel.LoadUsersWithoutRole();
@@ -58,8 +56,7 @@
 
     private async Task AssignRole(ChangeEventArgs eventArgs)
     {
-        Console.WriteLine(eventArgs.Value);
-        var selectedValues = eventArgs.Value.ToString().Split('#');
+        var selectedValues = (eventArgs.Value?.ToString() ?? "").Split('#');
 
         await _assignRolesViewModel.AssignRole(Convert.ToInt64(selectedValues[1]), selectedValues[0]);
         _toastService.ShowSuccess("Role updated successfully");

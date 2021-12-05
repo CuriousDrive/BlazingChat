@@ -3,7 +3,7 @@
 <Error>
     <CascadingAuthenticationState>
         <Router AppAssembly="@typeof(Program).Assembly"
-                AdditionalAssemblies="lazyLoadedAssemblies"
+                AdditionalAssemblies="_lazyLoadedAssemblies"
                 OnNavigateAsync="OnNavigation">
             <Found Context="routeData">
                 <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
@@ -18,13 +18,14 @@
 </Error>
 
 @code {
-    private List<System.Reflection.Assembly> lazyLoadedAssemblies = new List<System.Reflection.Assembly>();
+    private readonly List<System.Reflection.Assembly> _lazyLoadedAssemblies = new();
+
     private async Task OnNavigation(NavigationContext context)
     {
         if (context.Path == "settings") // Url of the page that needs the lazy loaded assembly
         {
             var assemblies = await AssemblyLoader.LoadAssembliesAsync(new[] { "Radzen.Blazor.dll" });
-            lazyLoadedAssemblies.AddRange(assemblies);
+            _lazyLoadedAssemblies.AddRange(assemblies);
         }
     }
 }

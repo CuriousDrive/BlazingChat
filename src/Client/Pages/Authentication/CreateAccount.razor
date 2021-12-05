@@ -1,5 +1,5 @@
 @page "/createaccount"
-@using BlazingChat.ViewModels
+
 @inject IRegisterViewModel _registerViewModel
 @inject NavigationManager _navigationManager
 @inject IToastService _toastService
@@ -49,13 +49,13 @@
 </SpinLoader>
 
 @code {
-	public bool IsLoading {get; set;} = false;
+    private bool IsLoading { get; set; }
 
-    public async Task RegisterUser()
+    private async Task RegisterUser()
     {
-		IsLoading = true;
+        IsLoading = true;
         await _registerViewModel.RegisterUser();
-		IsLoading = false;
+        IsLoading = false;
 
         _toastService.ShowInfo("Your user has been created in the system. Please login with your credentials");
         _navigationManager.NavigateTo($"/{true}");
