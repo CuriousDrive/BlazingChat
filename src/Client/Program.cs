@@ -20,10 +20,14 @@ builder.RootComponents.Add<App>("#app");
 var baseAddress = builder.Configuration["BaseAddress"] ??
                      throw new NullReferenceException("BaseAddress is missing in configuration");
 
+// authetication & authorization
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
-builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(baseAddress) });
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+builder.Services.AddTransient<CustomAuthorizationHandler>();
 
+// configuring http clients
+builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(baseAddress) });
 builder.Services.ConfigureAll<HttpClientFactoryOptions>(options =>
     options.HttpMessageHandlerBuilderActions.Add(handlerBuilder =>
         handlerBuilder.AdditionalHandlers.Add(
@@ -31,19 +35,17 @@ builder.Services.ConfigureAll<HttpClientFactoryOptions>(options =>
 
 var clientConfigurator = void (HttpClient client) => client.BaseAddress = new Uri(baseAddress);
 
-//transactional named http clients
+// transactional named http clients
 builder.Services.AddHttpClient<IProfileViewModel, ProfileViewModel>("ProfileViewModelClient", clientConfigurator);
 builder.Services.AddHttpClient<IContactsViewModel, ContactsViewModel>("ContactsViewModelClient", clientConfigurator);
 builder.Services.AddHttpClient<ISettingsViewModel, SettingsViewModel>("SettingsViewModelClient", clientConfigurator);
 builder.Services.AddHttpClient<IAssignRolesViewModel, AssignRolesViewModel>("AssignRolesViewModel", clientConfigurator);
 
-//authentication http clients
+// authentication http clients
 builder.Services.AddHttpClient<ILoginViewModel, LoginViewModel>("LoginViewModelClient", clientConfigurator);
 builder.Services.AddHttpClient<IRegisterViewModel, RegisterViewModel>("RegisterViewModelClient", clientConfigurator);
 
-builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
-builder.Services.AddBlazoredLocalStorage();
-builder.Services.AddTransient<CustomAuthorizationHandler>();
+// logging
 builder.Services.AddLogging(logging =>
 {
     var httpClient = builder.Services.BuildServiceProvider().GetRequiredService<HttpClient>();
@@ -51,6 +53,9 @@ builder.Services.AddLogging(logging =>
     logging.SetMinimumLevel(LogLevel.Error);
     logging.AddProvider(new ApplicationLoggerProvider(httpClient, authStateProvider));
 });
+
+// blazored services
+builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredToast();
 
 #endregion
