@@ -10,6 +10,7 @@ builder.RootComponents.Add<App>("#app");
 
 var baseAddress = builder.Configuration["BaseAddress"] ??
                      throw new NullReferenceException("BaseAddress is missing in configuration");
+
 builder.Services.AddBlazingChat(baseAddress);
 
 #endregion
