@@ -1,8 +1,7 @@
+using BlazingChat.Shared.Models;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using BlazingChat.Shared.Models;
-using Blazored.Toast.Services;
 
 namespace BlazingChat.ViewModels
 {
@@ -17,24 +16,19 @@ namespace BlazingChat.ViewModels
         public string ProfilePicDataUrl { get; set; }
         private HttpClient _httpClient;
 
-        public IToastService _toastService { get; }
-
         public ProfileViewModel()
         {
-
         }
 
-        public ProfileViewModel(HttpClient httpClient, IToastService toastService)
+        public ProfileViewModel(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _toastService = toastService;
         }
 
         public async Task UpdateProfile()
         {
             User user = this;
             await _httpClient.PutAsJsonAsync("profile/updateprofile/" + this.UserId, user);
-            _toastService.ShowSuccess("Profile info has been saved successfully.");
         }
 
         public async Task GetProfile()

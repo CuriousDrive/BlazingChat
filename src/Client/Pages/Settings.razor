@@ -5,6 +5,7 @@
 @inject ISettingsViewModel _settingsViewModel
 @inject NavigationManager _navigationManager
 @inject IJSRuntime _jsRuntime
+@inject IToastService _toastService
 
 <h2 class="white-text"><b>Settings</b></h2> 
 <hr class="white-horizontal-line"/>
@@ -68,9 +69,11 @@
 
         //persisting the settings in DB
         await _settingsViewModel.UpdateTheme();
+        _toastService.ShowSuccess("Settings have been saved successfully");
     }
     private async Task UpdateNotifications()
     {
         await _settingsViewModel.UpdateNotifications();
+        _toastService.ShowSuccess("Settings have been saved successfully");
     }
 }

@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using BlazingChat.Shared.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BlazingChat.ViewModels
 {

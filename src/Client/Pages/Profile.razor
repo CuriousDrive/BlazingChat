@@ -33,7 +33,7 @@
                 <br/>
                 <textarea @bind="_profileViewModel.AboutMe" class="form-control dark-theme-textbox" placeholder="about me"></textarea>
                 <br/>
-                <button class="btn btn-primary" disabled="@(!IsUserAuthorized)" @onclick="_profileViewModel.UpdateProfile">Save</button>
+                <button class="btn btn-primary" disabled="@(!IsUserAuthorized)" @onclick="UpdateProfile">Save</button>
                 <button class="btn btn-primary" disabled="@(!IsUserAuthorized)" @onclick="DownloadProfilePicture">Download Picture</button>
             </div>
         </div>
@@ -50,7 +50,7 @@
 
     private bool IsLoading { get; set; } = true;
     private bool IsUserAuthorized { get; set; }
-    
+
     protected override async Task OnInitializedAsync() 
     {
         var authState = await AuthenticationState;
@@ -99,7 +99,7 @@
     private async Task DownloadProfilePicture()
     {
         var base64String = _profileViewModel.ProfilePicDataUrl.Split(',')[1];
-        
+
         var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
         await module.InvokeVoidAsync("downloadFile","image/png",base64String,"profile.png");
     }
@@ -116,5 +116,11 @@
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             base64String,
             "document.docx");
+    }
+
+    private async Task UpdateProfile()
+    {
+        await _profileViewModel.UpdateProfile();
+        _toastService.ShowSuccess("Profile info has been saved successfully.");
     }
 }

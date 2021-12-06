@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using BlazingChat.Shared.Models;
 
 namespace BlazingChat.ViewModels
 {
@@ -12,7 +8,6 @@ namespace BlazingChat.ViewModels
         public bool Notifications { get; set; }
         public bool DarkTheme { get; set; }
 
-        public Task Save();
         public Task UpdateTheme();
         public Task UpdateNotifications();
         public Task GetProfile();

@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
-using BlazingChat.Client;
 using BlazingChat.Shared;
 using BlazingChat.Shared.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 
 namespace BlazingChat.ViewModels
 {

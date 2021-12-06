@@ -1,11 +1,8 @@
-using System;
+using BlazingChat.Shared.Models;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text;
 using System.Threading.Tasks;
-using BlazingChat.Shared.Models;
-using Blazored.Toast.Services;
 
 namespace BlazingChat.ViewModels
 {
@@ -15,16 +12,14 @@ namespace BlazingChat.ViewModels
         public List<User> UsersWithoutRole { get; set; }
 
         private HttpClient _httpClient;
-        public IToastService _toastService { get; }
 
         //methods
         public AssignRolesViewModel()
         {
         }
-        public AssignRolesViewModel(HttpClient httpClient, IToastService toastService)
+        public AssignRolesViewModel(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _toastService = toastService;
         }
 
         public async Task LoadUsersWithoutRole()

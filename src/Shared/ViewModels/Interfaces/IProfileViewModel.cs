@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using BlazingChat.Shared.Models;
 
 namespace BlazingChat.ViewModels
 {
