@@ -64,7 +64,9 @@ Please check out the videos below, if you want to learn how to build your own Bl
 | JWT Authorization - EP32 | https://youtu.be/bu6F4oeYdzA |
 | JWT For Facebook Authentication - EP33 | https://youtu.be/bBvDQ9z1Xdw |
 | Authorization using CascadingAuthenticationState & JWT - EP34 | https://youtu.be/uthjcpJHzKo |
-| Deploying the app with WebAPI using GitHub Actions(CI/CD) for FREE - EP35 | https://youtu.be/m7DqtL0WIV0 |
+| Deploying Blazor + WebAPI using GitHub Actions(CI/CD) - EP35 | https://youtu.be/m7DqtL0WIV0 |
+| Upgrade NET5 to NET6 in 8 minutes - EP36 | https://youtu.be/qNPKnrSEr-Y |
+| .NET6 : Program.cs Changes - EP37| https://youtu.be/iBBU0KC8EKw |
 
 ## Have any other questions?
 
