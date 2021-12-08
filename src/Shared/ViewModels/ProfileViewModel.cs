@@ -14,7 +14,8 @@ namespace BlazingChat.ViewModels
         public string Message { get; set; }
         public string AboutMe { get; set; }
         public string ProfilePicDataUrl { get; set; }
-        private HttpClient _httpClient;
+
+        private readonly HttpClient _httpClient;
 
         public ProfileViewModel()
         {
@@ -25,31 +26,27 @@ namespace BlazingChat.ViewModels
             _httpClient = httpClient;
         }
 
-        public async Task UpdateProfile()
-        {
-            User user = this;
-            await _httpClient.PutAsJsonAsync("profile/updateprofile/" + this.UserId, user);
-        }
+        public Task UpdateProfile() =>
+            _httpClient.PutAsJsonAsync($"profile/updateprofile/{UserId}", this);
 
         public async Task GetProfile()
         {
-            User user = await _httpClient.GetFromJsonAsync<User>("profile/getprofile/" + this.UserId);
+            ProfileViewModel user = await _httpClient.GetFromJsonAsync<User>($"profile/getprofile/{UserId}");
             LoadCurrentObject(user);
-            this.Message = "Profile loaded successfully";
+            Message = "Profile loaded successfully";
         }
-        private void LoadCurrentObject(ProfileViewModel profileViewModel)
+        private void LoadCurrentObject(IProfileViewModel profileViewModel)
         {
-            this.FirstName = profileViewModel.FirstName;
-            this.LastName = profileViewModel.LastName;
-            this.EmailAddress = profileViewModel.EmailAddress;
-            this.AboutMe = profileViewModel.AboutMe;
-            this.ProfilePicDataUrl = profileViewModel.ProfilePicDataUrl;
+            FirstName = profileViewModel.FirstName;
+            LastName = profileViewModel.LastName;
+            EmailAddress = profileViewModel.EmailAddress;
+            AboutMe = profileViewModel.AboutMe;
+            ProfilePicDataUrl = profileViewModel.ProfilePicDataUrl;
             //add more fields
         }
 
-        public static implicit operator ProfileViewModel(User user)
-        {
-            return new ProfileViewModel
+        public static implicit operator ProfileViewModel(User user) =>
+            new()
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -58,11 +55,9 @@ namespace BlazingChat.ViewModels
                 AboutMe = user.AboutMe,
                 ProfilePicDataUrl = user.ProfilePicDataUrl
             };
-        }
 
-        public static implicit operator User(ProfileViewModel profileViewModel)
-        {
-            return new User
+        public static implicit operator User(ProfileViewModel profileViewModel) =>
+            new()
             {
                 FirstName = profileViewModel.FirstName,
                 LastName = profileViewModel.LastName,
@@ -71,6 +66,5 @@ namespace BlazingChat.ViewModels
                 AboutMe = profileViewModel.AboutMe,
                 ProfilePicDataUrl = profileViewModel.ProfilePicDataUrl
             };
-        }
     }
 }

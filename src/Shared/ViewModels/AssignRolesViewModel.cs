@@ -8,33 +8,22 @@ namespace BlazingChat.ViewModels
 {
     public class AssignRolesViewModel : IAssignRolesViewModel
     {
-        //properties
-        public List<User> UsersWithoutRole { get; set; }
+        public IEnumerable<User> UsersWithoutRole { get; private set; } = new List<User>();
 
-        private HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
 
-        //methods
-        public AssignRolesViewModel()
-        {
-        }
         public AssignRolesViewModel(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
-        public async Task LoadUsersWithoutRole()
-        {
-            UsersWithoutRole = await _httpClient.GetFromJsonAsync<List<User>>($"user/getuserswithoutrole");
-        }
-        public async Task AssignRole(long userId, string role)
-        {
-            var user = new User { UserId = userId, Role = role };
-            await _httpClient.PutAsJsonAsync("user/assignrole", user);
-        }
+        public async Task LoadUsersWithoutRole() =>
+            UsersWithoutRole = await _httpClient.GetFromJsonAsync<List<User>>("user/getuserswithoutrole");
 
-        public async Task DeleteUser(long userId)
-        {
-            await _httpClient.DeleteAsync("user/deleteuser/" + userId);
-        }
+        public Task AssignRole(long userId, string role) =>
+            _httpClient.PutAsJsonAsync("user/assignrole", new User { UserId = userId, Role = role });
+
+        public Task DeleteUser(long userId) =>
+            _httpClient.DeleteAsync($"user/deleteuser/{userId}");
     }
 }

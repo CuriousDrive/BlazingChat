@@ -6,7 +6,7 @@ namespace BlazingChat.ViewModels
 {
     public interface IAssignRolesViewModel
     {
-        public List<User> UsersWithoutRole { get; set; }
+        public IEnumerable<User> UsersWithoutRole { get; }
 
         public Task LoadUsersWithoutRole();
         public Task AssignRole(long userId, string role);

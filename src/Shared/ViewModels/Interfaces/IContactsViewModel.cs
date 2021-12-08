@@ -5,8 +5,8 @@ namespace BlazingChat.ViewModels
 {
     public interface IContactsViewModel
     {
-        public List<Contact> Contacts { get; set; }
-        public int ContactsCount { get; set; }
+        public IEnumerable<Contact> Contacts { get; }
+        public int ContactsCount { get; }
 
         //Next two methods are gonna load 20,000 contacts
         public Task LoadAllContactsDemo();

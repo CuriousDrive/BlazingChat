@@ -1,5 +1,6 @@
 using BlazingChat.Shared.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -8,59 +9,37 @@ namespace BlazingChat.ViewModels
 {
     public class ContactsViewModel : IContactsViewModel
     {
-        //properties
-        public List<Contact> Contacts { get; set; } = new List<Contact>();
-        public int ContactsCount { get; set; } = 1;
-        private HttpClient _httpClient;
+        public IEnumerable<Contact> Contacts { get; private set; } = new List<Contact>();
+        public int ContactsCount { get; private set; } = 1;
 
-        //methods
-        public ContactsViewModel() { }
+        private readonly HttpClient _httpClient;
+
         public ContactsViewModel(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
-        private void LoadCurrentObject(List<User> users)
-        {
-            this.Contacts = new List<Contact>();
-            foreach (User user in users)
-            {
-                this.Contacts.Add(user);
-            }
-        }
+        private void LoadCurrentObject(IEnumerable<User> users) =>
+            Contacts = users.Select(u => (Contact)u);
 
         //loading 20,000 contacts
-        public async Task LoadAllContactsDemo()
-        {
-            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>("contacts/getallcontactsdemo");
-            LoadCurrentObject(users);
-        }
+        public async Task LoadAllContactsDemo() =>
+            LoadCurrentObject(await _httpClient.GetFromJsonAsync<List<User>>("contacts/getallcontactsdemo"));
 
-        public async Task LoadOnlyVisibleContactsDemo(int startIndex, int count)
-        {
-            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>($"contacts/getonlyvisiblecontactsdemo?startIndex={startIndex}&count={count}");
-            LoadCurrentObject(users);
-        }
-        public void LoadContactsCountDemo()
-        {
-            this.ContactsCount = 20000;
-        }
+        public async Task LoadOnlyVisibleContactsDemo(int startIndex, int count) =>
+            LoadCurrentObject(await _httpClient.GetFromJsonAsync<List<User>>($"contacts/getonlyvisiblecontactsdemo?startIndex={startIndex}&count={count}"));
+
+        public void LoadContactsCountDemo() =>
+            ContactsCount = 20000;
 
         //loading actual contacts
-        public async Task LoadAllContactsDB()
-        {
-            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>("contacts/getcontacts");
-            LoadCurrentObject(users);
-        }
+        public async Task LoadAllContactsDB() =>
+            LoadCurrentObject(await _httpClient.GetFromJsonAsync<List<User>>("contacts/getcontacts"));
 
-        public async Task LoadOnlyVisibleContactsDB(int startIndex, int count)
-        {
-            List<User> users = await _httpClient.GetFromJsonAsync<List<User>>($"contacts/getvisiblecontacts?startIndex={startIndex}&count={count}");
-            LoadCurrentObject(users);
-        }
-        public async Task LoadContactsCountDB()
-        {
-            this.ContactsCount = await _httpClient.GetFromJsonAsync<int>($"contacts/getcontactscount");
-        }
+        public async Task LoadOnlyVisibleContactsDB(int startIndex, int count) =>
+            LoadCurrentObject(await _httpClient.GetFromJsonAsync<List<User>>($"contacts/getvisiblecontacts?startIndex={startIndex}&count={count}"));
+
+        public async Task LoadContactsCountDB() =>
+            ContactsCount = await _httpClient.GetFromJsonAsync<int>("contacts/getcontactscount");
     }
 }
