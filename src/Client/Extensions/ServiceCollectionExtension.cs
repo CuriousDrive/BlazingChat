@@ -1,6 +1,9 @@
-﻿using BlazingChat.Client;
+﻿using System;
+using System.Net.Http;
+using BlazingChat.Client;
 using BlazingChat.Client.Handlers;
 using BlazingChat.Client.Logging;
+using BlazingChat.Shared.Logging;
 using BlazingChat.ViewModels;
 using Blazored.LocalStorage;
 using Blazored.Toast;
@@ -8,8 +11,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Net.Http;
 
 namespace BlazingChat.Shared.Extensions
 {
@@ -47,13 +48,14 @@ namespace BlazingChat.Shared.Extensions
             services.AddHttpClient<IRegisterViewModel, RegisterViewModel>("RegisterViewModelClient", clientConfigurator);
 
             // logging
-            services.AddLogging(logging =>
-            {
-                var httpClient = services.BuildServiceProvider().GetRequiredService<HttpClient>();
-                var authStateProvider = services.BuildServiceProvider().GetRequiredService<AuthenticationStateProvider>();
-                logging.SetMinimumLevel(LogLevel.Error);
-                logging.AddProvider(new ApplicationLoggerProvider(httpClient, authStateProvider));
-            });
+            services.AddLogging(logging => logging.SetMinimumLevel(LogLevel.Error));
+            services.AddSingleton<LogQueue>();
+            services.AddSingleton<LogReader>();
+            services.AddSingleton<LogWriter>();
+            services.AddSingleton<ILoggerProvider, ApplicationLoggerProvider>();
+            services.AddHttpClient("LoggerJob", c => c.BaseAddress = new Uri(baseAddress) );
+            services.AddSingleton<LoggerJob>();
+
 
             return services;
         }

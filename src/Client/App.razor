@@ -1,7 +1,12 @@
-@inject Microsoft.AspNetCore.Components.WebAssembly.Services.LazyAssemblyLoader AssemblyLoader
+@using BlazingChat.Client.Logging
 
-<Error>
-    <CascadingAuthenticationState>
+@implements IDisposable
+
+@inject Microsoft.AspNetCore.Components.WebAssembly.Services.LazyAssemblyLoader AssemblyLoader
+@inject LoggerJob _job
+
+<CascadingAuthenticationState>
+    <Error>
         <Router AppAssembly="@typeof(Program).Assembly"
                 AdditionalAssemblies="_lazyLoadedAssemblies"
                 OnNavigateAsync="OnNavigation">
@@ -14,11 +19,14 @@
                 </LayoutView>
             </NotFound> 
         </Router>  
-    </CascadingAuthenticationState>
-</Error>
+    </Error>
+</CascadingAuthenticationState>
 
 @code {
     private readonly List<System.Reflection.Assembly> _lazyLoadedAssemblies = new();
+
+    protected override Task OnInitializedAsync() =>
+        _job.Start();
 
     private async Task OnNavigation(NavigationContext context)
     {
@@ -28,4 +36,7 @@
             _lazyLoadedAssemblies.AddRange(assemblies);
         }
     }
+
+    public void Dispose() =>
+        _job.Stop();
 }
