@@ -3,6 +3,7 @@ using BlazingChat.Shared.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -17,54 +18,57 @@ namespace BlazingChat.ViewModels
         public string Password { get; set; }
         public bool RememberMe { get; set; }
 
-        private HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
+
         public LoginViewModel()
         {
-
         }
         public LoginViewModel(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
-        public async Task LoginUser()
-        {
-            await _httpClient.PostAsJsonAsync<User>($"user/loginuser?isPersistent={this.RememberMe}", this);
-        }
+        public Task LoginUser() =>
+            _httpClient.PostAsJsonAsync<User>($"user/loginuser?isPersistent={RememberMe}", this);
 
         public async Task<AuthenticationResponse> AuthenticateJWT()
         {
             //creating authentication request
-            AuthenticationRequest authenticationRequest = new AuthenticationRequest();
-            authenticationRequest.EmailAddress = this.EmailAddress;
-            authenticationRequest.Password = this.Password;
+            var authenticationRequest = new AuthenticationRequest
+            {
+                EmailAddress = EmailAddress,
+                Password = Password,
+            };
 
             //authenticating the request
-            var httpMessageReponse = await _httpClient.PostAsJsonAsync<AuthenticationRequest>($"user/authenticatejwt", authenticationRequest);
+            var httpMessageResponse = await _httpClient.PostAsJsonAsync("user/authenticatejwt", authenticationRequest);
 
             //sending the token to the client to store
-            return await httpMessageReponse.Content.ReadFromJsonAsync<AuthenticationResponse>();
+            return await httpMessageResponse.Content.ReadFromJsonAsync<AuthenticationResponse>();
         }
-        public async Task<string> GetFacebookAppIDAndRedirectUriAsync()
-        {
-            return await _httpClient.GetStringAsync("user/getfacebookappidandredirecturi");
-        }
+
+        public Task<string> GetFacebookAppIDAndRedirectUriAsync() =>
+            _httpClient.GetStringAsync("user/getfacebookappidandredirecturi");
 
         public async Task<User> GetUserByJWTAsync(string jwtToken)
         {
             try
             {
                 //preparing the http request
-                var requestMessage = new HttpRequestMessage(HttpMethod.Post, "user/getuserbyjwt");
-                requestMessage.Content = new StringContent(jwtToken);
-
-                requestMessage.Content.Headers.ContentType
-                    = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+                using var requestMessage = new HttpRequestMessage(HttpMethod.Post, "user/getuserbyjwt")
+                {
+                    Content = new StringContent(jwtToken)
+                    {
+                        Headers =
+                        {
+                            ContentType = new MediaTypeHeaderValue("application/json")
+                        }
+                    }
+                };
 
                 //making the http request
                 var response = await _httpClient.SendAsync(requestMessage);
 
-                var responseStatusCode = response.StatusCode;
                 var returnedUser = await response.Content.ReadFromJsonAsync<User>();
 
                 //returning the user if found
@@ -78,44 +82,38 @@ namespace BlazingChat.ViewModels
             }            
         }
 
-        public async Task<TwitterRequestTokenResponse> GetTwitterOAuthTokenAsync()
-        {
-            return await _httpClient.GetFromJsonAsync<TwitterRequestTokenResponse>("user/gettwitteroauthtokenusingresharp");
-        }
+        public Task<TwitterRequestTokenResponse> GetTwitterOAuthTokenAsync() =>
+            _httpClient.GetFromJsonAsync<TwitterRequestTokenResponse>("user/gettwitteroauthtokenusingresharp");
 
-        public async Task<string> GetGoogleClientIDAndRedirectUriAsync()
-        {
-            return await _httpClient.GetStringAsync("user/getgoogleclientidandredirecturi");
-        }
+        public Task<string> GetGoogleClientIDAndRedirectUriAsync() =>
+            _httpClient.GetStringAsync("user/getgoogleclientidandredirecturi");
 
-        public static implicit operator LoginViewModel(User user)
-        {
-            return new LoginViewModel
+        public static implicit operator LoginViewModel(User user) =>
+            new()
             {
                 EmailAddress = user.EmailAddress,
                 Password = user.Password
             };
-        }
 
         public async Task<string> GetTwitterJWTAsync(TwitterRequestTokenResponse twitterRequestTokenResponse)
         {
-            var httpMessageResponse = await _httpClient.PostAsJsonAsync<TwitterRequestTokenResponse>("user/getTwitterjwt", twitterRequestTokenResponse);
+            using var httpMessageResponse = await _httpClient.PostAsJsonAsync("user/getTwitterjwt", twitterRequestTokenResponse);
+
             return (await httpMessageResponse.Content.ReadFromJsonAsync<AuthenticationResponse>()).Token;
         }
 
         public async Task<string> GetFacebookJWTAsync(string accessToken)
         {
-            var httpMessageResponse = await _httpClient.PostAsJsonAsync<FacebookAuthRequest>("user/getfacebookjwt", new FacebookAuthRequest() { AccessToken = accessToken });
+            using var httpMessageResponse = await _httpClient.PostAsJsonAsync("user/getfacebookjwt", new FacebookAuthRequest { AccessToken = accessToken });
+
             return (await httpMessageResponse.Content.ReadFromJsonAsync<AuthenticationResponse>()).Token;
         }
 
-        public static implicit operator User(LoginViewModel loginViewModel)
-        {
-            return new User
+        public static implicit operator User(LoginViewModel loginViewModel) =>
+            new()
             {
                 EmailAddress = loginViewModel.EmailAddress,
                 Password = loginViewModel.Password
             };
-        }
     }
 }

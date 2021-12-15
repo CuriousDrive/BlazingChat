@@ -7,58 +7,45 @@ namespace BlazingChat.ViewModels
 {
     public class SettingsViewModel : ISettingsViewModel
     {
-        //properties
         public long UserId { get; set; }
         public bool Notifications { get; set; }
         public bool DarkTheme { get; set; }
-        private HttpClient _httpClient;
 
-        //methods
+        private readonly HttpClient _httpClient;
+
         public SettingsViewModel()
         {
         }
+
         public SettingsViewModel(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
-        public async Task GetProfile()
-        {
-            User user = await _httpClient.GetFromJsonAsync<User>($"profile/getprofile/{this.UserId}");
-            LoadCurrentObject(user);
-        }
 
-        public async Task UpdateTheme()
-        {
-            User user = this;
-            await _httpClient.PutAsJsonAsync($"settings/updatetheme/{this.UserId}", user);
-        }
+        public async Task GetProfile() =>
+            LoadCurrentObject(await _httpClient.GetFromJsonAsync<User>($"profile/getprofile/{UserId}"));
 
-        public async Task UpdateNotifications()
-        {
-            User user = this;
-            await _httpClient.PutAsJsonAsync($"settings/updatenotifications/{this.UserId}", user);
-        }
-        private void LoadCurrentObject(SettingsViewModel settingsViewModel)
-        {
-            this.DarkTheme = settingsViewModel.DarkTheme;
-        }
+        public Task UpdateTheme() =>
+            _httpClient.PutAsJsonAsync<User>($"settings/updatetheme/{UserId}", this);
 
-        //operators
-        public static implicit operator SettingsViewModel(User user)
-        {
-            return new SettingsViewModel
+        public Task UpdateNotifications() =>
+            _httpClient.PutAsJsonAsync<User>($"settings/updatenotifications/{UserId}", this);
+
+        private void LoadCurrentObject(SettingsViewModel settingsViewModel) =>
+            DarkTheme = settingsViewModel.DarkTheme;
+
+        public static implicit operator SettingsViewModel(User user) =>
+            new()
             {
-                Notifications = (user.Notifications == null || (long)user.Notifications == 0) ? false : true,
-                DarkTheme = (user.DarkTheme == null || (long)user.DarkTheme == 0) ? false : true
+                Notifications = user.Notifications != null && (long)user.Notifications != 0,
+                DarkTheme = user.DarkTheme != null && (long)user.DarkTheme != 0
             };
-        }
-        public static implicit operator User(SettingsViewModel settingsViewModel)
-        {
-            return new User
+
+        public static implicit operator User(SettingsViewModel settingsViewModel) =>
+            new()
             {
                 Notifications = settingsViewModel.Notifications ? 1 : 0,
                 DarkTheme = settingsViewModel.DarkTheme ? 1 : 0
             };
-        }
     }
 }
