@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shared\BlazingChat.Shared.csproj" />
+    <ProjectReference Include="..\BlazingChat.Shared\BlazingChat.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

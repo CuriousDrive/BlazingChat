@@ -23,7 +23,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
             builder =>
             {
-                builder.WithOrigins("https://localhost:5001",
+                builder.WithOrigins("https://localhost:44323",
                           "https://www.blazingchat.com")
                           .AllowAnyHeader()
                           .AllowAnyMethod();
