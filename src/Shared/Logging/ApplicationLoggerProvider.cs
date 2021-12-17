@@ -1,7 +1,7 @@
 using BlazingChat.Shared.Logging;
 using Microsoft.Extensions.Logging;
 
-namespace BlazingChat.Client.Logging
+namespace BlazingChat.Shared.Logging
 {
     public sealed class ApplicationLoggerProvider : ILoggerProvider
     {

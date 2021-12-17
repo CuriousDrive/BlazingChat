@@ -2,7 +2,6 @@
 using System.Net.Http;
 using BlazingChat.Client;
 using BlazingChat.Client.Handlers;
-using BlazingChat.Client.Logging;
 using BlazingChat.Shared.Logging;
 using BlazingChat.ViewModels;
 using Blazored.LocalStorage;
@@ -55,7 +54,6 @@ namespace BlazingChat.Shared.Extensions
             services.AddSingleton<ILoggerProvider, ApplicationLoggerProvider>();
             services.AddHttpClient("LoggerJob", c => c.BaseAddress = new Uri(baseAddress) );
             services.AddSingleton<LoggerJob>();
-
 
             return services;
         }

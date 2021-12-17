@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using BlazingChat.Shared.Logging;
 
-namespace BlazingChat.Client.Logging;
+namespace BlazingChat.Shared.Logging;
 
-internal class LoggerJob
+public class LoggerJob
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly LogReader _reader;

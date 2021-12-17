@@ -6,7 +6,7 @@ using BlazingChat.Shared.Models;
 using Microsoft.Extensions.Logging;
 using static Microsoft.Extensions.Logging.LogLevel;
 
-namespace BlazingChat.Client.Logging
+namespace BlazingChat.Shared.Logging
 {
     public class DatabaseLogger : ILogger
     {
