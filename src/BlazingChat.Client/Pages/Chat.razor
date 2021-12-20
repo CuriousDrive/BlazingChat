@@ -11,7 +11,6 @@
 @inject ILocalStorageService _localStorageService
 @inject ILoginViewModel _loginViewModel
 @inject IProfileViewModel _prolfileViewModel
-@inject IConfiguration _configuration
 @inject IOptions<ApplicationSettings> _applicationSettings
 
 @attribute [Authorize(Roles = "admin, general")]
@@ -115,8 +114,7 @@
             };
         }
 
-        Console.WriteLine(_applicationSettings.Value.BaseAddress);
-        var baseAddress = _applicationSettings.Value.BaseAddress; //_configuration["ApplicationSettings:BaseAddress"];
+        var baseAddress = _applicationSettings.Value.BaseAddress; 
 
         _hubConnection = new HubConnectionBuilder()
                             .WithUrl($"{baseAddress}chathub")
