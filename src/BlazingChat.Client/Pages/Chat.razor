@@ -2,8 +2,8 @@
 @page "/chat/{ToUserId}"
 
 @using Microsoft.AspNetCore.SignalR.Client
-@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
 @using Microsoft.Extensions.Configuration
+@using Microsoft.Extensions.Options
 
 @inject NavigationManager _navigationManager
 @inject IJSRuntime _jsRuntime
@@ -11,8 +11,8 @@
 @inject ILocalStorageService _localStorageService
 @inject ILoginViewModel _loginViewModel
 @inject IProfileViewModel _prolfileViewModel
-@inject IWebAssemblyHostEnvironment _webAssemblyHostEnvironment
 @inject IConfiguration _configuration
+@inject IOptions<ApplicationSettings> _applicationSettings
 
 @attribute [Authorize(Roles = "admin, general")]
 
@@ -115,7 +115,8 @@
             };
         }
 
-        var baseAddress = _configuration["BaseAddress"];
+        Console.WriteLine(_applicationSettings.Value.BaseAddress);
+        var baseAddress = _applicationSettings.Value.BaseAddress; //_configuration["ApplicationSettings:BaseAddress"];
 
         _hubConnection = new HubConnectionBuilder()
                             .WithUrl($"{baseAddress}chathub")

@@ -15,7 +15,8 @@ namespace BlazingChat.Shared.Extensions
 {
     public static class ServiceCollectionExtension
     {
-        public static IServiceCollection AddBlazingChat(this IServiceCollection services, string baseAddress)
+        public static IServiceCollection AddBlazingChat(this IServiceCollection services, 
+            ApplicationSettings applicationSettings)
         {
             // blazored services
             services.AddBlazoredLocalStorage();
@@ -28,13 +29,13 @@ namespace BlazingChat.Shared.Extensions
             services.AddTransient<CustomAuthorizationHandler>();
 
             // configuring http clients
-            services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(baseAddress) });
+            services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(applicationSettings.BaseAddress) });
             services.ConfigureAll<HttpClientFactoryOptions>(options =>
                 options.HttpMessageHandlerBuilderActions.Add(handlerBuilder =>
                     handlerBuilder.AdditionalHandlers.Add(
                         handlerBuilder.Services.GetRequiredService<CustomAuthorizationHandler>())));
 
-            var clientConfigurator = void (HttpClient client) => client.BaseAddress = new Uri(baseAddress);
+            var clientConfigurator = void (HttpClient client) => client.BaseAddress = new Uri(applicationSettings.BaseAddress);
 
             // transactional named http clients
             services.AddHttpClient<IProfileViewModel, ProfileViewModel>("ProfileViewModelClient", clientConfigurator);
@@ -52,7 +53,7 @@ namespace BlazingChat.Shared.Extensions
             services.AddSingleton<LogReader>();
             services.AddSingleton<LogWriter>();
             services.AddSingleton<ILoggerProvider, ApplicationLoggerProvider>();
-            services.AddHttpClient("LoggerJob", c => c.BaseAddress = new Uri(baseAddress) );
+            services.AddHttpClient("LoggerJob", c => c.BaseAddress = new Uri(applicationSettings.BaseAddress) );
             services.AddSingleton<LoggerJob>();
 
             return services;
