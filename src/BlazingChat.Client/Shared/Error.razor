@@ -1,11 +1,11 @@
+@using Microsoft.AspNetCore.Hosting
 @using Microsoft.Extensions.Logging
-@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
 @using System.Security.Claims
 @using System.Text.Json
 
 @inject ILogger<Error> _logger
 @inject IToastService _toastService
-@inject IWebAssemblyHostEnvironment _webAssemblyHostEnvironment
+@inject IHostingEnvironment _hostingEnvironment
 
 <CascadingValue Value="this" IsFixed="true">
     @ChildContent
@@ -21,7 +21,7 @@
     public async Task ProcessError(Exception ex)
     {
         _toastService.ShowError(
-            _webAssemblyHostEnvironment.IsDevelopment()
+            _hostingEnvironment.IsDevelopment()
                 ? "Oops, something has gone wrong. Please check the logs"
                 : "Oops, something has gone wrong. Please contact system admin");
 
