@@ -53,7 +53,7 @@
             //setting the themeName parameter for JS function
             var themeName = currentUser.DarkTheme == 1 ? "dark" : "light";
             //calling the JS function
-            var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/site.js");
+            var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/BlazingChat.Components/js/site.js");
             await module.InvokeVoidAsync("setTheme", themeName);
         }
         await base.OnInitializedAsync();

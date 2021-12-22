@@ -5,7 +5,7 @@ export function setTheme(themeName) {
     newLink.setAttribute("id", "theme");
     newLink.setAttribute("rel", "stylesheet");
     newLink.setAttribute("type", "text/css");
-    newLink.setAttribute("href", `css/app-${themeName}.css`);
+    newLink.setAttribute("href", `_content/BlazingChat.Components/css/app-${themeName}.css`);
     //remove the theme from the head tag
     let head = document.getElementsByTagName("head")[0];
     head.querySelector("#theme").remove();

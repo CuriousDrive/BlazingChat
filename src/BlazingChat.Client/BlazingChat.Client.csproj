@@ -12,11 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BlazingChat.Components\BlazingChat.Components.csproj" />
     <ProjectReference Include="..\BlazingChat.Shared\BlazingChat.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <BlazorWebAssemblyLazyLoad Include="Radzen.Blazor.dll" />
   </ItemGroup>
 
   <ItemGroup>
