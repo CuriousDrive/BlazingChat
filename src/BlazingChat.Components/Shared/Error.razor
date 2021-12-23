@@ -1,0 +1,42 @@
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.Extensions.Logging
+@using System.Security.Claims
+@using System.Text.Json
+
+@inject ILogger<Error> _logger
+@inject IToastService _toastService
+@inject IHostingEnvironment _hostingEnvironment
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationState { get; set; }
+
+    public async Task ProcessError(Exception ex)
+    {
+        _toastService.ShowError(
+            _hostingEnvironment.IsDevelopment()
+                ? "Oops, something has gone wrong. Please check the logs"
+                : "Oops, something has gone wrong. Please contact system admin");
+
+        var authState = await AuthenticationState;
+        var userId = Convert.ToInt64(authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+        var message = new LogMessage
+        {
+            LogLevel = LogLevel.Error.ToString(),
+            UserId = userId,
+            ExceptionMessage = ex.Message,
+            StackTrace = ex.StackTrace,
+            Source = "Client",
+            CreatedDate = DateTime.Now.ToString(),
+        };
+        _logger.Log(LogLevel.Error, 0, message, null, (logMessage, _) => JsonSerializer.Serialize(logMessage));
+    }
+}
