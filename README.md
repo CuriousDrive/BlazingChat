@@ -15,8 +15,9 @@ Check it out here [https://www.blazingchat.com](https://www.blazingchat.com)
 - Clone repo `https://github.com/CuriousDrive/BlazingChat.git` on your machine.
 - Open solution file `src/BlazingChat.sln`
 - Make sure to select `WebAPI` & `Client` to run as multiple startup projects
+
 ![Multiple-StartUp-Projects](https://github.com/CuriousDrive/BlazingChat/blob/main/Documents/Images/MultipleStartUpProjects.JPG)
-- Press `Cntrl + F5` to run the app. It should open app in your default browser.
+- Press `Cntrl + F5` to run the app. It should open the app in your default browser.
 - Click on login. You should get logged in with email address `john.smith@gmail.com`
 - Or you can login with your Twitter or Facebook
 - Congratulations!!! you are using BlazingChat.
