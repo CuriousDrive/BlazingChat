@@ -70,6 +70,16 @@
             _loginViewModel.Password = "john.smith";
         }
 
+        //var authState = await AuthenticationState;
+
+        //if (authState.User.Identity is { IsAuthenticated: true })
+        //{
+        //    _navigationManager.NavigateTo("/profile");
+        //}
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
         var authState = await AuthenticationState;
 
         if (authState.User.Identity is { IsAuthenticated: true })
