@@ -3,7 +3,7 @@
 @inject NavigationManager _navigationManager
 @inject ILoginViewModel _loginViewModel
 @inject IJSRuntime _jsRuntime
-@inject ILocalStorageService _localStorageService
+@inject IAccessTokenService _accessTokenService
 
 <div class="page">
     <div class="sidebar">
@@ -11,11 +11,6 @@
             <Authorized>
                 <NavMenu />
             </Authorized>
-            <Authorizing>
-                <p style="font-size: large; font-weight: bolder; color: white;">
-                    The app is getting authorized...
-                </p>
-            </Authorizing>
         </AuthorizeView>
     </div>
     <BlazoredToasts Position="ToastPosition.BottomRight"
@@ -28,7 +23,7 @@
         <div class="top-row px-4">
             <AuthorizeView>
                 <Authorized>
-                    <h4><b>Hello, @context.User.Identity.Name</b></h4> &nbsp; &nbsp;
+                    <h4><b>Hello, @context.User?.Identity?.Name</b></h4> &nbsp; &nbsp;
                     <button class="btn btn-danger" @onclick="LogoutUser">Logout</button>
                 </Authorized>
             </AuthorizeView>
@@ -43,9 +38,10 @@
     protected override async Task OnInitializedAsync()
     {
         //getting the current authenticated user for the app
-        var jwtToken = await _localStorageService.GetItemAsStringAsync("jwt_token");
+        var jwtToken = await _accessTokenService.GetAccessTokenAsync("jwt_token");
         if (jwtToken == null) return;
 
+        jwtToken = $@"""{jwtToken}""";
         User currentUser = await _loginViewModel.GetUserByJWTAsync(jwtToken);
 
         if (currentUser != null)
@@ -61,13 +57,7 @@
 
     private async Task LogoutUser()
     {
-        await _localStorageService.RemoveItemAsync("jwt_token");
+        await _accessTokenService.RemoveAccessTokenAsync("jwt_token");
         _navigationManager.NavigateTo("/", true);
     }
-
-    private void LoginUser()
-    {
-        _navigationManager.NavigateTo("/", true);
-    }
-
 }

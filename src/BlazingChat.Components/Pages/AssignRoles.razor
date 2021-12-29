@@ -13,9 +13,9 @@
 </div>
 <br />
 
-@if (_assignRolesViewModel.UsersWithoutRole?.Any() ?? false)
+@if (_assignRolesViewModel.AllUsers?.Any() ?? false)
 {
-    foreach (var user in _assignRolesViewModel.UsersWithoutRole)
+    foreach (var user in _assignRolesViewModel.AllUsers)
     {
         <div class="list-group-item list-group-item-action flex-column align-items-start contact-list-item" style="height: 55px;">
             <div class="row col-12">
@@ -44,13 +44,13 @@
 @code {
     protected override async Task OnInitializedAsync()
     {
-        await _assignRolesViewModel.LoadUsersWithoutRole();
+        await _assignRolesViewModel.LoadAllUsers();
     }
 
     private async Task DeleteUser(long userId)
     {
         await _assignRolesViewModel.DeleteUser(userId);
-        await _assignRolesViewModel.LoadUsersWithoutRole();
+        await _assignRolesViewModel.LoadAllUsers();
         StateHasChanged();
     }
 

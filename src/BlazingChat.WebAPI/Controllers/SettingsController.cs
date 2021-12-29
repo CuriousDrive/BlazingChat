@@ -12,7 +12,7 @@ namespace BlazingChat.WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    //[Authorize]
+    [Authorize]
     public class SettingsController : ControllerBase
     {
         private readonly ILogger<SettingsController> logger;

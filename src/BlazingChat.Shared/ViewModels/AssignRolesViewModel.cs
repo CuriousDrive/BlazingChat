@@ -1,4 +1,6 @@
+using BlazingChat.Shared.Extensions;
 using BlazingChat.Shared.Models;
+using BlazingChat.Shared.Services;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -8,22 +10,34 @@ namespace BlazingChat.ViewModels
 {
     public class AssignRolesViewModel : IAssignRolesViewModel
     {
-        public IEnumerable<User> UsersWithoutRole { get; private set; } = new List<User>();
+        public IEnumerable<User> AllUsers { get; private set; } = new List<User>();
 
         private readonly HttpClient _httpClient;
+        private readonly IAccessTokenService _accessTokenService;
 
-        public AssignRolesViewModel(HttpClient httpClient)
+        public AssignRolesViewModel(HttpClient httpClient,
+            IAccessTokenService accessTokenService)
         {
             _httpClient = httpClient;
+            _accessTokenService = accessTokenService;
         }
 
-        public async Task LoadUsersWithoutRole() =>
-            UsersWithoutRole = await _httpClient.GetFromJsonAsync<List<User>>("user/getuserswithoutrole");
+        public async Task LoadAllUsers()
+        {
+            var jwtToken = await _accessTokenService.GetAccessTokenAsync("jwt_token");
+            AllUsers = await _httpClient.GetAsync<List<User>>("user/getallusers", jwtToken);
+        }
 
-        public Task AssignRole(long userId, string role) =>
-            _httpClient.PutAsJsonAsync("user/assignrole", new User { UserId = userId, Role = role });
+        public async Task AssignRole(long userId, string role)
+        {
+            var jwtToken = await _accessTokenService.GetAccessTokenAsync("jwt_token");
+            await _httpClient.PutAsync<User>("user/assignrole", new User { UserId = userId, Role = role }, jwtToken);
+        }
 
-        public Task DeleteUser(long userId) =>
-            _httpClient.DeleteAsync($"user/deleteuser/{userId}");
+        public async Task DeleteUser(long userId)
+        {
+            var jwtToken = await _accessTokenService.GetAccessTokenAsync("jwt_token");
+            int result = await _httpClient.DeleteAsync($"user/deleteuser/{userId}", jwtToken);
+        }
     }
 }

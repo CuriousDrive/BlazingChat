@@ -271,12 +271,14 @@ namespace BlazingChat.WebAPI.Controllers
         }
 
         // Authorization Code
-        [HttpGet("getuserswithoutrole")]
-        public async Task<List<User>> GetUsersWithoutRole()
+        [Authorize(Roles = "admin")]
+        [HttpGet("getallusers")]
+        public async Task<List<User>> GetAllUsers()
         {
             return await _context.Users.Select(user => new User() { UserId = user.UserId ,EmailAddress = user.EmailAddress } ).ToListAsync();
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPut("assignrole")]
         public async Task<int> AssignRole([FromBody] User user)
         {
@@ -441,6 +443,5 @@ namespace BlazingChat.WebAPI.Controllers
             //returning the token back
             return tokenHandler.WriteToken(token);
         }
-
     }
 }

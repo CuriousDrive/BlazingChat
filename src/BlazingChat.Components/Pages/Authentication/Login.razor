@@ -3,9 +3,9 @@
 
 @inject ILoginViewModel _loginViewModel
 @inject NavigationManager _navigationManager
-@inject ILocalStorageService _localStorageService
 @inject IToastService _toastService
-@inject IJSRuntime _jsRuntime
+@inject IAccessTokenService _accessTokenService
+@inject AuthenticationStateProvider _authenticationStateProvider
 
 <hr class="white-horizontal-line" />
 <div class="col-12">
@@ -54,11 +54,11 @@
 
 @code {
     [CascadingParameter]
-    public Task<AuthenticationState> AuthenticationState { get; set; }
-    
+    public Task<AuthenticationState> AuthenticationState { get; set; } = null!;
+
     [Parameter]
     public bool RegisterRedirect { get; set; }
-    
+
     private bool IsLoading { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -70,16 +70,6 @@
             _loginViewModel.Password = "john.smith";
         }
 
-        //var authState = await AuthenticationState;
-
-        //if (authState.User.Identity is { IsAuthenticated: true })
-        //{
-        //    _navigationManager.NavigateTo("/profile");
-        //}
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
         var authState = await AuthenticationState;
 
         if (authState.User.Identity is { IsAuthenticated: true })
@@ -88,7 +78,7 @@
         }
     }
 
-    async Task OnKeyPress(KeyboardEventArgs args)
+    private async Task OnKeyPress(KeyboardEventArgs args)
     {
         if (args.Key == "Enter")
             await AuthenticateJWT();
@@ -100,8 +90,10 @@
         AuthenticationResponse authenticationResponse = await _loginViewModel.AuthenticateJWT();
         if (authenticationResponse.Token != string.Empty)
         {
-            await _localStorageService.SetItemAsync("jwt_token", authenticationResponse.Token);
-            _navigationManager.NavigateTo("/", true);
+            await _accessTokenService.SetAccessTokenAsync("jwt_token", authenticationResponse.Token);
+            await ((CustomAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated();
+            
+            _navigationManager.NavigateTo("/profile");
         }
         else
         {

@@ -69,9 +69,8 @@ namespace BlazingChat.ViewModels
                 //making the http request
                 var response = await _httpClient.SendAsync(requestMessage);
 
-                var returnedUser = await response.Content.ReadFromJsonAsync<User>();
-
                 //returning the user if found
+                var returnedUser = await response.Content.ReadFromJsonAsync<User>();
                 if (returnedUser != null) return await Task.FromResult(returnedUser);
                 else return null;
             }
