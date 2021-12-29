@@ -1,11 +1,13 @@
 @page "/"
 @page "/{RegisterRedirect:bool}"
+@using Microsoft.Extensions.Options
 
 @inject ILoginViewModel _loginViewModel
 @inject NavigationManager _navigationManager
 @inject IToastService _toastService
 @inject IAccessTokenService _accessTokenService
 @inject AuthenticationStateProvider _authenticationStateProvider
+@inject IOptions<ApplicationSettings> _applicationSettings
 
 <hr class="white-horizontal-line" />
 <div class="col-12">
@@ -93,7 +95,10 @@
             await _accessTokenService.SetAccessTokenAsync("jwt_token", authenticationResponse.Token);
             await ((CustomAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated();
             
-            _navigationManager.NavigateTo("/profile");
+            if(_applicationSettings.Value.UIFramework == "Server")
+                _navigationManager.NavigateTo("/profile");
+            else
+                _navigationManager.NavigateTo("/profile", true);
         }
         else
         {

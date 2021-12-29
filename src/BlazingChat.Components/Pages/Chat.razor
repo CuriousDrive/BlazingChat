@@ -135,7 +135,7 @@
     {
         if (eventArgs.Code == "Enter" || eventArgs.Code == "NumpadEnter")
         {
-            var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
+            var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./_content/BlazingChat.Components/js/site.js");
             var messageToBeSent = await module.InvokeAsync<string>("getMessageInput");
             await Send(messageToBeSent);
         }
@@ -157,7 +157,7 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/site.js");
+        var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/BlazingChat.Components/js/site.js");
         await module.InvokeVoidAsync("setScroll");
     }
 }
