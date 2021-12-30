@@ -8,7 +8,7 @@
 @inject NavigationManager _navigationManager
 @inject IJSRuntime _jsRuntime
 @inject HttpClient _httpClient
-@inject ILocalStorageService _localStorageService
+@inject IAccessTokenService _accessTokenService
 @inject ILoginViewModel _loginViewModel
 @inject IProfileViewModel _prolfileViewModel
 @inject IOptions<ApplicationSettings> _applicationSettings
@@ -78,26 +78,24 @@
 
 @code {
     [Parameter]
-    public string ToUserId { get; set; }
+    public string ToUserId { get; set; } = string.Empty;
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationState { get; set; } = null!;
 
     private User ToUser { get; set; } = new();
-    private string FromUserId { get; set; }
-    private string MessageText { get; set; }
+    private string FromUserId { get; set; } = string.Empty;
+    private string MessageText { get; set; } = string.Empty;
     private List<Message> Messages { get; } = new();
-
-    [CascadingParameter]
-    public Task<AuthenticationState> AuthenticationStateTask { get; set; }
-
-    private HubConnection _hubConnection;
+    private HubConnection _hubConnection = null!;
 
     protected override async Task OnInitializedAsync()
     {
-        var claimsPrincipal = (await AuthenticationStateTask).User;
+        var claimsPrincipal = (await AuthenticationState).User;
 
         if (claimsPrincipal.Identity is not { IsAuthenticated: true })
             _navigationManager.NavigateTo("/");
 
-        var jwtToken = await _localStorageService.GetItemAsStringAsync("jwt_token");
+        var jwtToken = await _accessTokenService.GetAccessTokenAsync("jwt_token");
         if (jwtToken == null) return;
 
         FromUserId = (await _loginViewModel.GetUserByJWTAsync(jwtToken)).UserId.ToString();
@@ -137,7 +135,7 @@
     {
         if (eventArgs.Code == "Enter" || eventArgs.Code == "NumpadEnter")
         {
-            var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./js/site.js");
+            var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import","./_content/BlazingChat.Components/js/site.js");
             var messageToBeSent = await module.InvokeAsync<string>("getMessageInput");
             await Send(messageToBeSent);
         }
@@ -159,8 +157,7 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/site.js");
+        var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/BlazingChat.Components/js/site.js");
         await module.InvokeVoidAsync("setScroll");
     }
-
 }

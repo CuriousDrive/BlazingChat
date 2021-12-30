@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net.Http;
 using BlazingChat.Client;
-using BlazingChat.Client.Handlers;
 using BlazingChat.Shared.Logging;
+using BlazingChat.Shared.Services;
 using BlazingChat.ViewModels;
 using Blazored.LocalStorage;
 using Blazored.Toast;
@@ -19,21 +19,21 @@ namespace BlazingChat.Shared.Extensions
             ApplicationSettings applicationSettings)
         {
             // blazored services
-            services.AddBlazoredLocalStorage();
             services.AddBlazoredToast();
+            services.AddBlazoredLocalStorage();
 
             // authetication & authorization
             services.AddOptions();
             services.AddAuthorizationCore();
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
-            services.AddTransient<CustomAuthorizationHandler>();
+            services.AddScoped<IAccessTokenService, WebAppAccessTokenService>();
 
             // configuring http clients
             services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(applicationSettings.BaseAddress) });
-            services.ConfigureAll<HttpClientFactoryOptions>(options =>
-                options.HttpMessageHandlerBuilderActions.Add(handlerBuilder =>
-                    handlerBuilder.AdditionalHandlers.Add(
-                        handlerBuilder.Services.GetRequiredService<CustomAuthorizationHandler>())));
+            //services.ConfigureAll<HttpClientFactoryOptions>(options =>
+            //    options.HttpMessageHandlerBuilderActions.Add(handlerBuilder =>
+            //        handlerBuilder.AdditionalHandlers.Add(
+            //            handlerBuilder.Services.GetRequiredService<CustomAuthorizationHandler>())));
 
             var clientConfigurator = void (HttpClient client) => client.BaseAddress = new Uri(applicationSettings.BaseAddress);
 

@@ -8,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazingChat.Shared", "Blazi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazingChat.WebAPI", "BlazingChat.WebAPI\BlazingChat.WebAPI.csproj", "{8889467E-53FC-4A7E-819D-EA40750F34C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazingChat.Components", "BlazingChat.Components\BlazingChat.Components.csproj", "{B035DFD9-D419-41B1-AF6E-36D8FDEAF039}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazingChat.Components", "BlazingChat.Components\BlazingChat.Components.csproj", "{B035DFD9-D419-41B1-AF6E-36D8FDEAF039}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

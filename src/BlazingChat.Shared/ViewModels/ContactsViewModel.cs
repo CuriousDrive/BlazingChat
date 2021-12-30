@@ -1,4 +1,6 @@
+using BlazingChat.Shared.Extensions;
 using BlazingChat.Shared.Models;
+using BlazingChat.Shared.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -13,33 +15,37 @@ namespace BlazingChat.ViewModels
         public int ContactsCount { get; private set; } = 1;
 
         private readonly HttpClient _httpClient;
+        private readonly IAccessTokenService _accessTokenService;
 
-        public ContactsViewModel(HttpClient httpClient)
+        public ContactsViewModel(HttpClient httpClient,
+            IAccessTokenService accessTokenService)
         {
             _httpClient = httpClient;
+            _accessTokenService = accessTokenService;
         }
 
         private void LoadCurrentObject(IEnumerable<User> users) =>
             Contacts = users.Select(u => (Contact)u);
 
-        //loading 20,000 contacts
-        public async Task LoadAllContactsDemo() =>
-            LoadCurrentObject(await _httpClient.GetFromJsonAsync<List<User>>("contacts/getallcontactsdemo"));
-
-        public async Task LoadOnlyVisibleContactsDemo(int startIndex, int count) =>
-            LoadCurrentObject(await _httpClient.GetFromJsonAsync<List<User>>($"contacts/getonlyvisiblecontactsdemo?startIndex={startIndex}&count={count}"));
-
-        public void LoadContactsCountDemo() =>
-            ContactsCount = 20000;
-
         //loading actual contacts
-        public async Task LoadAllContactsDB() =>
-            LoadCurrentObject(await _httpClient.GetFromJsonAsync<List<User>>("contacts/getcontacts"));
+        public async Task LoadAllContactsDB()
+        {
+            var jwtToken = await _accessTokenService.GetAccessTokenAsync("jwt_token");
+            var users = await _httpClient.GetAsync<List<User>>("contacts/getcontacts", jwtToken);
+            LoadCurrentObject(users);
+        }
 
-        public async Task LoadOnlyVisibleContactsDB(int startIndex, int count) =>
-            LoadCurrentObject(await _httpClient.GetFromJsonAsync<List<User>>($"contacts/getvisiblecontacts?startIndex={startIndex}&count={count}"));
+        public async Task LoadOnlyVisibleContactsDB(int startIndex, int count)
+        {
+            var jwtToken = await _accessTokenService.GetAccessTokenAsync("jwt_token");
+            var users = await _httpClient.GetAsync<List<User>>($"contacts/getvisiblecontacts?startIndex={startIndex}&count={count}", jwtToken);
+            LoadCurrentObject(users);
+        }
 
-        public async Task LoadContactsCountDB() =>
-            ContactsCount = await _httpClient.GetFromJsonAsync<int>("contacts/getcontactscount");
+        public async Task LoadContactsCountDB()
+        {
+            var jwtToken = await _accessTokenService.GetAccessTokenAsync("jwt_token");
+            ContactsCount = await _httpClient.GetAsync<int>("contacts/getcontactscount", jwtToken);
+        }
     }
 }

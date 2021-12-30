@@ -2,6 +2,8 @@ using BlazingChat.Shared.Models;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using BlazingChat.Shared.Extensions;
+using BlazingChat.Shared.Services;
 
 namespace BlazingChat.ViewModels
 {
@@ -16,25 +18,32 @@ namespace BlazingChat.ViewModels
         public string ProfilePicDataUrl { get; set; }
 
         private readonly HttpClient _httpClient;
+        private readonly IAccessTokenService _accessTokenService;
 
         public ProfileViewModel()
         {
         }
 
-        public ProfileViewModel(HttpClient httpClient)
+        public ProfileViewModel(HttpClient httpClient, 
+            IAccessTokenService accessTokenService)
         {
             _httpClient = httpClient;
+            _accessTokenService = accessTokenService;
         }
 
-        public Task UpdateProfile() =>
-            _httpClient.PutAsJsonAsync($"profile/updateprofile/{UserId}", this);
+        public async Task UpdateProfile()
+        {
+            var jwtToken = await _accessTokenService.GetAccessTokenAsync("jwt_token");
+            await _httpClient.PutAsync<User>($"profile/updateprofile/{UserId}", this, jwtToken);
+        }
 
         public async Task GetProfile()
         {
-            ProfileViewModel user = await _httpClient.GetFromJsonAsync<User>($"profile/getprofile/{UserId}");
+            var jwtToken = await _accessTokenService.GetAccessTokenAsync("jwt_token");
+            ProfileViewModel user = await _httpClient.GetAsync<User>($"profile/getprofile/{UserId}",jwtToken);
             LoadCurrentObject(user);
-            Message = "Profile loaded successfully";
         }
+
         private void LoadCurrentObject(IProfileViewModel profileViewModel)
         {
             FirstName = profileViewModel.FirstName;

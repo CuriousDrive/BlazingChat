@@ -1,6 +1,6 @@
 ﻿@inject HttpClient _httpClient
 @inject NavigationManager _navigationManager
-@inject ILocalStorageService _localStorageService
+@inject IAccessTokenService _accessTokenService
 
 <div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand bold-text" href="">BlazingChat</a>
@@ -54,7 +54,7 @@
 @code {
     private bool _collapseNavMenu = true;
 
-    private string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
+    private string NavMenuCssClass => _collapseNavMenu ? "collapse" : string.Empty;
 
     private void ToggleNavMenu()
     {
@@ -63,7 +63,7 @@
 
     private async Task Logout()
     {
-        await _localStorageService.RemoveItemAsync("jwt_token");
+        await _accessTokenService.RemoveAccessTokenAsync("jwt_token");
         _navigationManager.NavigateTo("/", true);
     }
 }

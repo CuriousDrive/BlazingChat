@@ -3,7 +3,7 @@
 @inject NavigationManager _navigationManager
 @inject ILoginViewModel _loginViewModel
 @inject IJSRuntime _jsRuntime
-@inject ILocalStorageService _localStorageService
+@inject IAccessTokenService _accessTokenService
 
 <div class="page">
     <div class="sidebar">
@@ -11,11 +11,6 @@
             <Authorized>
                 <NavMenu />
             </Authorized>
-            <Authorizing>
-                <p style="font-size: large; font-weight: bolder; color: white;">
-                    The app is getting authorized...
-                </p>
-            </Authorizing>
         </AuthorizeView>
     </div>
     <BlazoredToasts Position="ToastPosition.BottomRight"
@@ -28,7 +23,7 @@
         <div class="top-row px-4">
             <AuthorizeView>
                 <Authorized>
-                    <h4><b>Hello, @context.User.Identity.Name</b></h4> &nbsp; &nbsp;
+                    <h4><b>Hello, @context.User?.Identity?.Name</b></h4> &nbsp; &nbsp;
                     <button class="btn btn-danger" @onclick="LogoutUser">Logout</button>
                 </Authorized>
             </AuthorizeView>
@@ -40,34 +35,31 @@
 </div>
 
 @code {
-    protected override async Task OnInitializedAsync()
+    
+    protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        //getting the current authenticated user for the app
-        var jwtToken = await _localStorageService.GetItemAsStringAsync("jwt_token");
-        if (jwtToken == null) return;
-
-        User currentUser = await _loginViewModel.GetUserByJWTAsync(jwtToken);
-
-        if (currentUser != null)
+        //if(firstRender)
         {
-            //setting the themeName parameter for JS function
-            var themeName = currentUser.DarkTheme == 1 ? "dark" : "light";
-            //calling the JS function
-            var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/BlazingChat.Components/js/site.js");
-            await module.InvokeVoidAsync("setTheme", themeName);
+            var jwtToken = await _accessTokenService.GetAccessTokenAsync("jwt_token");
+            if (jwtToken == null) return;
+
+            jwtToken = $@"""{jwtToken}""";
+            User currentUser = await _loginViewModel.GetUserByJWTAsync(jwtToken);
+
+            if (currentUser != null)
+            {
+                //setting the themeName parameter for JS function
+                var themeName = currentUser.DarkTheme == 1 ? "dark" : "light";
+                //calling the JS function
+                var module = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/BlazingChat.Components/js/site.js");
+                await module.InvokeVoidAsync("setTheme", themeName);
+            }
         }
-        await base.OnInitializedAsync();
     }
 
     private async Task LogoutUser()
     {
-        await _localStorageService.RemoveItemAsync("jwt_token");
+        await _accessTokenService.RemoveAccessTokenAsync("jwt_token");
         _navigationManager.NavigateTo("/", true);
     }
-
-    private void LoginUser()
-    {
-        _navigationManager.NavigateTo("/", true);
-    }
-
 }
