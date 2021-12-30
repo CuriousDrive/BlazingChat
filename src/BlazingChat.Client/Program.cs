@@ -7,6 +7,7 @@ using BlazingChat.Components;
 using BlazingChat.Shared.Extensions;
 using BlazingChat.Shared;
 
+
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 
