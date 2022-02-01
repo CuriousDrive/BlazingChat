@@ -28,11 +28,11 @@
             <DataAnnotationsValidator />
             <ValidationSummary />
             <div class="col-xl-6 col-md-8 col-12">
-                <input @onkeypress="OnKeyPress" type="text" @bind="_loginViewModel.EmailAddress" class="form-control dark-theme-textbox" placeholder="email address">
+                <input id="user_name" @onkeypress="OnKeyPress" type="text" @bind="_loginViewModel.EmailAddress" class="form-control dark-theme-textbox" placeholder="email address">
             </div>
             <br />
             <div class="col-xl-6 col-md-8 col-12">
-                <input @onkeypress="OnKeyPress" type="password" @bind="_loginViewModel.Password" class="form-control dark-theme-textbox" placeholder="password">
+                <input id="password" @onkeypress="OnKeyPress" type="password" @bind="_loginViewModel.Password" class="form-control dark-theme-textbox" placeholder="password">
             </div>
             <br />
             <div class="col-xl-6 col-md-8 col-12 row">
