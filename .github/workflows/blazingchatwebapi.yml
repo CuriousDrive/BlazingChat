@@ -3,8 +3,6 @@ on:
   push:
     branches:
     - main
-    paths:
-    - src/BlazingChat.WebAPI/**
 env:
   AZURE_WEBAPP_NAME: blazingchatwebapi
   AZURE_WEBAPP_PACKAGE_PATH: src/BlazingChat.WebAPI/publish
