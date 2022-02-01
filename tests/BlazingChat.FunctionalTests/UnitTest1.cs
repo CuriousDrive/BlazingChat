@@ -37,17 +37,28 @@ namespace BlazingChat.FunctionalTests
             var webAppUrl = "https://www.blazingchat.com";
             WebDriver.Navigate().GoToUrl(webAppUrl);
 
+            Thread.Sleep(10000);
+
             var userName = "julius.caesar@gmail.com";
             var password = "julius.caesar";
 
-            var input = WebDriver.FindElement(By.Id("email"));
+            var input = WebDriver.FindElement(By.Id("user_name"));
+            input.Clear();
             input.SendKeys(userName);
 
-            input = WebDriver.FindElement(By.Id("pass"));
+            Thread.Sleep(2000);
+
+            input = WebDriver.FindElement(By.Id("password"));
+            input.Clear();
             input.SendKeys(password);
 
-            // Click on the login button
+            Thread.Sleep(2000);
+            
+            input = WebDriver.FindElement(By.Id("password"));
 
+
+            // Click on the login button
+            Assert.Pass();
         }
 
         private WebDriver GetChromeDriver()

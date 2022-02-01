@@ -28,16 +28,16 @@
             <DataAnnotationsValidator />
             <ValidationSummary />
             <div class="col-xl-6 col-md-8 col-12">
-                <input id="user_name" @onkeypress="OnKeyPress" type="text" @bind="_loginViewModel.EmailAddress" class="form-control dark-theme-textbox" placeholder="email address">
+                <input id="input_emailaddress" @onkeypress="OnKeyPress" type="text" @bind="_loginViewModel.EmailAddress" class="form-control dark-theme-textbox" placeholder="email address">
             </div>
             <br />
             <div class="col-xl-6 col-md-8 col-12">
-                <input id="password" @onkeypress="OnKeyPress" type="password" @bind="_loginViewModel.Password" class="form-control dark-theme-textbox" placeholder="password">
+                <input id="input_password" @onkeypress="OnKeyPress" type="password" @bind="_loginViewModel.Password" class="form-control dark-theme-textbox" placeholder="password">
             </div>
             <br />
             <div class="col-xl-6 col-md-8 col-12 row">
                 <div class="col-xl-2 col-lg-2 col-md-6 col-sm-3 col-3">
-                    <button type="submit" class="btn btn-danger">Login</button>
+                    <button id="button_login" type="submit" class="btn btn-danger">Login</button>
                 </div>
                 <div class="col-xl-5 col-lg-5 col-md-6 col-sm-9 col-9">
                     <a style="font-weight: bold;" href="/createaccount">Create an account</a>
