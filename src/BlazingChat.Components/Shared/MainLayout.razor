@@ -23,7 +23,7 @@
         <div class="top-row px-4">
             <AuthorizeView>
                 <Authorized>
-                    <h4><b>Hello, @context.User?.Identity?.Name</b></h4> &nbsp; &nbsp;
+                    <h4 id="welcome_message"><b>Hello, @context.User?.Identity?.Name</b></h4> &nbsp; &nbsp;
                     <button class="btn btn-danger" @onclick="LogoutUser">Logout</button>
                 </Authorized>
             </AuthorizeView>
