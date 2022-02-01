@@ -192,7 +192,7 @@ namespace BlazingChat.WebAPI.Controllers
 
         //Twitter Authentication using JWT
         [HttpGet("gettwitteroauthtokenusingresharp")]
-        public ActionResult<TwitterRequestTokenResponse> GetTwitterOAuthTokenUsingResharpAsync()
+        public async Task<ActionResult<TwitterRequestTokenResponse>> GetTwitterOAuthTokenUsingResharpAsync()
         {
             var consumerKey = _configuration["Authentication:Twitter:ConsumerKey"];
             var consumerSecrete = _configuration["Authentication:Twitter:ConsumerSecrete"];
@@ -206,8 +206,8 @@ namespace BlazingChat.WebAPI.Controllers
                 callbackUrl // Value for the oauth_callback parameter
             );
 
-            var request = new RestRequest("/oauth/request_token", Method.POST);
-            var response = client.Execute(request);
+            var request = new RestRequest("/oauth/request_token", Method.Post);
+            var response = await client.ExecuteAsync(request);
 
             var qs = HttpUtility.ParseQueryString(response.Content);
 
@@ -240,8 +240,8 @@ namespace BlazingChat.WebAPI.Controllers
                 twitterRequestTokenResponse.OAuthVerifier
             );
 
-            var request = new RestRequest("/oauth/access_token", Method.POST);
-            var response = client.Execute(request);
+            var request = new RestRequest("/oauth/access_token", Method.Post);
+            var response = await client.ExecuteAsync(request);
 
             var qs = HttpUtility.ParseQueryString(response.Content);
             var _token = qs["oauth_token"];
