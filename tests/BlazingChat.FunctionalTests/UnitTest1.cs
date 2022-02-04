@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Threading;
 
@@ -9,11 +10,14 @@ namespace BlazingChat.FunctionalTests
     public class Tests
     {
         private WebDriver WebDriver { get; set; } = null!;
+        private string DriverPath { get; set; } = @"C:\Data\CuriousDrive\WebDrivers\Chrome";
+        private string BaseUrl { get; set; } = "https://www.blazingchat.com";
 
         [SetUp]
         public void Setup()
         {
             WebDriver = GetChromeDriver();
+            WebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(120);
         }
 
         [TearDown]
@@ -25,59 +29,64 @@ namespace BlazingChat.FunctionalTests
         [Test]
         public void IsPageTitleBlazingChat()
         {
-            var webAppUrl = "https://www.blazingchat.com";
-
-            WebDriver.Navigate().GoToUrl(webAppUrl);
+            WebDriver.Navigate().GoToUrl(BaseUrl);
             Assert.AreEqual("BlazingChat", WebDriver.Title);
         }
 
         [Test]
-        public void LoginTest()
+        public void CanUserLogin()
         {
-            var webAppUrl = "https://www.blazingchat.com";
-            WebDriver.Navigate().GoToUrl(webAppUrl);
+            // Navigate to login page
+            WebDriver.Navigate().GoToUrl(BaseUrl);
 
-            Thread.Sleep(10000);
-
-            var userName = "julius.caesar@gmail.com";
-            var password = "julius.caesar";
-
-            var input = WebDriver.FindElement(By.Id("user_name"));
+            // Enter EmailAddress
+            Thread.Sleep(5000);
+            var input = WebDriver.FindElement(By.Id("input_emailaddress"));
             input.Clear();
-            input.SendKeys(userName);
+            input.SendKeys("julius.caesar@gmail.com");
 
-            Thread.Sleep(2000);
-
-            input = WebDriver.FindElement(By.Id("password"));
+            // Enter Password
+            Thread.Sleep(5000);
+            input = WebDriver.FindElement(By.Id("input_password"));
             input.Clear();
-            input.SendKeys(password);
+            input.SendKeys("julius.caesar");
 
-            Thread.Sleep(2000);
-            
-            input = WebDriver.FindElement(By.Id("password"));
+            // Click on Login button
+            Thread.Sleep(5000);
+            input = WebDriver.FindElement(By.Id("button_login"));
+            input.Click();
 
+            // Validate login message
+            var startTimestamp = DateTime.Now.Millisecond;
+            var endTimstamp = startTimestamp + 15000;
 
-            // Click on the login button
-            Assert.Pass();
+            while (true)
+            {
+                try
+                {
+                    input = WebDriver.FindElement(By.Id("p_welcome_message"));
+                    Assert.AreEqual("Hello, julius.caesar@gmail.com", input.Text);
+                    break;
+                }
+                catch
+                {
+                    var currentTimestamp = DateTime.Now.Millisecond;
+                    if (currentTimestamp > endTimstamp)
+                    {
+                        throw;
+                    }
+                    Thread.Sleep(2000);
+                }
+            }
         }
 
         private WebDriver GetChromeDriver()
         {
-            //var path = Environment.GetEnvironmentVariable("ChromeWebDriver");
-            var path = @"C:\Data\CuriousDrive\WebDrivers\Chrome";
-            
             var options = new ChromeOptions();
             options.AddArguments("--no-sandbox");
             //options.AddArguments("--headless");
 
-            if (!string.IsNullOrWhiteSpace(path))
-            {
-                return new ChromeDriver(path, options, TimeSpan.FromSeconds(300));
-            }
-            else
-            {
-                return new ChromeDriver(options);
-            }
+            return new ChromeDriver(DriverPath, options, TimeSpan.FromSeconds(300));
         }
     }
 }
