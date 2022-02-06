@@ -75,7 +75,7 @@ namespace BlazingChat.FunctionalTests
         private WebDriver GetChromeDriver()
         {
             var options = new ChromeOptions();
-            options.AddArguments("--headless");
+            //options.AddArguments("--headless");
 
             return new ChromeDriver(DriverPath, options, TimeSpan.FromSeconds(300));
         }
