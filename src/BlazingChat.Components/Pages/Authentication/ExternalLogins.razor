@@ -3,6 +3,7 @@
 @inject ILoginViewModel _loginViewModel
 @inject NavigationManager _navigationManager
 @inject ILocalStorageService _localStorageService
+@inject IAccessTokenService _accessTokenService
 
 <div class="col-xl-6 col-md-8 col-12">
     <a class="btn btn-block btn-social btn-twitter" @onclick="TwitterJWT" href="">
@@ -27,7 +28,7 @@
             twitterRequestTokenResponse.OAuthVerifier = oauthVerifier;
 
             string token = await _loginViewModel.GetTwitterJWTAsync(twitterRequestTokenResponse);
-            await _localStorageService.SetItemAsync<string>("jwt_token", token);
+            await _accessTokenService.SetAccessTokenAsync("jwt_token", token);
 
             await _localStorageService.RemoveItemAsync("twitterRequestTokenResponse");
 
@@ -38,7 +39,7 @@
         if (facebookUri.Length > 1 && QueryHelpers.ParseQuery(facebookUri[1]).TryGetValue("access_token", out var accessToken))
         {
             string token = await _loginViewModel.GetFacebookJWTAsync(accessToken);
-            await _localStorageService.SetItemAsync<string>("jwt_token", token);
+            await _accessTokenService.SetAccessTokenAsync("jwt_token", token);
 
             _navigationManager.NavigateTo("/", true);
         }
