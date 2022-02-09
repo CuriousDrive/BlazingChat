@@ -28,8 +28,8 @@
                             id="roles" 
                             @onchange="@AssignRole">
                         <option value=@($"#{user.UserId}")>None</option>
-                        <option value=@($"admin#{user.UserId}")>Admin</option>
-                        <option value=@($"general#{user.UserId}")>General</option>
+                        <option value=@($"admin#{user.UserId}") selected="@(user.Role=="admin")">Admin</option>
+                        <option value=@($"general#{user.UserId}") selected="@(user.Role =="general")">General</option>
                     </select>
                 </div>
                 <div class="col-3">
