@@ -31,7 +31,7 @@ namespace BlazingChat.ViewModels
         public async Task AssignRole(long userId, string role)
         {
             var jwtToken = await _accessTokenService.GetAccessTokenAsync("jwt_token");
-            await _httpClient.PutAsync<User>("user/assignrole", new User { UserId = userId, Role = role }, jwtToken);
+            await _httpClient.PutAsync<int>("user/assignrole", new User { UserId = userId, Role = role }, jwtToken);
         }
 
         public async Task DeleteUser(long userId)

@@ -275,7 +275,8 @@ namespace BlazingChat.WebAPI.Controllers
         [HttpGet("getallusers")]
         public async Task<List<User>> GetAllUsers()
         {
-            return await _context.Users.Select(user => new User() { UserId = user.UserId ,EmailAddress = user.EmailAddress } ).ToListAsync();
+            return await _context.Users.Select(user => 
+                new User() { UserId = user.UserId ,EmailAddress = user.EmailAddress, Role = user.Role } ).ToListAsync();
         }
 
         [Authorize(Roles = "admin")]
