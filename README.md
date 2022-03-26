@@ -16,7 +16,7 @@ Check it out here [https://www.blazingchat.com](https://www.blazingchat.com)
 - Open solution file `src/BlazingChat.sln`
 - Make sure to select `WebAPI` & `Client` to run as multiple startup projects
 
-![Multiple-StartUp-Projects](https://github.com/CuriousDrive/BlazingChat/blob/main/Source Code By Episodes/Documents/Images/MultipleStartUpProjects.JPG)
+![Multiple-StartUp-Projects](https://github.com/CuriousDrive/BlazingChat/blob/main/Source%20Code%20By%20Episodes/Documents/Images/MultipleStartUpProjects.JPG)
 - Press `Cntrl + F5` to run the app. It should open the app in your default browser.
 - Click on login. You should get logged in with email address `john.smith@gmail.com`
 - Or you can login with your Twitter or Facebook
