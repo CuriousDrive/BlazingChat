@@ -26,7 +26,6 @@ builder.Services.Configure<ApplicationSettings>(options =>
 });
 
 // SEO Services
-builder.Services.AddSingleton<MetadataProvider>();
 builder.Services.AddScoped<MetadataTransferService>();
 
 // adding application services
