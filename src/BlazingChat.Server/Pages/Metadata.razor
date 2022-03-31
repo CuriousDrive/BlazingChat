@@ -1,0 +1,26 @@
+@using BlazingChat.Server.SEO
+@using System.ComponentModel
+@inject MetadataTransferService MetadataTransferService
+@implements IDisposable
+
+    <title>@MetadataTransferService.Title</title>
+    <meta name="description" content="@MetadataTransferService.Description" />
+    <meta name="og:title" property="og:title" content="@MetadataTransferService.OgTitle">
+    <meta name="twitter:card" content="@MetadataTransferService.TwitterCard">
+
+@code {
+    protected override void OnInitialized()
+    {
+        MetadataTransferService.PropertyChanged += OnMetadataChanged;
+    }
+
+    private void OnMetadataChanged(object sender, PropertyChangedEventArgs e)
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        MetadataTransferService.PropertyChanged -= OnMetadataChanged;
+    }
+}

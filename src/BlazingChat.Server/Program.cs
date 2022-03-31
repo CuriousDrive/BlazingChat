@@ -4,6 +4,7 @@ using BlazingChat.Components;
 using BlazingChat.Shared.Extensions;
 using BlazingChat.Shared;
 using Microsoft.Extensions.Hosting.Internal;
+using BlazingChat.Server.SEO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,9 @@ builder.Services.Configure<ApplicationSettings>(options =>
 {
     applicationSettingsSection.Bind(options);
 });
+
+// SEO Services
+builder.Services.AddScoped<MetadataTransferService>();
 
 // adding application services
 builder.Services.AddBlazingChat(applicationSettingsSection.Get<ApplicationSettings>());
